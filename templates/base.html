@@ -25,7 +25,7 @@
                     
                     <!-- 中间内容区域 -->
                     <div class="sidebar-content flex-grow-1">
-                        <!-- 这里可以添加其他内容 -->
+                        <!-- 里可以添加其他内容 -->
                     </div>
                     
                     <!-- 底部按钮 -->
@@ -105,16 +105,14 @@
                                     <label for="registerEmail" class="form-label">邮箱</label>
                                     <input type="email" class="form-control" id="registerEmail" name="email" required>
                                     <div class="form-text">仅支持QQ邮箱、网易邮箱、新浪邮箱和126邮箱</div>
-                                    <div class="invalid-feedback">请输入有效的邮箱地址</div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="registerCaptcha" class="form-label">验证码</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="registerCaptcha" name="captcha_value" required>
                                         <input type="hidden" name="captcha_key" value="{{ hashkey }}">
-                                        <img id="captchaImage" src="{{ image_url }}" alt="验证码" style="height: 38px; cursor: pointer;">
+                                        <img id="captchaImage" class="captcha-image" src="{{ image_url }}" alt="验证码">
                                     </div>
-                                    <div class="invalid-feedback">请输入验证码</div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="registerEmailCode" class="form-label">邮箱验证码</label>
@@ -122,27 +120,24 @@
                                         <input type="text" class="form-control" id="registerEmailCode" name="email_code" required>
                                         <button type="button" class="btn btn-outline-secondary send-code-btn">获取验证码</button>
                                     </div>
-                                    <div class="invalid-feedback">请输入邮箱验证码</div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="registerPassword" class="form-label">密码</label>
                                     <div class="input-group">
-                                        <input type="password" class="form-control" id="registerPassword" required>
+                                        <input type="password" class="form-control" id="registerPassword" name="password1" required>
                                         <button class="btn btn-outline-secondary toggle-password" type="button">
                                             <i class="fas fa-eye"></i>
                                         </button>
                                     </div>
-                                    <div class="invalid-feedback">请输入密码</div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="registerConfirmPassword" class="form-label">确认密码</label>
                                     <div class="input-group">
-                                        <input type="password" class="form-control" id="registerConfirmPassword" required>
+                                        <input type="password" class="form-control" id="registerConfirmPassword" name="password2" required>
                                         <button class="btn btn-outline-secondary toggle-password" type="button">
                                             <i class="fas fa-eye"></i>
                                         </button>
                                     </div>
-                                    <div class="invalid-feedback">两次输入的密码不一致</div>
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100">注册</button>
                             </form>

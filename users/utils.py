@@ -9,16 +9,42 @@ def generate_email_code():
 
 def send_verification_code(email, code):
     """发送邮箱验证码"""
-    subject = 'TeaTalk 验证码'
-    message = f'您的验证码是：{code}，有效期为5分钟。'
-    from_email = settings.DEFAULT_FROM_EMAIL
-    recipient_list = [email]
-    
     try:
-        send_mail(subject, message, from_email, recipient_list)
-        return True
+        subject = 'TeaTalk 验证码'
+        message = f'''
+        您好！
+        
+        您的验证码是：{code}
+        
+        验证码有效期为5分钟，请尽快使用。
+        
+        如果这不是您的操作，请忽略此邮件。
+        
+        TeaTalk 团队
+        '''
+        from_email = settings.DEFAULT_FROM_EMAIL
+        recipient_list = [email]
+        
+        print(f"开始发送邮件...")
+        print(f"发件人: {from_email}")
+        print(f"收件人: {email}")
+        print(f"验证码: {code}")
+        
+        result = send_mail(
+            subject=subject,
+            message=message,
+            from_email=from_email,
+            recipient_list=recipient_list,
+            fail_silently=False
+        )
+        
+        print(f"邮件发送结果: {result}")
+        return result > 0
+        
     except Exception as e:
-        print(f"发送邮件失败: {e}")
+        print(f"发送邮件时出错: {str(e)}")
+        print(f"错误类型: {type(e).__name__}")
+        print(f"错误详情: {e.args}")
         return False
 
 def validate_password_strength(password):

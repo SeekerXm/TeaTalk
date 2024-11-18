@@ -50,31 +50,40 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 刷新验证码
     function refreshCaptcha() {
-        fetch('/captcha/refresh/')
-            .then(response => response.json())
-            .then(data => {
-                // 更新所有验证码图片和对应的 hashkey
-                document.querySelectorAll('.captcha-image').forEach(img => {
-                    img.src = data.image_url;
-                    // 找到对应的 hashkey 输入框并更新值
-                    const form = img.closest('form');
-                    if (form) {
-                        const hashkeyInput = form.querySelector('[name="captcha_0"]');
-                        if (hashkeyInput) {
-                            hashkeyInput.value = data.key;
-                        }
+        fetch('/captcha/refresh/', {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // 更新所有验证码图片和对应的 hashkey
+            document.querySelectorAll('.captcha-image').forEach(img => {
+                img.src = data.image_url;
+                // 找到对应的 hashkey 输入框并更新值
+                const form = img.closest('form');
+                if (form) {
+                    const hashkeyInput = form.querySelector('[name="captcha_key"]');
+                    if (hashkeyInput) {
+                        hashkeyInput.value = data.key;
                     }
-                });
-            })
-            .catch(error => console.error('刷新验证码失败:', error));
+                }
+            });
+        })
+        .catch(error => console.error('刷新验证码失败:', error));
     }
 
     // 为所有验证码图片添加点击事件
-    document.querySelectorAll('.captcha-image').forEach(img => {
-        img.style.cursor = 'pointer';  // 添加手型光标
-        img.title = '点击刷新验证码';  // 添加提示文字
+    const captchaImages = document.querySelectorAll('.captcha-image');
+    console.log('找到验证码图片:', captchaImages.length); // 调试日志
+    
+    captchaImages.forEach(img => {
+        img.style.cursor = 'pointer';
+        img.title = '点击刷新验证码';
         img.addEventListener('click', function(e) {
-            e.preventDefault();  // 阻止默认行为
+            console.log('验证码图片被点击'); // 调试日志
+            e.preventDefault();
             refreshCaptcha();
         });
     });
@@ -89,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => updateCountdown(button), 1000);
         } else {
             button.disabled = false;
-            button.textContent = '获取验证码';
+            button.textContent = '获验证码';
         }
     };
     
@@ -97,28 +106,18 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function() {
             const form = this.closest('form');
             const email = form.querySelector('[name="email"]').value;
-            const captcha = form.querySelector('[name="captcha_1"]').value;
-            const captchaKey = form.querySelector('[name="captcha_0"]').value;
-            const csrfToken = form.querySelector('[name="csrfmiddlewaretoken"]').value;
+            const captcha = form.querySelector('[name="captcha_value"]').value;
+            const captchaKey = form.querySelector('[name="captcha_key"]').value;
+            const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
 
-            // 邮箱格式验证
-            const emailRegex = /^[^\s@]+@(qq\.com|163\.com|sina\.com|126\.com)$/i;
-            if (!email) {
-                showError('请输入邮箱地址');
-                return;
-            }
-            if (!emailRegex.test(email)) {
-                showError('仅支持QQ邮箱、网易邮箱、新浪邮箱和126邮箱');
-                return;
-            }
+            console.log('发送验证码 - 表单数据:', {
+                email,
+                captcha,
+                captchaKey,
+                csrfToken
+            });
 
             // 验证码验证
-            if (!captcha) {
-                showError('请输入验证码');
-                return;
-            }
-            
-            // 先验证人机验证码
             fetch('/verify-captcha/', {
                 method: 'POST',
                 headers: {
@@ -132,9 +131,10 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => response.json())
             .then(data => {
+                console.log('验证码验证结果:', data);
                 if (data.valid) {
-                    // 验证码正确，发送邮箱验证码
-                    fetch('/send-email-code/', {
+                    // 发送邮箱验证码
+                    return fetch('/send-email-code/', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded',
@@ -143,30 +143,29 @@ document.addEventListener('DOMContentLoaded', function() {
                         body: new URLSearchParams({
                             'email': email
                         })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            countdown = 60;
-                            updateCountdown(this);
-                            showMessage('验证码已发送到您的邮箱', 'success');
-                        } else {
-                            showError(data.message || '发送验证码失败');
-                            refreshCaptcha();
-                        }
-                    })
-                    .catch(error => {
-                        console.error('发送邮箱验证码失败:', error);
-                        showError('网络错误，请稍后重试');
                     });
                 } else {
-                    showError('验证码错误');
+                    throw new Error('验证码错误');
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('邮箱验证码发送结果:', data);
+                if (data.success) {
+                    countdown = 60;
+                    updateCountdown(this);
+                    showMessage('验证码已发送到您的邮箱', 'success');
+                } else {
+                    showError(data.message || '发送验证码失败');
                     refreshCaptcha();
                 }
             })
             .catch(error => {
-                console.error('验证验证码失败:', error);
-                showError('网络错误，请稍后重试');
+                console.error('请求失败:', error);
+                showError(error.message || '网络错误，请稍后重试');
+                if (error.message === '验证码错误') {
+                    refreshCaptcha();
+                }
             });
         });
     });
@@ -180,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const password1 = form.querySelector('#registerPassword').value;
                 const password2 = form.querySelector('#registerConfirmPassword').value;
                 const emailCode = form.querySelector('[name="email_code"]').value;
-                const captcha = form.querySelector('[name="captcha_1"]').value;
+                const captcha = form.querySelector('[name="captcha_value"]').value;
 
                 // 邮箱验证
                 if (!email) {
@@ -326,24 +325,47 @@ document.addEventListener('DOMContentLoaded', function() {
                     method: 'POST',
                     body: formData
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     if (data.success) {
-                        showMessage('操作成功', 'success');
-                        if (formId === 'loginForm') {
+                        showMessage(data.message || '操作成功', 'success');
+                        
+                        // 如果是注册成功
+                        if (formId === 'registerForm' && data.email) {
+                            // 延迟1.5秒后切换到登录表单
+                            setTimeout(() => {
+                                // 切换到登录标签页
+                                const loginTab = document.querySelector('[data-bs-target="#loginTab"]');
+                                const tabInstance = new bootstrap.Tab(loginTab);
+                                tabInstance.show();
+                                
+                                // 自动填充邮箱
+                                const loginEmail = document.querySelector('#loginEmail');
+                                if (loginEmail) {
+                                    loginEmail.value = data.email;
+                                }
+                                
+                                // 聚焦到密码输入框
+                                const loginPassword = document.querySelector('#loginPassword');
+                                if (loginPassword) {
+                                    loginPassword.focus();
+                                }
+                                
+                                // 清空注册表单
+                                form.reset();
+                                form.classList.remove('was-validated');
+                            }, 1500);
+                        } else if (formId === 'loginForm') {
                             location.reload();
-                        } else {
-                            setTimeout(() => location.reload(), 1500);
                         }
                     } else {
-                        if (data.errors) {
-                            Object.entries(data.errors).forEach(([field, errors]) => {
-                                showError(errors[0]);
-                            });
-                        } else {
-                            showError(data.message || '操作失败');
-                        }
-                        // ��果是验证码错误，��新验证码
+                        showError(data.message || '操作失败');
+                        // 如果是验证码错误，刷新验证码
                         if (data.message && data.message.includes('验证码')) {
                             refreshCaptcha();
                         }
@@ -351,7 +373,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .catch(error => {
                     console.error('请求失败:', error);
-                    showError('网络错误，请稍后重试');
+                    showError('服务器错误，请稍后重试');
                 });
             });
         }
@@ -360,7 +382,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // 消息提示函数
     function showMessage(message, type = 'error') {
         const alertDiv = document.createElement('div');
-        alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show`;
+        alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show position-relative`;
+        alertDiv.style.marginBottom = '1rem';
         alertDiv.innerHTML = `
             <div class="d-flex align-items-center">
                 <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} me-2"></i>
@@ -372,7 +395,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // 找到当前激活的表单面板
         const activePane = document.querySelector('.tab-pane.active');
         if (activePane) {
-            activePane.insertBefore(alertDiv, activePane.firstChild);
+            // 插入到表单之前
+            const form = activePane.querySelector('form');
+            if (form) {
+                form.insertAdjacentElement('beforebegin', alertDiv);
+            }
         }
         
         // 3秒后自动消失
@@ -386,12 +413,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function showError(message) {
         showMessage(message, 'error');
     }
-
-    // 验证码刷新功能
-    const captchaImage = document.getElementById('captchaImage');
-    if (captchaImage) {
-        captchaImage.addEventListener('click', refreshCaptcha);
-    }
 });
 
 function refreshCaptcha() {
@@ -403,9 +424,18 @@ function refreshCaptcha() {
     })
     .then(response => response.json())
     .then(data => {
-        // 更新验证码图片和key
-        document.querySelector('input[name="captcha_key"]').value = data.key;
-        document.getElementById('captchaImage').src = data.image_url;
+        // 更新所有验证码图片和对应的 hashkey
+        document.querySelectorAll('.captcha-image').forEach(img => {
+            img.src = data.image_url;
+            // 找到对应的 hashkey 输入框并更新值
+            const form = img.closest('form');
+            if (form) {
+                const hashkeyInput = form.querySelector('[name="captcha_key"]');
+                if (hashkeyInput) {
+                    hashkeyInput.value = data.key;
+                }
+            }
+        });
     })
     .catch(error => {
         console.error('刷新验证码失败:', error);
