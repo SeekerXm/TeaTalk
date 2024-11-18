@@ -17,24 +17,19 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('-date_joined',)
     
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
-        ('个人信息', {'fields': ('username',)}),
-        ('权限', {
+        ('用户信息', {
+            'classes': ('wide', 'extrapretty', 'user-info'),
             'fields': (
+                'email',
+                ('status', 'ban_until'),
                 'user_type',
-                'status',
-                'ban_until',
-                'is_active',
-                'groups',
-                'user_permissions',
-            ),
+            )
         }),
-        ('重要日期', {'fields': ('last_login', 'date_joined')}),
     )
     
     add_fieldsets = (
         (None, {
-            'classes': ('wide',),
+            'classes': ('wide', 'extrapretty', 'user-info'),
             'fields': ('email', 'password1', 'password2'),
         }),
     )
@@ -316,5 +311,5 @@ class CustomUserAdmin(UserAdmin):
 
     class Media:
         css = {
-            'all': ('css/custom_admin.css',)
+            'all': ('css/custom_admin.css', 'css/user_admin.css')
         }
