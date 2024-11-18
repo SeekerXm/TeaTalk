@@ -139,15 +139,20 @@ class CustomUserAdmin(UserAdmin):
         color = status_colors.get(obj.status, 'secondary')
         icon = status_icons.get(obj.status, '')
         
-        if obj.status == 'banned' and obj.ban_until:
+        if obj.status == 'banned':
+            if obj.ban_until:
+                ban_time = obj.ban_until.strftime('%Y-%m-%d %H:%M')
+                status_text = f'封禁 (至 {ban_time})'
+            else:
+                status_text = '永久封禁'
+            
             return format_html(
-                '<span class="badge bg-{}" data-ban-until="(至 {})">'
-                '{} {}</span>',
+                '<span class="badge bg-{}">{} {}</span>',
                 color,
-                obj.ban_until.strftime('%Y-%m-%d %H:%M'),
                 icon,
-                obj.get_status_display()
+                status_text
             )
+        
         return format_html(
             '<span class="badge bg-{}">{} {}</span>',
             color,
