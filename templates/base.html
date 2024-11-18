@@ -19,7 +19,7 @@
                 <div class="d-flex flex-column h-100">
                     <!-- 顶部 Logo -->
                     <div class="sidebar-header">
-                        <img src="/static/images/logo.png" alt="TeaTalk" class="logo">
+                        <img src="/static/images/favicon.png" alt="TeaTalk" class="logo">
                         <h1>TeaTalk</h1>
                     </div>
                     
@@ -78,15 +78,16 @@
                         <!-- 登录表单 -->
                         <div class="tab-pane fade show active" id="loginTab">
                             <form id="loginForm" class="needs-validation" novalidate>
+                                {% csrf_token %}
                                 <div class="mb-3">
                                     <label for="loginEmail" class="form-label">邮箱</label>
-                                    <input type="email" class="form-control" id="loginEmail" required>
+                                    <input type="email" class="form-control" id="loginEmail" name="email" required>
                                     <div class="invalid-feedback">请输入有效的邮箱地址</div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="loginPassword" class="form-label">密码</label>
                                     <div class="input-group">
-                                        <input type="password" class="form-control" id="loginPassword" required>
+                                        <input type="password" class="form-control" id="loginPassword" name="password" required>
                                         <button class="btn btn-outline-secondary toggle-password" type="button">
                                             <i class="fas fa-eye"></i>
                                         </button>

@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // 注册单密码确认验证
+    // 注册��密码确认验证
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
         const password = registerForm.querySelector('#registerPassword');
@@ -239,8 +239,8 @@ document.addEventListener('DOMContentLoaded', function() {
         'loginForm': {
             url: '/login/',
             validate: function(form) {
-                const email = form.querySelector('#loginEmail').value;
-                const password = form.querySelector('#loginPassword').value;
+                const email = form.querySelector('[name="email"]').value;
+                const password = form.querySelector('[name="password"]').value;
 
                 if (!email) {
                     showError('请输入邮箱地址');
@@ -314,58 +314,74 @@ document.addEventListener('DOMContentLoaded', function() {
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
-                // 先进行客户端验证
                 if (!handler.validate(this)) {
                     return;
                 }
 
                 const formData = new FormData(this);
+                const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+                
+                // 打印调试信息
+                console.log('提交表单:', formId);
+                console.log('表单数据:', Object.fromEntries(formData));
                 
                 fetch(handler.url, {
                     method: 'POST',
-                    body: formData
+                    headers: {
+                        'X-CSRFToken': csrfToken,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: formData,
+                    credentials: 'same-origin'  // 添加这行以包含cookies
                 })
                 .then(response => {
+                    console.log('响应状态:', response.status);  // 添加调试日志
                     if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
+                        return response.text().then(text => {  // 获取错误响应的具体内容
+                            console.error('错误响应内容:', text);
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        });
                     }
                     return response.json();
                 })
                 .then(data => {
+                    console.log('响应数据:', data);  // 添加调试日志
                     if (data.success) {
-                        showMessage(data.message || '操作成功', 'success');
-                        
-                        // 如果是注册成功
-                        if (formId === 'registerForm' && data.email) {
-                            // 延迟1.5秒后切换到登录表单
+                        if (formId === 'loginForm') {
+                            showMessage('登录成功！', 'success');
                             setTimeout(() => {
-                                // 切换到登录标签页
-                                const loginTab = document.querySelector('[data-bs-target="#loginTab"]');
-                                const tabInstance = new bootstrap.Tab(loginTab);
-                                tabInstance.show();
-                                
-                                // 自动填充邮箱
-                                const loginEmail = document.querySelector('#loginEmail');
-                                if (loginEmail) {
-                                    loginEmail.value = data.email;
-                                }
-                                
-                                // 聚焦到密码输入框
-                                const loginPassword = document.querySelector('#loginPassword');
-                                if (loginPassword) {
-                                    loginPassword.focus();
-                                }
-                                
-                                // 清空注册表单
-                                form.reset();
-                                form.classList.remove('was-validated');
-                            }, 1500);
-                        } else if (formId === 'loginForm') {
-                            location.reload();
+                                location.reload();
+                            }, 1000);
+                        } else {
+                            showMessage(data.message || '操作成功', 'success');
+                            if (formId === 'registerForm' && data.email) {
+                                // 延迟1.5秒后切换到登录表单
+                                setTimeout(() => {
+                                    // 切换到登录标签页
+                                    const loginTab = document.querySelector('[data-bs-target="#loginTab"]');
+                                    const tabInstance = new bootstrap.Tab(loginTab);
+                                    tabInstance.show();
+                                    
+                                    // 自动填充邮箱
+                                    const loginEmail = document.querySelector('#loginEmail');
+                                    if (loginEmail) {
+                                        loginEmail.value = data.email;
+                                    }
+                                    
+                                    // 聚焦到密码输入框
+                                    const loginPassword = document.querySelector('#loginPassword');
+                                    if (loginPassword) {
+                                        loginPassword.focus();
+                                    }
+                                    
+                                    // 清空注册表单
+                                    form.reset();
+                                    form.classList.remove('was-validated');
+                                }, 1500);
+                            }
                         }
                     } else {
                         showError(data.message || '操作失败');
-                        // 如果是验证码错误，刷新验证码
                         if (data.message && data.message.includes('验证码')) {
                             refreshCaptcha();
                         }

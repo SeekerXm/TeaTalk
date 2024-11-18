@@ -26,6 +26,12 @@ class LoginForm(forms.Form):
     email = forms.EmailField(label='邮箱')
     password = forms.CharField(label='密码', widget=forms.PasswordInput)
 
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if not validate_email_domain(email):
+            raise ValidationError('不支持的邮箱域名')
+        return email
+
 class ResetPasswordForm(forms.Form):
     email = forms.EmailField(label='邮箱')
     email_code = forms.CharField(label='邮箱验证码', max_length=6)

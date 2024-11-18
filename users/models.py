@@ -1,43 +1,26 @@
-from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils import timezone
 from datetime import timedelta
 
-class CustomUserManager(BaseUserManager):
+class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
-        """创建普通用户，只需要邮箱"""
         if not email:
-            raise ValueError('邮箱是必填项')
+            raise ValueError('邮箱地址是必需的')
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         if password:
             user.set_password(password)
         user.save(using=self._db)
         return user
-    
-    def create_superuser(self, email, username, password=None, **extra_fields):
-        """创建超级管理员，需要用户名和邮箱"""
-        if not email:
-            raise ValueError('邮箱是必填项')
-        if not username:
-            raise ValueError('用户名是必填项')
-            
+
+    def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('user_type', 'admin')
-            
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True.')
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Superuser must have is_superuser=True.')
-            
-        email = self.normalize_email(email)
-        user = self.model(email=email, username=username, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
+        return self.create_user(email, password, **extra_fields)
 
-class User(AbstractUser):
+class User(AbstractBaseUser, PermissionsMixin):
     STATUS_CHOICES = (
         ('normal', '正常'),
         ('warning', '警告'),
@@ -61,14 +44,15 @@ class User(AbstractUser):
     user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES, default='user', verbose_name='用户类型')
     ban_until = models.DateTimeField(null=True, blank=True, verbose_name='封禁截止时间')
     last_login = models.DateTimeField(default=timezone.now, verbose_name='最后登录时间')
+    date_joined = models.DateTimeField(default=timezone.now, verbose_name='注册时间')
     email_verified = models.BooleanField(default=False, verbose_name='邮箱已验证')
     email_verification_code = models.CharField(max_length=6, null=True, blank=True, verbose_name='邮箱验证码')
     email_verification_code_expires = models.DateTimeField(null=True, blank=True, verbose_name='验证码过期时间')
     
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']  # 创建超级用户时需要用户名
+    REQUIRED_FIELDS = []
     
-    objects = CustomUserManager()
+    objects = UserManager()
     
     class Meta:
         verbose_name = '用户'
@@ -104,3 +88,7 @@ class User(AbstractUser):
         if timezone.now() > self.email_verification_code_expires:
             return False
         return self.email_verification_code == code
+    
+    @property
+    def is_staff(self):
+        return self.user_type == 'admin'

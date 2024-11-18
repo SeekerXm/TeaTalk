@@ -11,26 +11,29 @@ from .models import User
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
-    list_display = ('display_username', 'email', 'status_tag', 'user_type', 'date_joined', 'last_login')
+    list_display = ('email', 'username', 'status', 'user_type', 'date_joined', 'last_login')
     list_filter = ('status', 'user_type')
-    search_fields = ('username', 'email')
+    search_fields = ('email', 'username')
     ordering = ('-date_joined',)
     
-    # 管理员用户的字段集
-    admin_fieldsets = (
-        (None, {'fields': ('username', 'email', 'password')}),
-        ('权限信息', {'fields': ('user_type', 'status', 'ban_until')}),
-        ('重要日期', {'fields': ('last_login', 'date_joined')}),
-    )
-    
-    # 普通用户的字段集
-    user_fieldsets = (
+    fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('权限信息', {'fields': ('user_type', 'status', 'ban_until')}),
+        ('个人信息', {'fields': ('username',)}),
+        ('权限', {
+            'fields': (
+                'user_type',
+                'status',
+                'ban_until',
+                'is_active',
+                'is_staff',
+                'is_superuser',
+                'groups',
+                'user_permissions',
+            ),
+        }),
         ('重要日期', {'fields': ('last_login', 'date_joined')}),
     )
     
-    # 添加用户时的字段集
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
@@ -38,7 +41,6 @@ class CustomUserAdmin(UserAdmin):
         }),
     )
     
-    # 添加操作按钮
     change_list_template = "admin/user_changelist.html"
     change_form_template = "admin/user_change_form.html"
     
@@ -126,8 +128,8 @@ class CustomUserAdmin(UserAdmin):
         if not obj:
             return self.add_fieldsets
         if obj.user_type == 'admin':
-            return self.admin_fieldsets
-        return self.user_fieldsets
+            return self.fieldsets
+        return self.fieldsets
     
     def status_tag(self, obj):
         status_colors = {

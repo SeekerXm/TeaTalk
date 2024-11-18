@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
@@ -11,6 +11,7 @@ from .utils import generate_email_code, send_verification_code, validate_email_d
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from announcements.models import Announcement
+from django.contrib.auth import get_user_model
 
 def index(request):
     """首页视图"""
@@ -160,18 +161,48 @@ def register(request):
 @require_POST
 def user_login(request):
     """登录处理"""
-    form = LoginForm(request.POST)
-    if form.is_valid():
-        email = form.cleaned_data['email']
-        password = form.cleaned_data['password']
-        try:
-            user = User.objects.get(email=email)
-            if user.check_password(password):
+    try:
+        print("开始处理登录请求")
+        print(f"POST数据: {request.POST}")
+        
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            print(f"表单验证通过 - Email: {email}")
+            
+            # 使用 authenticate 进行身份验证
+            user = authenticate(request, username=email, password=password)
+            
+            if user is not None:
+                if not user.email_verified:
+                    print("邮箱未验证")
+                    return JsonResponse({
+                        'success': False,
+                        'message': '请先验证您的邮箱'
+                    })
+                
+                print("登录成功")
                 login(request, user)
-                return JsonResponse({'success': True})
-        except User.DoesNotExist:
-            pass
-    return JsonResponse({'success': False, 'message': '邮箱或密码错误'})
+                return JsonResponse({
+                    'success': True,
+                    'message': '登录成功'
+                })
+            else:
+                print("用户验证失败")
+                return JsonResponse({
+                    'success': False,
+                    'message': '邮箱或密码错误'
+                })
+                
+    except Exception as e:
+        print(f"登录处理时出错: {str(e)}")
+        print(f"错误类型: {type(e).__name__}")
+        print(f"错误详情: {e.args}")
+        return JsonResponse({
+            'success': False,
+            'message': '服务器错误，请稍后重试'
+        })
 
 @require_POST
 def reset_password(request):
