@@ -25,8 +25,6 @@ class CustomUserAdmin(UserAdmin):
                 'status',
                 'ban_until',
                 'is_active',
-                'is_staff',
-                'is_superuser',
                 'groups',
                 'user_permissions',
             ),

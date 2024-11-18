@@ -48,6 +48,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email_verified = models.BooleanField(default=False, verbose_name='邮箱已验证')
     email_verification_code = models.CharField(max_length=6, null=True, blank=True, verbose_name='邮箱验证码')
     email_verification_code_expires = models.DateTimeField(null=True, blank=True, verbose_name='验证码过期时间')
+    is_active = models.BooleanField(default=True, verbose_name='是否激活')
     
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -91,4 +92,5 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     @property
     def is_staff(self):
+        """是否为管理员"""
         return self.user_type == 'admin'
