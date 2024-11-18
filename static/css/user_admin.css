@@ -1,0 +1,178 @@
+/* 修改用户界面样式 */
+.change-form #content-main {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+/* 表单容器样式 */
+.change-form .module {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    border: none;
+}
+
+/* 表单标题样式 - 使用更具体的选择器来提高优先级 */
+.change-form #content-main .module.user-info h2,
+.change-form #content-main .module h2,
+.module.user-info h2,
+.inline-group h2,
+.selector-chosen h2,
+div.module h2 {
+    font-size: 1.2rem !important;
+    color: #1a1a1a !important;  /* 深色文字 */
+    padding: 20px !important;
+    margin: 0 !important;
+    background: #ffffff !important;  /* 纯白色背景 */
+    border-bottom: 1px solid #eee !important;
+    font-weight: 500 !important;
+}
+
+/* 表单字段容器 */
+.change-form .form-row {
+    padding: 20px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.change-form .form-row:last-child {
+    border-bottom: none;
+}
+
+.change-form .form-row:hover {
+    background-color: #f8f9fa;
+}
+
+/* 字段标签样式 */
+.change-form .form-row label {
+    flex: 0 0 120px;
+    color: #374151;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* 输入框和选择器样式 */
+.change-form .form-row input,
+.change-form .form-row select {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #374151;
+    background-color: #fff;
+    transition: all 0.3s ease;
+}
+
+.change-form .form-row input:focus,
+.change-form .form-row select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    outline: none;
+}
+
+/* 状态选择器样式 */
+.change-form .field-status select {
+    font-weight: 500;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23666'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 20px;
+    padding-right: 30px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* 状态选项样式 */
+.change-form .field-status select option[value="normal"] {
+    color: #059669;
+}
+
+.change-form .field-status select option[value="warning"] {
+    color: #d97706;
+}
+
+.change-form .field-status select option[value="banned"] {
+    color: #dc2626;
+}
+
+/* 封禁时间输入框样式 */
+.change-form .field-ban_until input {
+    color: #dc2626;
+    font-family: monospace;
+    letter-spacing: 0.5px;
+}
+
+/* 提交按钮区域样式 */
+.change-form .submit-row {
+    background: linear-gradient(145deg, #f8f9fa, #ffffff) !important;
+    border-top: 1px solid #eee !important;
+    padding: 20px !important;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 0;
+    border-radius: 0 0 15px 15px;
+}
+
+.change-form .submit-row input[type="submit"] {
+    background: linear-gradient(145deg, #3b82f6, #2563eb);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.change-form .submit-row input[type="submit"]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+/* 删除按钮样式 */
+.change-form .submit-row .deletelink {
+    background: linear-gradient(145deg, #ef4444, #dc2626) !important;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    color: white !important;
+    font-weight: 500;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.change-form .submit-row .deletelink:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+}
+
+/* 禁用状态样式 */
+.change-form input:disabled,
+.change-form select:disabled {
+    background-color: #f3f4f6;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .change-form .form-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    
+    .change-form .form-row label {
+        flex: none;
+    }
+} 
