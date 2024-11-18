@@ -1,0 +1,49 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_urls admin_list %}
+
+{% block object-tools-items %}
+    {% if has_add_permission %}
+        <li>
+            {% url cl.opts|admin_urlname:'add' as add_url %}
+            <a href="{% add_preserved_filters add_url is_popup to_field %}" class="addlink">
+                {% blocktranslate with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktranslate %}
+            </a>
+        </li>
+    {% endif %}
+    
+    {% if not is_popup %}
+        {% if has_change_permission %}
+            <li>
+                <a href="change-status/" class="changelink">修改状态</a>
+            </li>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block result_list %}
+    {{ block.super }}
+    <script>
+        // 为每个用户行添加状态修改按钮
+        document.addEventListener('DOMContentLoaded', function() {
+            const rows = document.querySelectorAll('tr[class^="row"]');
+            rows.forEach(function(row) {
+                const cells = row.getElementsByTagName('td');
+                if (cells.length > 0) {
+                    const userTypeCell = cells[3]; // 用户类型列
+                    if (userTypeCell.textContent.trim() !== '管理员') {
+                        const actionsCell = cells[cells.length - 1];
+                        const changeUrl = row.getAttribute('data-change-url');
+                        if (changeUrl) {
+                            const statusButton = document.createElement('a');
+                            statusButton.href = changeUrl + 'change-status/';
+                            statusButton.className = 'button';
+                            statusButton.style.marginLeft = '5px';
+                            statusButton.textContent = '修改状态';
+                            actionsCell.appendChild(statusButton);
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %} 

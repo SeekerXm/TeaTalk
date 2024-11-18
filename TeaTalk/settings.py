@@ -205,3 +205,9 @@ SIMPLEUI_ADD_BUTTON = False
 # 添加以下配置
 SIMPLEUI_ACTION_ITEMS = []
 SIMPLEUI_QUICK_ACTIONS = []
+
+# 认证后端配置
+AUTHENTICATION_BACKENDS = [
+    'users.backends.EmailOrUsernameModelBackend',  # 自定义的认证后端
+    'django.contrib.auth.backends.ModelBackend',  # 保留默认的认证后端作为备用
+]

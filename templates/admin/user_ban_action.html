@@ -1,0 +1,140 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="module aligned">
+        <h2>选择封禁时长</h2>
+        <div class="form-row">
+            <label for="id_ban_type">封禁类型:</label>
+            <select name="ban_type" id="id_ban_type" onchange="toggleCustomTime(this.value)" style="width: 200px;">
+                <option value="1">1天</option>
+                <option value="3">3天</option>
+                <option value="7">7天</option>
+                <option value="30">30天</option>
+                <option value="custom">自定义时长</option>
+                <option value="permanent">永久</option>
+            </select>
+        </div>
+        <div class="form-row" id="custom_time_row" style="display: none;">
+            <div style="margin-bottom: 10px;">
+                <label>自定义时长:</label>
+                <div style="display: inline-block; margin-left: 10px;">
+                    <input type="number" name="custom_days" id="id_custom_days" min="0" value="0" style="width: 80px;">
+                    <label for="id_custom_days" style="margin-left: 5px;">天</label>
+                    
+                    <input type="number" name="custom_hours" id="id_custom_hours" min="0" max="23" value="0" style="width: 80px; margin-left: 15px;">
+                    <label for="id_custom_hours" style="margin-left: 5px;">小时</label>
+                    
+                    <input type="number" name="custom_minutes" id="id_custom_minutes" min="0" max="59" value="0" style="width: 80px; margin-left: 15px;">
+                    <label for="id_custom_minutes" style="margin-left: 5px;">分钟</label>
+                </div>
+            </div>
+            <div class="help" style="margin-left: 110px; color: #666;">
+                至少需要设置1分钟的封禁时长
+            </div>
+        </div>
+    </div>
+    
+    <div class="submit-row">
+        {% for obj in queryset %}
+            <input type="hidden" name="{{ action_checkbox_name }}" value="{{ obj.pk }}">
+        {% endfor %}
+        <input type="hidden" name="action" value="set_status_banned_custom">
+        <input type="hidden" name="apply" value="yes">
+        <input type="submit" class="default" value="确认" onclick="return validateForm()">
+        <a href="" class="button cancel-link">取消</a>
+    </div>
+</form>
+
+<script>
+function toggleCustomTime(type) {
+    var customTimeRow = document.getElementById('custom_time_row');
+    customTimeRow.style.display = type === 'custom' ? 'block' : 'none';
+}
+
+function validateForm() {
+    var banType = document.getElementById('id_ban_type').value;
+    if (banType === 'custom') {
+        var days = parseInt(document.getElementById('id_custom_days').value) || 0;
+        var hours = parseInt(document.getElementById('id_custom_hours').value) || 0;
+        var minutes = parseInt(document.getElementById('id_custom_minutes').value) || 0;
+        
+        if (days === 0 && hours === 0 && minutes === 0) {
+            alert('请至少设置1分钟的封禁时长！');
+            return false;
+        }
+        
+        // 验证小时和分钟的范围
+        if (hours < 0 || hours > 23) {
+            alert('小时数必须在0-23之间！');
+            return false;
+        }
+        if (minutes < 0 || minutes > 59) {
+            alert('分钟数必须在0-59之间！');
+            return false;
+        }
+    }
+    return true;
+}
+
+// 限制输入范围
+document.getElementById('id_custom_hours').addEventListener('change', function() {
+    if (this.value > 23) this.value = 23;
+    if (this.value < 0) this.value = 0;
+});
+
+document.getElementById('id_custom_minutes').addEventListener('change', function() {
+    if (this.value > 59) this.value = 59;
+    if (this.value < 0) this.value = 0;
+});
+
+document.getElementById('id_custom_days').addEventListener('change', function() {
+    if (this.value < 0) this.value = 0;
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    toggleCustomTime(document.getElementById('id_ban_type').value);
+});
+</script>
+
+<style>
+.module h2 {
+    background: #79aec8;
+    padding: 8px;
+    font-size: 14px;
+    color: white;
+    border-radius: 4px 4px 0 0;
+}
+
+.form-row {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.form-row label {
+    display: inline-block;
+    width: 100px;
+    color: #333;
+}
+
+.form-row input[type="number"] {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.help {
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.submit-row {
+    padding: 15px;
+    background: #f8f8f8;
+    border-top: 1px solid #eee;
+    margin-top: 15px;
+}
+</style>
+{% endblock %} 
