@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,12 +32,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'simpleui',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'users.apps.UsersConfig',
+    'announcements.apps.AnnouncementsConfig',
 ]
 
 MIDDLEWARE = [
@@ -76,8 +80,16 @@ WSGI_APPLICATION = 'TeaTalk.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ai_chat_assistant',
+        'USER': 'root',
+        'PASSWORD': 'mxm123456',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        }
     }
 }
 
@@ -104,21 +116,92 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# 邮箱配置
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'seekerxm163.com'
+EMAIL_HOST_PASSWORD = 'BYj37SAmu7MQWtHx'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+AUTH_USER_MODEL = 'users.User'
+
+# Simple UI 配置
+SIMPLEUI_CONFIG = {
+    'system_keep': False,
+    'menu_display': ['用户管理', '公告管理'],
+    'dynamic': False,
+    'menus': [{
+        'name': '用户管理',
+        'icon': 'fas fa-users',
+        'models': [{
+            'name': '用户列表',
+            'icon': 'fas fa-user',
+            'url': '/admin/users/user/',
+            'add_url': None,
+            'add_button': False,
+            'icon_actions': []
+        }]
+    }, {
+        'name': '公告管理',
+        'icon': 'fas fa-bullhorn',
+        'models': [{
+            'name': '公告列表',
+            'icon': 'fas fa-scroll',
+            'url': '/admin/announcements/announcement/'
+        }]
+    }]
+}
+
+# Simple UI 其他设置
+SIMPLEUI_DEFAULT_THEME = 'admin.lte.css'
+SIMPLEUI_LOGO = '/static/images/favicon.png'
+SIMPLEUI_TITLE = 'TeaTalk AI 聊天助手'
+SIMPLEUI_HOME_INFO = False
+SIMPLEUI_ANALYSIS = False
+SIMPLEUI_HOME_QUICK = False
+SIMPLEUI_HOME_ACTION = False
+SIMPLEUI_STATIC_OFFLINE = True
+SIMPLEUI_ICON = {
+    '用户管理': 'fas fa-users',
+    '公告管理': 'fas fa-bullhorn',
+    '用户列表': 'fas fa-user',
+    '公告列表': 'fas fa-scroll'
+}
+
+# 禁用所有快速操作按钮
+SIMPLEUI_QUICK_BUTTON = False
+SIMPLEUI_IMPORT_EXPORT_BUTTON = False
+SIMPLEUI_ADD_BUTTON = False
+
+# 添加以下配置
+SIMPLEUI_ACTION_ITEMS = []
+SIMPLEUI_QUICK_ACTIONS = []
