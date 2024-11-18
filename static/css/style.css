@@ -239,7 +239,7 @@ body {
     line-height: 1.6;
 }
 
-/* 调整模态框大小 */
+/* 调整模态框小 */
 #settingsModal .modal-dialog {
     max-width: 900px;
 }
@@ -264,4 +264,69 @@ body {
     background-color: #f8f9fa;
     padding: 15px;
     border-radius: 8px;
+}
+
+/* 公告弹窗样式 */
+#announcementPopupModal .modal-content {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+#announcementPopupModal .modal-header {
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+#announcementPopupModal .modal-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+#announcementPopupModal .btn-close {
+    opacity: 0.6;
+    transition: all 0.2s ease;
+}
+
+#announcementPopupModal .btn-close:hover {
+    opacity: 1;
+}
+
+#announcementPopupModal .modal-body {
+    padding: 20px;
+}
+
+#announcementPopupModal .announcement-content {
+    padding: 0;
+    max-height: none;
+    overflow: visible;
+    background: none;
+    margin-bottom: 15px;
+}
+
+#announcementPopupModal .announcement-content p {
+    margin: 0;
+    color: #374151;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+#announcementPopupModal .announcement-meta {
+    padding-top: 15px;
+    border-top: 1px solid #f0f0f0;
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+/* 禁止点击背景关闭 */
+.modal-backdrop {
+    pointer-events: none;
+}
+
+/* 响应式调整 */
+@media (max-width: 576px) {
+    #announcementPopupModal .modal-dialog {
+        margin: 1rem;
+    }
 } 

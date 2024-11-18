@@ -252,7 +252,7 @@
                                             </span>
                                         </div>
                                         <div class="info-item">
-                                            <span class="info-label">注册时间</span>
+                                            <span class="info-label">注时间</span>
                                             <span class="info-value">{{ user.date_joined|date:"Y-m-d H:i" }}</span>
                                         </div>
                                     </div>
@@ -315,7 +315,7 @@
     <!-- 公告弹窗 -->
     {% if popup_announcement %}
     <div class="modal fade" id="announcementPopupModal" tabindex="-1" aria-hidden="true" 
-         data-announcement-id="{{ popup_announcement.id }}">
+         data-announcement-id="{{ popup_announcement.id }}" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -323,10 +323,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    {{ popup_announcement.content|linebreaks }}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">我知道了</button>
+                    <div class="announcement-content">
+                        <p>{{ popup_announcement.content }}</p>
+                    </div>
+                    <div class="announcement-meta text-muted mt-3">
+                        <small>更新时间：{{ popup_announcement.updated_at|date:"Y-m-d H:i" }}</small>
+                    </div>
                 </div>
             </div>
         </div>
