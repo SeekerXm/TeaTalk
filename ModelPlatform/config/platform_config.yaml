@@ -1,0 +1,51 @@
+# 智谱AI平台配置
+zhipuai:
+  api_key: "8e1436a72f831bf54b6ae4ca43587788.sUsYvAEEXcNF84X0"
+  available_models:
+    text:
+      - "glm-4-flash"
+    image: []  # 暂不支持图像生成
+
+# 百度千帆平台配置
+qianfan:
+  access_key: "ALTAKp6vpru3TSWZ0ZDRmhhOza"
+  secret_key: "2dac3d6e90ca44d7939932f26b68c2a2"
+  available_models:
+    text:
+      - "Yi-34B-Chat"
+    image:
+      - "Fuyu-8B"
+
+# 讯飞星火平台配置
+spark:
+  app_id: "27ca9f10"
+  api_key: "78de37f4f0cb76b95bb94de437d7fc5c"
+  api_secret: "YTYzZGE0ZmY2ZjFjOTIwNmZjNjdiZDAy"
+  domain: "lite"
+  available_models:
+    text:
+      - "Spark-Lite"
+    image: []  # 暂不支持图像生成
+
+# SiliconCloud平台配置
+silicon:
+  api_key: "sk-dbpqlfjeedqscsxcedtblzvtjtakcrmzhxpgihkmycdbyfkj"
+  available_models:
+    text:
+      - "THUDM/chatglm3-6b"
+      - "google/gemma-2-9b-it"
+      - "THUDM/glm-4-9b-chat"
+      - "internlm/internlm2_5-7b-chat"
+      - "meta-llama/Meta-Llama-3.1-8B-Instruct"
+      - "meta-llama/Meta-Llama-3-8B-Instruct"
+      - "Qwen/Qwen2.5-7B-Instruct"
+      - "Qwen/Qwen2.5-Coder-7B-Instruct"
+      - "Qwen/Qwen2-1.5B-Instruct"
+      - "Qwen/Qwen2-7B-Instruct"
+      - "01-ai/Yi-1.5-6B-Chat"
+      - "01-ai/Yi-1.5-9B-Chat-16K"
+    image:
+      - "black-forest-labs/FLUX.1-schnell"
+      - "stabilityai/stable-diffusion-2-1"
+      - "stabilityai/stable-diffusion-3-medium"
+      - "stabilityai/stable-diffusion-xl-base-1.0"
