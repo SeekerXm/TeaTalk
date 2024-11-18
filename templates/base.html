@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeaTalk AI 聊天助手</title>
+    <!-- Bootstrap CSS -->
+    <link href="/static/bootstrap-5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome CSS -->
+    <link href="/static/fontawesome-free-6.6.0-web/css/all.min.css" rel="stylesheet">
+    <!-- 自定义 CSS -->
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid vh-100">
+        <div class="row h-100">
+            <!-- 左侧栏 -->
+            <div class="col-md-3 col-lg-2 sidebar">
+                <div class="d-flex flex-column h-100">
+                    <!-- 顶部 Logo -->
+                    <div class="sidebar-header">
+                        <img src="/static/images/logo.png" alt="TeaTalk" class="logo">
+                        <h1>TeaTalk</h1>
+                    </div>
+                    
+                    <!-- 中间内容区域 -->
+                    <div class="sidebar-content flex-grow-1">
+                        <!-- 这里可以添加其他内容 -->
+                    </div>
+                    
+                    <!-- 底部按钮 -->
+                    <div class="sidebar-footer">
+                        <button class="btn btn-outline-light w-100 mb-2" data-bs-toggle="modal" data-bs-target="#settingsModal">
+                            <i class="fas fa-cog"></i> 设置
+                        </button>
+                        <button class="btn {% if user.is_authenticated %}btn-danger{% else %}btn-primary{% endif %} w-100" 
+                                {% if user.is_authenticated %}
+                                    onclick="window.location.href='{% url 'logout' %}'"
+                                {% else %}
+                                    data-bs-toggle="modal" data-bs-target="#authModal"
+                                {% endif %}>
+                            <i class="fas {% if user.is_authenticated %}fa-sign-out-alt{% else %}fa-sign-in-alt{% endif %}"></i>
+                            {% if user.is_authenticated %}退出{% else %}登录{% endif %}
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 右侧聊天区域 -->
+            <div class="col-md-9 col-lg-10 chat-area">
+                <div class="chat-container">
+                    <!-- 聊天内容将在这里显示 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 登录/注册/找回密码模态框 -->
+    <div class="modal fade" id="authModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <ul class="nav nav-tabs w-100" role="tablist">
+                        <li class="nav-item flex-grow-1" role="presentation">
+                            <button class="nav-link active w-100" data-bs-toggle="tab" data-bs-target="#loginTab" type="button">登录</button>
+                        </li>
+                        <li class="nav-item flex-grow-1" role="presentation">
+                            <button class="nav-link w-100" data-bs-toggle="tab" data-bs-target="#registerTab" type="button">注册</button>
+                        </li>
+                        <li class="nav-item flex-grow-1" role="presentation">
+                            <button class="nav-link w-100" data-bs-toggle="tab" data-bs-target="#resetTab" type="button">找回密码</button>
+                        </li>
+                    </ul>
+                    <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="tab-content">
+                        <!-- 登录表单 -->
+                        <div class="tab-pane fade show active" id="loginTab">
+                            <form id="loginForm" class="needs-validation" novalidate>
+                                <div class="mb-3">
+                                    <label for="loginEmail" class="form-label">邮箱</label>
+                                    <input type="email" class="form-control" id="loginEmail" required>
+                                    <div class="invalid-feedback">请输入有效的邮箱地址</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="loginPassword" class="form-label">密码</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="loginPassword" required>
+                                        <button class="btn btn-outline-secondary toggle-password" type="button">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="invalid-feedback">请输入密码</div>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">登录</button>
+                            </form>
+                        </div>
+                        
+                        <!-- 注册表单 -->
+                        <div class="tab-pane fade" id="registerTab">
+                            <form id="registerForm" class="needs-validation" novalidate>
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="registerEmail" class="form-label">邮箱</label>
+                                    <input type="email" class="form-control" id="registerEmail" name="email" required>
+                                    <div class="form-text">仅支持QQ邮箱、网易邮箱、新浪邮箱和126邮箱</div>
+                                    <div class="invalid-feedback">请输入有效的邮箱地址</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="registerCaptcha" class="form-label">验证码</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="registerCaptcha" name="captcha_value" required>
+                                        <input type="hidden" name="captcha_key" value="{{ hashkey }}">
+                                        <img id="captchaImage" src="{{ image_url }}" alt="验证码" style="height: 38px; cursor: pointer;">
+                                    </div>
+                                    <div class="invalid-feedback">请输入验证码</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="registerEmailCode" class="form-label">邮箱验证码</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="registerEmailCode" name="email_code" required>
+                                        <button type="button" class="btn btn-outline-secondary send-code-btn">获取验证码</button>
+                                    </div>
+                                    <div class="invalid-feedback">请输入邮箱验证码</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="registerPassword" class="form-label">密码</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="registerPassword" required>
+                                        <button class="btn btn-outline-secondary toggle-password" type="button">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="invalid-feedback">请输入密码</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="registerConfirmPassword" class="form-label">确认密码</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="registerConfirmPassword" required>
+                                        <button class="btn btn-outline-secondary toggle-password" type="button">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="invalid-feedback">两次输入的密码不一致</div>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">注册</button>
+                            </form>
+                        </div>
+                        
+                        <!-- 找回密码表单 -->
+                        <div class="tab-pane fade" id="resetTab">
+                            <form id="resetForm" class="needs-validation" novalidate>
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="resetEmail" class="form-label">邮箱</label>
+                                    <input type="email" class="form-control" id="resetEmail" name="email" required>
+                                    <div class="invalid-feedback">请输入有效的邮箱地址</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="resetEmailCode" class="form-label">邮箱验证码</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="resetEmailCode" name="email_code" required>
+                                        <button type="button" class="btn btn-outline-secondary send-code-btn">获取验证码</button>
+                                    </div>
+                                    <div class="invalid-feedback">请输入邮箱验证码</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="resetPassword" class="form-label">新密码</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="resetPassword" required>
+                                        <button class="btn btn-outline-secondary toggle-password" type="button">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="invalid-feedback">请输入新密码</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="resetConfirmPassword" class="form-label">确认新密码</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="resetConfirmPassword" required>
+                                        <button class="btn btn-outline-secondary toggle-password" type="button">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="invalid-feedback">两次输入的新密码不一致</div>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">发送重置链接</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="/static/bootstrap-5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- 自定义 JS -->
+    <script src="/static/js/main.js"></script>
+</body>
+</html> 

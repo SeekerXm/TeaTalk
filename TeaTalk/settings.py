@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
     'announcements.apps.AnnouncementsConfig',
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -217,3 +218,9 @@ SIMPLEUI_HOME_PAGE = '/admin/home/'  # 自定义首页URL
 SIMPLEUI_HOME_TITLE = '系统概览'  # 首页标题
 SIMPLEUI_HOME_ICON = 'fa fa-dashboard'  # 首页图标
 SIMPLEUI_CUSTOM_DASHBOARD = True  # 启用自定义仪表盘
+
+# 添加 Captcha 配置
+CAPTCHA_LENGTH = 4  # 验证码长度
+CAPTCHA_TIMEOUT = 5  # 验证码过期时间（分钟）
+CAPTCHA_IMAGE_SIZE = (100, 30)  # 验证码图片大小
+CAPTCHA_FONT_SIZE = 28  # 验证码字体大小

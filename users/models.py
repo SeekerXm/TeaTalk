@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils import timezone
+from datetime import timedelta
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -60,6 +61,9 @@ class User(AbstractUser):
     user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES, default='user', verbose_name='用户类型')
     ban_until = models.DateTimeField(null=True, blank=True, verbose_name='封禁截止时间')
     last_login = models.DateTimeField(default=timezone.now, verbose_name='最后登录时间')
+    email_verified = models.BooleanField(default=False, verbose_name='邮箱已验证')
+    email_verification_code = models.CharField(max_length=6, null=True, blank=True, verbose_name='邮箱验证码')
+    email_verification_code_expires = models.DateTimeField(null=True, blank=True, verbose_name='验证码过期时间')
     
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']  # 创建超级用户时需要用户名
@@ -86,3 +90,17 @@ class User(AbstractUser):
             self.username = None
             self.user_type = 'user'
         super().save(*args, **kwargs)
+    
+    def set_email_verification_code(self, code):
+        """设置邮箱验证码"""
+        self.email_verification_code = code
+        self.email_verification_code_expires = timezone.now() + timedelta(minutes=5)
+        self.save()
+    
+    def check_email_verification_code(self, code):
+        """检查邮箱验证码"""
+        if not self.email_verification_code or not self.email_verification_code_expires:
+            return False
+        if timezone.now() > self.email_verification_code_expires:
+            return False
+        return self.email_verification_code == code

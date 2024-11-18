@@ -15,18 +15,26 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.static import serve
-from users.views import home
+from users import views
 
 admin.site.site_header = 'TeaTalk AI 聊天助手'
 admin.site.site_title = 'TeaTalk AI 聊天助手'
 admin.site.index_title = '管理后台'
 
 urlpatterns = [
-    path('admin/home/', home, name='admin_home'),
+    path('', views.index, name='index'),
+    path('verify-captcha/', views.verify_captcha, name='verify_captcha'),
+    path('send-email-code/', views.send_email_code, name='send_email_code'),
+    path('register/', views.register, name='register'),
+    path('login/', views.user_login, name='login'),
+    path('logout/', views.user_logout, name='logout'),
+    path('reset-password/', views.reset_password, name='reset_password'),
+    path('captcha/', include('captcha.urls')),
+    path('admin/home/', views.home, name='admin_home'),
     path('admin/', admin.site.urls),
 ]
 
