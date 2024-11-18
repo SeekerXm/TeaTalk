@@ -11,12 +11,8 @@ class AnnouncementAdmin(admin.ModelAdmin):
     
     fieldsets = (
         (None, {
-            'fields': ('title', 'content')
+            'fields': ('title', 'content', 'show_popup', 'is_active')
         }),
-        ('设置', {
-            'fields': ('show_popup', 'is_active'),
-            'classes': ('collapse',)
-        })
     )
 
     class Media:
