@@ -8,6 +8,7 @@
 /dataSources.local.xml
 # .idea文件夹
 .idea/
+.idea/workspace.xml
 #venv文件夹
 venv/
 # .env文件
