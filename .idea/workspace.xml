@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="提交信息：更新用户模型，删除不必要字段，新增邮箱验证功能及相关表单；优化用户管理界面，调整管理员界面的字段显示顺序；增强前端表单的CSRF保护和错误处理，统一字段名称；更新基础模板中的Logo和样式；修复JavaScript逻辑，改进用户登录流程。" />
+    <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="更新用户模型，删除不必要字段，新增邮箱验证功能及相关表单；优化用户管理界面，调整管理员界面的字段显示顺序；增强前端表单的CSRF保护和错误处理，统一字段名称；更新基础模板中的Logo和样式；修复JavaScript逻辑，改进用户登录流程。">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/admin.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -90,7 +93,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1731891219373</updated>
-      <workItem from="1731891221476" duration="21117000" />
+      <workItem from="1731891221476" duration="21905000" />
     </task>
     <task id="LOCAL-00001" summary="提交信息：实现了多个AI平台的接口，新增智谱AI、百度千帆、讯飞星火及SiliconCloud平台支持，包含文本对话和图像生成功能。添加配置管理类及平台工厂类，配置文件整合了各平台的API密钥与可用模型。优化了用户管理和公告管理功能，更新部分项目功能说明文档。">
       <option name="closed" value="true" />
@@ -164,7 +167,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731932578972</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="更新用户模型，删除不必要字段，新增邮箱验证功能及相关表单；优化用户管理界面，调整管理员界面的字段显示顺序；增强前端表单的CSRF保护和错误处理，统一字段名称；更新基础模板中的Logo和样式；修复JavaScript逻辑，改进用户登录流程。">
+      <option name="closed" value="true" />
+      <created>1731933048043</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1731933048043</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -190,6 +201,7 @@
     <MESSAGE value="新增公告管理界面的自定义模板，修改样式以增强用户体验；优化用户管理和公告管理功能。" />
     <MESSAGE value="提交信息：更新用户模型，新增邮箱验证相关字段和方法；添加注册、登录和重置密码功能的表单及视图；集成验证码功能；优化用户管理和公告管理模块；增加基础页面模板及样式。" />
     <MESSAGE value="提交信息：更新用户模型，删除不必要字段，新增邮箱验证功能及相关表单；优化用户管理界面，调整管理员界面的字段显示顺序；增强前端表单的CSRF保护和错误处理，统一字段名称；更新基础模板中的Logo和样式；修复JavaScript逻辑，改进用户登录流程。" />
-    <option name="LAST_COMMIT_MESSAGE" value="提交信息：更新用户模型，删除不必要字段，新增邮箱验证功能及相关表单；优化用户管理界面，调整管理员界面的字段显示顺序；增强前端表单的CSRF保护和错误处理，统一字段名称；更新基础模板中的Logo和样式；修复JavaScript逻辑，改进用户登录流程。" />
+    <MESSAGE value="更新用户模型，删除不必要字段，新增邮箱验证功能及相关表单；优化用户管理界面，调整管理员界面的字段显示顺序；增强前端表单的CSRF保护和错误处理，统一字段名称；更新基础模板中的Logo和样式；修复JavaScript逻辑，改进用户登录流程。" />
+    <option name="LAST_COMMIT_MESSAGE" value="更新用户模型，删除不必要字段，新增邮箱验证功能及相关表单；优化用户管理界面，调整管理员界面的字段显示顺序；增强前端表单的CSRF保护和错误处理，统一字段名称；更新基础模板中的Logo和样式；修复JavaScript逻辑，改进用户登录流程。" />
   </component>
 </project>

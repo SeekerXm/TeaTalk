@@ -11,7 +11,7 @@ from .models import User
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
-    list_display = ('email', 'username', 'status', 'user_type', 'date_joined', 'last_login')
+    list_display = ('email', 'username', 'status_tag', 'user_type_tag', 'date_joined', 'last_login')
     list_filter = ('status', 'user_type')
     search_fields = ('email', 'username')
     ordering = ('-date_joined',)
@@ -130,22 +130,58 @@ class CustomUserAdmin(UserAdmin):
         return self.fieldsets
     
     def status_tag(self, obj):
+        """自定义状态显示"""
         status_colors = {
             'normal': 'success',
             'warning': 'warning',
             'banned': 'danger'
         }
-        color = status_colors.get(obj.status, 'default')
+        status_icons = {
+            'normal': '●',
+            'warning': '⚠',
+            'banned': '⛔'
+        }
+        color = status_colors.get(obj.status, 'secondary')
+        icon = status_icons.get(obj.status, '')
+        
         if obj.status == 'banned' and obj.ban_until:
             return format_html(
-                '<span class="el-tag el-tag--{}">{} (至 {})</span>',
-                color, obj.get_status_display(), obj.ban_until.strftime('%Y-%m-%d %H:%M')
+                '<span class="badge bg-{}" data-ban-until="(至 {})">'
+                '{} {}</span>',
+                color,
+                obj.ban_until.strftime('%Y-%m-%d %H:%M'),
+                icon,
+                obj.get_status_display()
             )
         return format_html(
-            '<span class="el-tag el-tag--{}">{}</span>',
-            color, obj.get_status_display()
+            '<span class="badge bg-{}">{} {}</span>',
+            color,
+            icon,
+            obj.get_status_display()
         )
     status_tag.short_description = '状态'
+    status_tag.admin_order_field = 'status'
+
+    def user_type_tag(self, obj):
+        """自定义用户类型显示"""
+        type_colors = {
+            'admin': 'primary',
+            'user': 'info'
+        }
+        type_icons = {
+            'admin': '👑',
+            'user': '👤'
+        }
+        color = type_colors.get(obj.user_type, 'secondary')
+        icon = type_icons.get(obj.user_type, '')
+        return format_html(
+            '<span class="badge bg-{}">{} {}</span>',
+            color,
+            icon,
+            obj.get_user_type_display()
+        )
+    user_type_tag.short_description = '用户类型'
+    user_type_tag.admin_order_field = 'user_type'
     
     def get_readonly_fields(self, request, obj=None):
         if obj:
@@ -277,3 +313,8 @@ class CustomUserAdmin(UserAdmin):
         queryset.delete()
         self.message_user(request, "选中的用户已被删除。")
     delete_selected_users.short_description = "删除所选的用户"
+
+    class Media:
+        css = {
+            'all': ('css/custom_admin.css',)
+        }
