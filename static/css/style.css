@@ -90,4 +90,31 @@ body {
     .chat-area {
         height: calc(100vh - 60px);
     }
+}
+
+/* 设置模态框样式 */
+.announcement-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.announcement-item {
+    transition: all 0.2s ease;
+}
+
+.announcement-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(4px);
+}
+
+.badge {
+    font-weight: 500;
+    padding: 0.4em 0.8em;
+}
+
+/* 用户信息样式 */
+.user-info {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
 } 

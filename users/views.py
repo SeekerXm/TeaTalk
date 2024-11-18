@@ -19,9 +19,13 @@ def index(request):
     hashkey = CaptchaStore.generate_key()
     image_url = captcha_image_url(hashkey)
     
+    # 获取公告列表
+    announcements = Announcement.objects.filter(is_active=True).order_by('-created_at')
+    
     context = {
         'hashkey': hashkey,
         'image_url': image_url,
+        'announcements': announcements,
     }
     return render(request, 'base.html', context)
 
@@ -329,4 +333,20 @@ def refresh_captcha(request):
             'key': new_key,
             'image_url': new_image_url
         })
-    return JsonResponse({'status': 'error'}, status=400) 
+    return JsonResponse({'status': 'error'}, status=400)
+
+def get_announcement(request, announcement_id):
+    """获取公告详情"""
+    try:
+        announcement = Announcement.objects.get(id=announcement_id, is_active=True)
+        return JsonResponse({
+            'success': True,
+            'title': announcement.title,
+            'content': announcement.content,
+            'created_at': announcement.created_at.strftime('%Y-%m-%d %H:%M')
+        })
+    except Announcement.DoesNotExist:
+        return JsonResponse({
+            'success': False,
+            'message': '公告不存在'
+        }) 

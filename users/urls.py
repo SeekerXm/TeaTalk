@@ -10,4 +10,5 @@ urlpatterns = [
     path('verify-captcha/', views.verify_captcha, name='verify-captcha'),
     path('send-email-code/', views.send_email_code, name='send-email-code'),
     path('captcha/refresh/', views.refresh_captcha, name='captcha-refresh'),
+    path('announcement/<int:announcement_id>/', views.get_announcement, name='get-announcement'),
 ] 

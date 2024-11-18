@@ -488,6 +488,47 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => alertDiv.remove(), 150);
         }, timeout);
     }
+
+    // 公告相关功能
+    document.addEventListener('DOMContentLoaded', function() {
+        // 处理公告点击事件
+        document.querySelectorAll('.announcement-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const announcementId = this.dataset.announcementId;
+                
+                // 获取公告详情
+                fetch(`/announcement/${announcementId}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // 填充公告详情模态框
+                            document.getElementById('announcementTitle').textContent = data.title;
+                            document.getElementById('announcementContent').innerHTML = data.content;
+                            document.getElementById('announcementDate').textContent = 
+                                `发布时间：${data.created_at}`;
+                            
+                            // 隐藏设置模态框，显示公告详情模态框
+                            const settingsModal = bootstrap.Modal.getInstance(
+                                document.getElementById('settingsModal')
+                            );
+                            settingsModal.hide();
+                            
+                            const announcementModal = new bootstrap.Modal(
+                                document.getElementById('announcementDetailModal')
+                            );
+                            announcementModal.show();
+                        } else {
+                            showError('获取公告详情失败');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('获取公告详情失败:', error);
+                        showError('网络错误，请稍后重试');
+                    });
+            });
+        });
+    });
 });
 
 function refreshCaptcha() {

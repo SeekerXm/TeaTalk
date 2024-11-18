@@ -196,6 +196,86 @@
         </div>
     </div>
 
+    <!-- 设置模态框 -->
+    <div class="modal fade" id="settingsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">设置</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- 用户信息部分 -->
+                    {% if user.is_authenticated %}
+                    <div class="user-info mb-4">
+                        <h6 class="border-bottom pb-2 mb-3">用户信息</h6>
+                        <div class="mb-2">
+                            <span class="text-muted">邮箱：</span>
+                            <span>{{ user.email }}</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="text-muted">状态：</span>
+                            {% if user.status == 'normal' %}
+                                <span class="badge bg-success">正常</span>
+                            {% elif user.status == 'warning' %}
+                                <span class="badge bg-warning">警告</span>
+                            {% elif user.status == 'banned' %}
+                                <span class="badge bg-danger">
+                                    {% if user.ban_until %}
+                                        封禁至 {{ user.ban_until|date:"Y-m-d H:i" }}
+                                    {% else %}
+                                        永久封禁
+                                    {% endif %}
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- 公告列表部分 -->
+                    <div class="announcements">
+                        <h6 class="border-bottom pb-2 mb-3">公告列表</h6>
+                        <div class="list-group announcement-list">
+                            {% for announcement in announcements %}
+                                <a href="#" class="list-group-item list-group-item-action announcement-item" 
+                                   data-announcement-id="{{ announcement.id }}">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">{{ announcement.title }}</h6>
+                                        <small class="text-muted">{{ announcement.created_at|date:"Y-m-d" }}</small>
+                                    </div>
+                                    <p class="mb-1 text-truncate">{{ announcement.content }}</p>
+                                </a>
+                            {% empty %}
+                                <div class="text-center text-muted py-3">暂无公告</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 公告详情模态框 -->
+    <div class="modal fade" id="announcementDetailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="announcementTitle"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="announcementContent"></div>
+                    <div class="text-muted mt-3">
+                        <small id="announcementDate"></small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap JS -->
     <script src="/static/bootstrap-5.3.0/js/bootstrap.bundle.min.js"></script>
     <!-- 自定义 JS -->
