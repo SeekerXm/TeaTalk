@@ -211,3 +211,9 @@ AUTHENTICATION_BACKENDS = [
     'users.backends.EmailOrUsernameModelBackend',  # 自定义的认证后端
     'django.contrib.auth.backends.ModelBackend',  # 保留默认的认证后端作为备用
 ]
+
+# 自定义首页
+SIMPLEUI_HOME_PAGE = '/admin/home/'  # 自定义首页URL
+SIMPLEUI_HOME_TITLE = '系统概览'  # 首页标题
+SIMPLEUI_HOME_ICON = 'fa fa-dashboard'  # 首页图标
+SIMPLEUI_CUSTOM_DASHBOARD = True  # 启用自定义仪表盘
