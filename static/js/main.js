@@ -529,6 +529,31 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+
+    // 设置模态框菜单切换
+    const menuItems = document.querySelectorAll('.settings-menu .list-group-item');
+    
+    menuItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // 移除所有菜单项的激活状态
+            menuItems.forEach(i => i.classList.remove('active'));
+            // 激活当前菜单项
+            this.classList.add('active');
+            
+            // 获取目标面板
+            const target = this.dataset.settingsTarget;
+            
+            // 隐藏所有面板
+            document.querySelectorAll('.settings-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            // 显示目标面板
+            document.getElementById(`${target}Panel`).classList.add('active');
+        });
+    });
 });
 
 function refreshCaptcha() {

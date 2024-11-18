@@ -93,18 +93,140 @@ body {
 }
 
 /* 设置模态框样式 */
-.announcement-list {
-    max-height: 300px;
-    overflow-y: auto;
+.settings-container {
+    display: flex;
+    min-height: 500px;
 }
 
+/* 左侧菜单样式 */
+.settings-menu {
+    width: 200px;
+    border-right: 1px solid #eee;
+    background-color: #f8f9fa;
+}
+
+.settings-menu .list-group-item {
+    border: none;
+    border-radius: 0;
+    padding: 12px 20px;
+    font-size: 0.95rem;
+    color: #495057;
+    background-color: transparent;
+    transition: all 0.3s ease;
+}
+
+.settings-menu .list-group-item:hover {
+    background-color: #f0f0f0;
+    color: #2563eb;
+}
+
+.settings-menu .list-group-item.active {
+    background-color: #e9ecef;
+    color: #2563eb;
+    font-weight: 500;
+}
+
+/* 右侧内容区域样式 */
+.settings-content {
+    flex: 1;
+    background-color: #fff;
+}
+
+.settings-panel {
+    display: none;
+    height: 100%;
+}
+
+.settings-panel.active {
+    display: block;
+}
+
+.settings-panel-title {
+    padding: 20px;
+    margin: 0;
+    border-bottom: 1px solid #eee;
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.settings-panel-content {
+    padding: 20px;
+}
+
+/* 用户信息样式 */
+.user-info .info-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.user-info .info-item:last-child {
+    border-bottom: none;
+}
+
+.user-info .info-label {
+    width: 80px;
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.user-info .info-value {
+    flex: 1;
+    color: #1a1a1a;
+}
+
+/* 公告列表样式 */
 .announcement-item {
-    transition: all 0.2s ease;
+    padding: 15px 0;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .announcement-item:hover {
     background-color: #f8f9fa;
-    transform: translateX(4px);
+    padding-left: 10px;
+}
+
+.announcement-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.announcement-title {
+    margin: 0;
+    font-size: 1rem;
+    color: #1a1a1a;
+}
+
+.announcement-date {
+    color: #6b7280;
+    font-size: 0.85rem;
+}
+
+.announcement-preview {
+    margin: 0;
+    color: #4b5563;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* 调整模态框大小 */
+#settingsModal .modal-dialog {
+    max-width: 900px;
+}
+
+#settingsModal .modal-content {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+#settingsModal .modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #eee;
 }
 
 .badge {

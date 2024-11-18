@@ -198,56 +198,83 @@
 
     <!-- 设置模态框 -->
     <div class="modal fade" id="settingsModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">设置</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <!-- 用户信息部分 -->
-                    {% if user.is_authenticated %}
-                    <div class="user-info mb-4">
-                        <h6 class="border-bottom pb-2 mb-3">用户信息</h6>
-                        <div class="mb-2">
-                            <span class="text-muted">邮箱：</span>
-                            <span>{{ user.email }}</span>
-                        </div>
-                        <div class="mb-2">
-                            <span class="text-muted">状态：</span>
-                            {% if user.status == 'normal' %}
-                                <span class="badge bg-success">正常</span>
-                            {% elif user.status == 'warning' %}
-                                <span class="badge bg-warning">警告</span>
-                            {% elif user.status == 'banned' %}
-                                <span class="badge bg-danger">
-                                    {% if user.ban_until %}
-                                        封禁至 {{ user.ban_until|date:"Y-m-d H:i" }}
-                                    {% else %}
-                                        永久封禁
-                                    {% endif %}
-                                </span>
-                            {% endif %}
-                        </div>
-                    </div>
-                    {% endif %}
-
-                    <!-- 公告列表部分 -->
-                    <div class="announcements">
-                        <h6 class="border-bottom pb-2 mb-3">公告列表</h6>
-                        <div class="list-group announcement-list">
-                            {% for announcement in announcements %}
-                                <a href="#" class="list-group-item list-group-item-action announcement-item" 
-                                   data-announcement-id="{{ announcement.id }}">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-1">{{ announcement.title }}</h6>
-                                        <small class="text-muted">{{ announcement.created_at|date:"Y-m-d" }}</small>
-                                    </div>
-                                    <p class="mb-1 text-truncate">{{ announcement.content }}</p>
+                <div class="modal-body p-0">
+                    <div class="settings-container">
+                        <!-- 左侧菜单 -->
+                        <div class="settings-menu">
+                            <div class="list-group list-group-flush">
+                                {% if user.is_authenticated %}
+                                <a href="#" class="list-group-item list-group-item-action active" data-settings-target="user">
+                                    <i class="fas fa-user me-2"></i>用户信息
                                 </a>
-                            {% empty %}
-                                <div class="text-center text-muted py-3">暂无公告</div>
-                            {% endfor %}
+                                {% endif %}
+                                <a href="#" class="list-group-item list-group-item-action {% if not user.is_authenticated %}active{% endif %}" data-settings-target="announcements">
+                                    <i class="fas fa-bullhorn me-2"></i>公告列表
+                                </a>
+                                <!-- 可以添加更多菜单项 -->
+                            </div>
+                        </div>
+                        
+                        <!-- 右侧内容区域 -->
+                        <div class="settings-content">
+                            <!-- 用户信息面板 -->
+                            {% if user.is_authenticated %}
+                            <div class="settings-panel active" id="userPanel">
+                                <h6 class="settings-panel-title">用户信息</h6>
+                                <div class="settings-panel-content">
+                                    <div class="user-info">
+                                        <div class="info-item">
+                                            <span class="info-label">邮箱</span>
+                                            <span class="info-value">{{ user.email }}</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">状态</span>
+                                            <span class="info-value">
+                                                {% if user.status == 'normal' %}
+                                                    <span class="badge bg-success">正常</span>
+                                                {% elif user.status == 'warning' %}
+                                                    <span class="badge bg-warning">警告</span>
+                                                {% elif user.status == 'banned' %}
+                                                    <span class="badge bg-danger">
+                                                        {% if user.ban_until %}
+                                                            封禁至 {{ user.ban_until|date:"Y-m-d H:i" }}
+                                                        {% else %}
+                                                            永久封禁
+                                                        {% endif %}
+                                                    </span>
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            <!-- 公告列表面板 -->
+                            <div class="settings-panel {% if not user.is_authenticated %}active{% endif %}" id="announcementsPanel">
+                                <h6 class="settings-panel-title">公告列表</h6>
+                                <div class="settings-panel-content">
+                                    <div class="announcement-list">
+                                        {% for announcement in announcements %}
+                                            <div class="announcement-item" data-announcement-id="{{ announcement.id }}">
+                                                <div class="announcement-header">
+                                                    <h6 class="announcement-title">{{ announcement.title }}</h6>
+                                                    <small class="announcement-date">{{ announcement.created_at|date:"Y-m-d" }}</small>
+                                                </div>
+                                                <p class="announcement-preview">{{ announcement.content|truncatechars:100 }}</p>
+                                            </div>
+                                        {% empty %}
+                                            <div class="text-center text-muted py-3">暂无公告</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
