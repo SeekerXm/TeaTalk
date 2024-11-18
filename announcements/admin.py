@@ -21,7 +21,7 @@ class AnnouncementAdmin(admin.ModelAdmin):
 
     class Media:
         css = {
-            'all': ('css/announcement_admin.css',)
+            'all': ('css/announcement_edit.css',)
         }
 
 @admin.register(UserAnnouncementRead)
