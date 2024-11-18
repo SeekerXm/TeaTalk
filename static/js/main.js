@@ -268,7 +268,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 const emailRegex = /^[^\s@]+@(qq\.com|163\.com|sina\.com|126\.com)$/i;
                 if (!emailRegex.test(email)) {
-                    showError('仅支持QQ邮箱、网易邮箱、新浪邮箱和126邮箱');
+                    showError('仅支持QQ邮箱、网易邮箱、新浪邮箱126邮箱');
                     return false;
                 }
 
@@ -357,7 +357,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             // 重置密码成功后的处理
                             showMessage(data.message || '密码重置成功！', 'success');
                             setTimeout(() => {
-                                // 切换到登录标签页
+                                // 切换到登标签页
                                 const loginTab = document.querySelector('[data-bs-target="#loginTab"]');
                                 const tabInstance = new bootstrap.Tab(loginTab);
                                 tabInstance.show();
@@ -381,7 +381,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         } else if (formId === 'registerForm' && data.email) {
                             // 延迟1.5秒后切换到登录表单
                             setTimeout(() => {
-                                // 切换到登录标签页
+                                // 切换到登录标���页
                                 const loginTab = document.querySelector('[data-bs-target="#loginTab"]');
                                 const tabInstance = new bootstrap.Tab(loginTab);
                                 tabInstance.show();
@@ -577,6 +577,76 @@ document.addEventListener('DOMContentLoaded', function() {
             content.classList.toggle('show');
         });
     });
+
+    // 公告弹窗处理
+    const announcementPopupModal = document.getElementById('announcementPopupModal');
+    console.log('找到公告弹窗元素:', announcementPopupModal);
+    
+    if (announcementPopupModal) {
+        const modal = new bootstrap.Modal(announcementPopupModal);
+        console.log('初始化公告弹窗');
+        
+        // 延迟一秒显示，确保页面完全加载
+        setTimeout(() => {
+            modal.show();
+            console.log('显示公告弹窗');
+        }, 1000);
+        
+        // 如果用户已登录，标记公告为已读
+        if (document.body.classList.contains('user-authenticated')) {
+            announcementPopupModal.addEventListener('hidden.bs.modal', function() {
+                const announcementId = this.dataset.announcementId;
+                const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+                console.log('标记公告已读:', announcementId);
+                
+                fetch(`/mark-announcement-read/${announcementId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': csrfToken,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('标记公告已读结果:', data);
+                    if (!data.success) {
+                        console.error('标记公告已读失败:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('标记公告已读失败:', error);
+                });
+            });
+        } else {
+            // 未登录用户，使用 session 记录已读状态
+            announcementPopupModal.addEventListener('hidden.bs.modal', function() {
+                const announcementId = this.dataset.announcementId;
+                const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+                
+                fetch(`/mark-announcement-read/${announcementId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': csrfToken,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('未登录用户标记公告已读结果:', data);
+                })
+                .catch(error => {
+                    console.error('未登录用户标记公告已读失败:', error);
+                });
+            });
+        }
+    }
 });
 
 function refreshCaptcha() {

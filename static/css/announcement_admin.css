@@ -1,0 +1,107 @@
+/* 日期导航样式 */
+.toplinks {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.toplinks li {
+    position: relative;
+    list-style-type: none;
+    margin: 0;
+}
+
+/* 修改分隔符样式 */
+.toplinks li:not(:last-child)::after {
+    content: '/';
+    position: absolute;
+    right: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #d1d5db;
+    font-size: 0.9rem;  /* 调整分隔符大小 */
+    opacity: 0.6;  /* 降低分隔符透明度 */
+    margin-top: -1px;  /* 微调分隔符位置 */
+}
+
+/* 年份和日期的特殊样式 */
+.date-back {
+    display: flex;
+    align-items: center;
+}
+
+.date-back a {
+    padding-right: 15px !important;  /* 调整年份右侧间距 */
+}
+
+.toplinks a {
+    color: #374151;
+    text-decoration: none;
+    font-size: 0.95rem;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: transparent;
+    line-height: 1.2;  /* 添加行高确保文字垂直居中 */
+}
+
+.toplinks a:hover {
+    background-color: #f3f4f6;
+    color: #2563eb;
+}
+
+/* 年份导航样式 */
+.date-back a {
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.date-back a:hover {
+    color: #2563eb;
+}
+
+/* 当前日期样式 */
+.toplinks li:not(.date-back) a {
+    font-weight: 500;
+}
+
+/* 添加图标 */
+.date-back a::before {
+    content: '←';
+    font-family: monospace;
+    margin-right: 4px;
+    font-size: 1.1rem;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .toplinks {
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 10px 15px;
+    }
+    
+    .toplinks li:not(:last-child)::after {
+        display: none;
+    }
+    
+    .toplinks li {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .toplinks a {
+        justify-content: center;
+        width: 100%;
+    }
+} 

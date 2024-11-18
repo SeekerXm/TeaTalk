@@ -36,6 +36,9 @@ urlpatterns = [
     path('captcha/', include('captcha.urls')),
     path('admin/home/', views.home, name='admin_home'),
     path('admin/', admin.site.urls),
+    path('captcha/refresh/', views.refresh_captcha, name='captcha-refresh'),
+    path('announcement/<int:announcement_id>/', views.get_announcement, name='get-announcement'),
+    path('mark-announcement-read/<int:announcement_id>/', views.mark_announcement_read, name='mark-announcement-read'),
 ]
 
 if settings.DEBUG:

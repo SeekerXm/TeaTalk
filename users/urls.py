@@ -11,4 +11,5 @@ urlpatterns = [
     path('send-email-code/', views.send_email_code, name='send-email-code'),
     path('captcha/refresh/', views.refresh_captcha, name='captcha-refresh'),
     path('announcement/<int:announcement_id>/', views.get_announcement, name='get-announcement'),
+    path('mark-announcement-read/<int:announcement_id>/', views.mark_announcement_read, name='mark-announcement-read'),
 ] 

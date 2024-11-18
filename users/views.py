@@ -10,8 +10,7 @@ from .models import User
 from .utils import generate_email_code, send_verification_code, validate_email_domain
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
-from announcements.models import Announcement
-from django.contrib.auth import get_user_model
+from announcements.models import Announcement, UserAnnouncementRead
 
 def index(request):
     """首页视图"""
@@ -19,13 +18,47 @@ def index(request):
     hashkey = CaptchaStore.generate_key()
     image_url = captcha_image_url(hashkey)
     
-    # 获取公告列表
+    # 获取启用的公告列表
     announcements = Announcement.objects.filter(is_active=True).order_by('-created_at')
+    print(f"获取到的公告列表: {announcements}")
+    
+    # 获取需要弹出显示的公告
+    popup_announcement = None
+    if request.user.is_authenticated:
+        print(f"当前用户: {request.user.email}")
+        # 获取用户未读的弹出公告
+        popup_announcement = announcements.filter(
+            show_popup=True,
+            is_active=True
+        ).exclude(
+            userannouncementread__user=request.user
+        ).first()
+        print(f"已登录用户的弹出公告: {popup_announcement}")
+    else:
+        print("未登录用户")
+        # 获取最新的弹出公告
+        latest_popup = announcements.filter(
+            show_popup=True,
+            is_active=True
+        ).first()
+        
+        if latest_popup:
+            # 获取session中存储的已读公告ID列表
+            read_announcements = request.session.get('read_announcements', [])
+            print(f"未登录用户的已读公告列表: {read_announcements}")
+            
+            # 如果最新公告未被读过，则显示
+            if latest_popup.id not in read_announcements:
+                popup_announcement = latest_popup
+                print(f"未登录用户的弹出公告: {popup_announcement}")
+    
+    print(f"最终弹出公告: {popup_announcement}")
     
     context = {
         'hashkey': hashkey,
         'image_url': image_url,
         'announcements': announcements,
+        'popup_announcement': popup_announcement,
     }
     return render(request, 'base.html', context)
 
@@ -254,7 +287,7 @@ def reset_password(request):
                         ban_time = user.ban_until.strftime('%Y-%m-%d %H:%M')
                         return JsonResponse({
                             'success': False,
-                            'message': f'该账号已被封禁至 {ban_time}，无法重置密码'
+                            'message': f'该账号已被封禁至 {ban_time}，无法重置密'
                         })
                     else:
                         return JsonResponse({
@@ -303,7 +336,7 @@ def user_logout(request):
 @staff_member_required
 def home(request):
     """后台首页视图"""
-    # 获取用户统计信息
+    # 获取用户计信息
     total_users = User.objects.filter(user_type='user').count()
     active_users = User.objects.filter(user_type='user', status='normal').count()
     warned_users = User.objects.filter(user_type='user', status='warning').count()
@@ -345,6 +378,35 @@ def get_announcement(request, announcement_id):
             'content': announcement.content,
             'created_at': announcement.created_at.strftime('%Y-%m-%d %H:%M')
         })
+    except Announcement.DoesNotExist:
+        return JsonResponse({
+            'success': False,
+            'message': '公告不存在'
+        })
+
+@require_POST
+def mark_announcement_read(request, announcement_id):
+    """标记公告为已读"""
+    try:
+        announcement = Announcement.objects.get(id=announcement_id, is_active=True)
+        
+        if request.user.is_authenticated:
+            # 已登录用户：创建阅读记录
+            UserAnnouncementRead.objects.get_or_create(
+                user=request.user,
+                announcement=announcement
+            )
+            print(f"已登录用户 {request.user.email} 标记公告 {announcement_id} 为已读")
+        else:
+            # 未登录用户：在session中记录已读状态
+            read_announcements = request.session.get('read_announcements', [])
+            if announcement_id not in read_announcements:
+                read_announcements.append(announcement_id)
+                request.session['read_announcements'] = read_announcements
+                request.session.modified = True
+                print(f"未登录用户标记公告 {announcement_id} 为已读")
+        
+        return JsonResponse({'success': True})
     except Announcement.DoesNotExist:
         return JsonResponse({
             'success': False,
