@@ -48,7 +48,14 @@ class User(AbstractUser):
     )
     
     email = models.EmailField(unique=True, verbose_name='邮箱')
-    username = models.CharField(max_length=150, unique=True, null=True, blank=True, verbose_name='用户名')
+    username = models.CharField(
+        max_length=150, 
+        unique=True, 
+        null=True, 
+        blank=True, 
+        default='', 
+        verbose_name='用户名'
+    )
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='normal', verbose_name='状态')
     user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES, default='user', verbose_name='用户类型')
     ban_until = models.DateTimeField(null=True, blank=True, verbose_name='封禁截止时间')
@@ -70,9 +77,12 @@ class User(AbstractUser):
         return self.email
     
     def save(self, *args, **kwargs):
-        # 如果有用户名，则为管理员
-        if self.username:
-            self.user_type = 'admin'
+        # 如果是管理员用户，必须有用户名
+        if self.user_type == 'admin':
+            if not self.username:
+                raise ValueError('管理员用户必须设置用户名')
         else:
+            # 如果是普通用户，不能有用户名
+            self.username = None
             self.user_type = 'user'
         super().save(*args, **kwargs)

@@ -157,7 +157,7 @@ class CustomUserAdmin(UserAdmin):
     def save_model(self, request, obj, form, change):
         if not change:  # 创建新用户时
             obj.set_password(form.cleaned_data["password1"])
-            obj.username = obj.email.split('@')[0]
+            obj.username = None
             obj.user_type = 'user'
         super().save_model(request, obj, form, change)
     
