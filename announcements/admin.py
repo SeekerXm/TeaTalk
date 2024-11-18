@@ -19,6 +19,8 @@ class AnnouncementAdmin(admin.ModelAdmin):
         }),
     )
     
+    change_form_template = 'admin/announcement_change_form.html'
+    
     def show_modal_tag(self, obj):
         return format_html(
             '<span class="el-tag el-tag--{}">{}</span>',
