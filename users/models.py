@@ -94,3 +94,19 @@ class User(AbstractBaseUser, PermissionsMixin):
     def is_staff(self):
         """是否为管理员"""
         return self.user_type == 'admin'
+    
+    def is_banned(self):
+        """检查用户是否被封禁"""
+        if self.status != 'banned':
+            return False
+        if not self.ban_until:  # 永久封禁
+            return True
+        return timezone.now() < self.ban_until  # 检查临时封禁是否过期
+    
+    def get_ban_status(self):
+        """获取封禁状态信息"""
+        if not self.is_banned():
+            return None
+        if not self.ban_until:
+            return "永久封禁"
+        return f"封禁至 {self.ban_until.strftime('%Y-%m-%d %H:%M')}"

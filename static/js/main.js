@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // 注册��密码确认验证
+    // 注册密码确认验证
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
         const password = registerForm.querySelector('#registerPassword');
@@ -256,14 +256,19 @@ document.addEventListener('DOMContentLoaded', function() {
         'resetForm': {
             url: '/reset-password/',
             validate: function(form) {
-                const email = form.querySelector('#resetEmail').value;
+                const email = form.querySelector('[name="email"]').value;
                 const emailCode = form.querySelector('[name="email_code"]').value;
-                const password1 = form.querySelector('#resetPassword').value;
-                const password2 = form.querySelector('#resetConfirmPassword').value;
+                const password1 = form.querySelector('[name="password1"]').value;
+                const password2 = form.querySelector('[name="password2"]').value;
 
                 // 邮箱验证
                 if (!email) {
                     showError('请输入邮箱地址');
+                    return false;
+                }
+                const emailRegex = /^[^\s@]+@(qq\.com|163\.com|sina\.com|126\.com)$/i;
+                if (!emailRegex.test(email)) {
+                    showError('仅支持QQ邮箱、网易邮箱、新浪邮箱和126邮箱');
                     return false;
                 }
 
@@ -321,10 +326,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const formData = new FormData(this);
                 const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
                 
-                // 打印调试信息
-                console.log('提交表单:', formId);
-                console.log('表单数据:', Object.fromEntries(formData));
-                
                 fetch(handler.url, {
                     method: 'POST',
                     headers: {
@@ -332,12 +333,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         'X-Requested-With': 'XMLHttpRequest'
                     },
                     body: formData,
-                    credentials: 'same-origin'  // 添加这行以包含cookies
+                    credentials: 'same-origin'
                 })
                 .then(response => {
-                    console.log('响应状态:', response.status);  // 添加调试日志
+                    console.log('响应状态:', response.status);
                     if (!response.ok) {
-                        return response.text().then(text => {  // 获取错误响应的具体内容
+                        return response.text().then(text => {
                             console.error('错误响应内容:', text);
                             throw new Error(`HTTP error! status: ${response.status}`);
                         });
@@ -345,44 +346,73 @@ document.addEventListener('DOMContentLoaded', function() {
                     return response.json();
                 })
                 .then(data => {
-                    console.log('响应数据:', data);  // 添加调试日志
+                    console.log('响应数据:', data);
                     if (data.success) {
                         if (formId === 'loginForm') {
                             showMessage('登录成功！', 'success');
                             setTimeout(() => {
                                 location.reload();
                             }, 1000);
-                        } else {
-                            showMessage(data.message || '操作成功', 'success');
-                            if (formId === 'registerForm' && data.email) {
-                                // 延迟1.5秒后切换到登录表单
-                                setTimeout(() => {
-                                    // 切换到登录标签页
-                                    const loginTab = document.querySelector('[data-bs-target="#loginTab"]');
-                                    const tabInstance = new bootstrap.Tab(loginTab);
-                                    tabInstance.show();
-                                    
-                                    // 自动填充邮箱
-                                    const loginEmail = document.querySelector('#loginEmail');
-                                    if (loginEmail) {
-                                        loginEmail.value = data.email;
-                                    }
-                                    
-                                    // 聚焦到密码输入框
-                                    const loginPassword = document.querySelector('#loginPassword');
-                                    if (loginPassword) {
-                                        loginPassword.focus();
-                                    }
-                                    
-                                    // 清空注册表单
-                                    form.reset();
-                                    form.classList.remove('was-validated');
-                                }, 1500);
-                            }
+                        } else if (formId === 'resetForm' && data.email) {
+                            // 重置密码成功后的处理
+                            showMessage(data.message || '密码重置成功！', 'success');
+                            setTimeout(() => {
+                                // 切换到登录标签页
+                                const loginTab = document.querySelector('[data-bs-target="#loginTab"]');
+                                const tabInstance = new bootstrap.Tab(loginTab);
+                                tabInstance.show();
+                                
+                                // 自动填充邮箱
+                                const loginEmail = document.querySelector('#loginEmail');
+                                if (loginEmail) {
+                                    loginEmail.value = data.email;
+                                }
+                                
+                                // 聚焦到密码输入框
+                                const loginPassword = document.querySelector('#loginPassword');
+                                if (loginPassword) {
+                                    loginPassword.focus();
+                                }
+                                
+                                // 清空重置密码表单
+                                form.reset();
+                                form.classList.remove('was-validated');
+                            }, 1500);
+                        } else if (formId === 'registerForm' && data.email) {
+                            // 延迟1.5秒后切换到登录表单
+                            setTimeout(() => {
+                                // 切换到登录标签页
+                                const loginTab = document.querySelector('[data-bs-target="#loginTab"]');
+                                const tabInstance = new bootstrap.Tab(loginTab);
+                                tabInstance.show();
+                                
+                                // 自动填充邮箱
+                                const loginEmail = document.querySelector('#loginEmail');
+                                if (loginEmail) {
+                                    loginEmail.value = data.email;
+                                }
+                                
+                                // 聚焦到密码输入框
+                                const loginPassword = document.querySelector('#loginPassword');
+                                if (loginPassword) {
+                                    loginPassword.focus();
+                                }
+                                
+                                // 清空注册表单
+                                form.reset();
+                                form.classList.remove('was-validated');
+                            }, 1500);
                         }
                     } else {
-                        showError(data.message || '操作失败');
-                        if (data.message && data.message.includes('验证码')) {
+                        // 显示错误消息
+                        const errorMessage = data.message;
+                        if (errorMessage.includes('封禁')) {
+                            // 对于封禁消息使用特殊样式
+                            showError(errorMessage, 'ban-error');
+                        } else {
+                            showError(errorMessage);
+                        }
+                        if (errorMessage && errorMessage.includes('验证码')) {
                             refreshCaptcha();
                         }
                     }
@@ -426,8 +456,37 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 错误提示函数（使用 showMessage）
-    function showError(message) {
-        showMessage(message, 'error');
+    function showError(message, className = '') {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-danger alert-dismissible fade show position-relative ${className}`;
+        alertDiv.style.marginBottom = '1rem';
+        
+        // 为封禁错误添加特殊样式
+        const iconClass = className === 'ban-error' ? 'fa-ban' : 'fa-exclamation-circle';
+        
+        alertDiv.innerHTML = `
+            <div class="d-flex align-items-center">
+                <i class="fas ${iconClass} me-2"></i>
+                <div>${message}</div>
+                <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
+            </div>
+        `;
+        
+        // 找到当前激活的表单面板
+        const activePane = document.querySelector('.tab-pane.active');
+        if (activePane) {
+            const form = activePane.querySelector('form');
+            if (form) {
+                form.insertAdjacentElement('beforebegin', alertDiv);
+            }
+        }
+        
+        // 封禁错误提示显示时间更长
+        const timeout = className === 'ban-error' ? 5000 : 3000;
+        setTimeout(() => {
+            alertDiv.classList.remove('show');
+            setTimeout(() => alertDiv.remove(), 150);
+        }, timeout);
     }
 });
 

@@ -171,10 +171,24 @@ def user_login(request):
             password = form.cleaned_data['password']
             print(f"表单验证通过 - Email: {email}")
             
-            # 使用 authenticate 进行身份验证
+            # 使用 authenticate 进行用户验证
             user = authenticate(request, username=email, password=password)
             
             if user is not None:
+                # 检查用户是否被封禁
+                if user.status == 'banned':
+                    if user.ban_until:
+                        ban_time = user.ban_until.strftime('%Y-%m-%d %H:%M')
+                        return JsonResponse({
+                            'success': False,
+                            'message': f'该账号已被封禁至 {ban_time}'
+                        })
+                    else:
+                        return JsonResponse({
+                            'success': False,
+                            'message': '该账号已被永久封禁'
+                        })
+                
                 if not user.email_verified:
                     print("邮箱未验证")
                     return JsonResponse({
@@ -194,6 +208,13 @@ def user_login(request):
                     'success': False,
                     'message': '邮箱或密码错误'
                 })
+        else:
+            # 添加这个分支处理表单验证失败的情况
+            print(f"表单验证失败: {form.errors}")
+            return JsonResponse({
+                'success': False,
+                'message': '邮箱或密码格式错误'
+            })
                 
     except Exception as e:
         print(f"登录处理时出错: {str(e)}")
@@ -207,20 +228,68 @@ def user_login(request):
 @require_POST
 def reset_password(request):
     """重置密码处理"""
-    form = ResetPasswordForm(request.POST)
-    if form.is_valid():
-        email = form.cleaned_data['email']
-        try:
-            user = User.objects.get(email=email)
-            if not user.check_email_verification_code(form.cleaned_data['email_code']):
-                return JsonResponse({'success': False, 'message': '邮箱验证码无效'})
+    try:
+        print("开始处理重置密码请求")
+        print(f"POST数据: {request.POST}")
+        
+        form = ResetPasswordForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            try:
+                user = User.objects.get(email=email)
+                if not user.check_email_verification_code(form.cleaned_data['email_code']):
+                    print("邮箱验证码无效")
+                    return JsonResponse({
+                        'success': False,
+                        'message': '邮箱验证码无效'
+                    })
+                
+                # 检查用户状态
+                if user.status == 'banned':
+                    if user.ban_until:
+                        ban_time = user.ban_until.strftime('%Y-%m-%d %H:%M')
+                        return JsonResponse({
+                            'success': False,
+                            'message': f'该账号已被封禁至 {ban_time}，无法重置密码'
+                        })
+                    else:
+                        return JsonResponse({
+                            'success': False,
+                            'message': '该账号已被永久封禁，无法重置密码'
+                        })
+                
+                # 重置密码
+                user.set_password(form.cleaned_data['password1'])
+                user.save()
+                print(f"密码重置成功 - Email: {email}")
+                return JsonResponse({
+                    'success': True,
+                    'message': '密码重置成功！请使用新密码登录。',
+                    'email': email
+                })
+            except User.DoesNotExist:
+                print("用户不存在")
+                return JsonResponse({
+                    'success': False,
+                    'message': '该邮箱未注册'
+                })
+        else:
+            print(f"表单验证失败: {form.errors}")
+            # 获取第一个错误信息
+            first_error = next(iter(form.errors.values()))[0]
+            return JsonResponse({
+                'success': False,
+                'message': str(first_error)
+            })
             
-            user.set_password(form.cleaned_data['password1'])
-            user.save()
-            return JsonResponse({'success': True})
-        except User.DoesNotExist:
-            return JsonResponse({'success': False, 'message': '用户不存在'})
-    return JsonResponse({'success': False, 'errors': form.errors})
+    except Exception as e:
+        print(f"重置密码时出错: {str(e)}")
+        print(f"错误类型: {type(e).__name__}")
+        print(f"错误详情: {e.args}")
+        return JsonResponse({
+            'success': False,
+            'message': '服务器错误，请稍后重试'
+        })
 
 def user_logout(request):
     """退出登录"""
