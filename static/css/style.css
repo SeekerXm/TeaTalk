@@ -157,8 +157,9 @@ body {
 .user-info .info-item {
     display: flex;
     align-items: center;
-    padding: 12px 0;
+    padding: 12px 15px;
     border-bottom: 1px solid #f0f0f0;
+    background-color: #fff;
 }
 
 .user-info .info-item:last-child {
@@ -178,22 +179,32 @@ body {
 
 /* 公告列表样式 */
 .announcement-item {
-    padding: 15px 0;
     border-bottom: 1px solid #f0f0f0;
-    cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.announcement-item:hover {
-    background-color: #f8f9fa;
-    padding-left: 10px;
-}
-
 .announcement-header {
+    padding: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+.announcement-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.announcement-toggle {
+    font-size: 0.8rem;
+    color: #6b7280;
+    transition: transform 0.3s ease;
+}
+
+.announcement-item.expanded .announcement-toggle {
+    transform: rotate(90deg);
 }
 
 .announcement-title {
@@ -207,11 +218,25 @@ body {
     font-size: 0.85rem;
 }
 
-.announcement-preview {
+.announcement-content {
+    padding: 0 15px;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background-color: #f8f9fa;
+}
+
+.announcement-content.show {
+    padding: 15px;
+    max-height: 500px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.announcement-content p {
     margin: 0;
     color: #4b5563;
-    font-size: 0.9rem;
-    line-height: 1.5;
+    font-size: 0.95rem;
+    line-height: 1.6;
 }
 
 /* 调整模态框大小 */

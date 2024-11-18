@@ -251,6 +251,10 @@
                                                 {% endif %}
                                             </span>
                                         </div>
+                                        <div class="info-item">
+                                            <span class="info-label">注册时间</span>
+                                            <span class="info-value">{{ user.date_joined|date:"Y-m-d H:i" }}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -262,12 +266,17 @@
                                 <div class="settings-panel-content">
                                     <div class="announcement-list">
                                         {% for announcement in announcements %}
-                                            <div class="announcement-item" data-announcement-id="{{ announcement.id }}">
+                                            <div class="announcement-item {% if forloop.first %}expanded{% endif %}" data-announcement-id="{{ announcement.id }}">
                                                 <div class="announcement-header">
-                                                    <h6 class="announcement-title">{{ announcement.title }}</h6>
+                                                    <div class="announcement-title-wrapper">
+                                                        <i class="fas fa-chevron-right announcement-toggle"></i>
+                                                        <h6 class="announcement-title">{{ announcement.title }}</h6>
+                                                    </div>
                                                     <small class="announcement-date">{{ announcement.created_at|date:"Y-m-d" }}</small>
                                                 </div>
-                                                <p class="announcement-preview">{{ announcement.content|truncatechars:100 }}</p>
+                                                <div class="announcement-content {% if forloop.first %}show{% endif %}">
+                                                    <p>{{ announcement.content }}</p>
+                                                </div>
                                             </div>
                                         {% empty %}
                                             <div class="text-center text-muted py-3">暂无公告</div>

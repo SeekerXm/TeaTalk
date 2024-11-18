@@ -554,6 +554,29 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById(`${target}Panel`).classList.add('active');
         });
     });
+
+    // 公告折叠面板处理
+    const announcementItems = document.querySelectorAll('.announcement-item');
+    
+    announcementItems.forEach(item => {
+        const header = item.querySelector('.announcement-header');
+        header.addEventListener('click', function() {
+            const content = item.querySelector('.announcement-content');
+            const isExpanded = item.classList.contains('expanded');
+            
+            // 关闭其他展开的公告
+            announcementItems.forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.classList.remove('expanded');
+                    otherItem.querySelector('.announcement-content').classList.remove('show');
+                }
+            });
+            
+            // 切换当前公告的展开状态
+            item.classList.toggle('expanded');
+            content.classList.toggle('show');
+        });
+    });
 });
 
 function refreshCaptcha() {
