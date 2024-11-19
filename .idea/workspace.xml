@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="添加聊天模块及相关前端功能，包括聊天输入和消息显示，优化公告获取逻辑，移除冗余代码，更新样式以提升用户体验。" />
+    <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="更新聊天消息区域，增加了AI助手的欢迎消息并调整了样式；改进了密码提示信息；添加了聊天功能的JS代码，增强了消息显示逻辑，添加了头像功能。" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -313,7 +313,23 @@
       <option name="project" value="LOCAL" />
       <updated>1732030242836</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="添加聊天模块及相关前端功能，包括聊天输入和消息显示，优化公告获取逻辑，移除冗余代码，更新样式以提升用户体验。">
+      <option name="closed" value="true" />
+      <created>1732030667258</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1732030667258</updated>
+    </task>
+    <task id="LOCAL-00029" summary="更新聊天消息区域，增加了AI助手的欢迎消息并调整了样式；改进了密码提示信息；添加了聊天功能的JS代码，增强了消息显示逻辑，添加了头像功能。">
+      <option name="closed" value="true" />
+      <created>1732031664026</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1732031664026</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -331,7 +347,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="更新依赖项；优化数据库配置为MySQL并添加用户自定义设置；添加媒体文件和静态文件配置；设置Django语言和时区；配置邮箱设置和Simple UI选项。" />
     <MESSAGE value="更新用户模型的用户名字段，设置默认值并调整保存逻辑以适应新用户名约束；新增数据库迁移文件以反映模型更改。" />
     <MESSAGE value="更新用户模型的用户名字段，设置默认值并调整保存逻辑以适应新用户名约束；新增数据库迁移文件以反映模型更改。同时包含对多个AI平台的接口实现和功能优化。" />
     <MESSAGE value="新增公告管理界面的自定义模板，修改样式以增强用户体验。" />
@@ -356,7 +371,8 @@
     <MESSAGE value="删除无用的初始文件和平台实现代码，新增聊天模块和相关前端功能，完善聊天功能的后端处理。" />
     <MESSAGE value="workspace.xml" />
     <MESSAGE value="添加聊天模块及相关前端功能，包括聊天输入和消息显示，优化公告获取逻辑，移除冗余代码，更新样式以提升用户体验。" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加聊天模块及相关前端功能，包括聊天输入和消息显示，优化公告获取逻辑，移除冗余代码，更新样式以提升用户体验。" />
+    <MESSAGE value="更新聊天消息区域，增加了AI助手的欢迎消息并调整了样式；改进了密码提示信息；添加了聊天功能的JS代码，增强了消息显示逻辑，添加了头像功能。" />
+    <option name="LAST_COMMIT_MESSAGE" value="更新聊天消息区域，增加了AI助手的欢迎消息并调整了样式；改进了密码提示信息；添加了聊天功能的JS代码，增强了消息显示逻辑，添加了头像功能。" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/TeaTalk$main.coverage" NAME="main 覆盖结果" MODIFIED="1731993364645" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ModelPlatform" />

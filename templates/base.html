@@ -73,7 +73,7 @@
 
                     <!-- 聊天消息区域 -->
                     <div id="chatMessages" class="chat-messages">
-                        <!-- 测试消息 -->
+                        <!-- 欢迎消息 -->
                         <div class="message assistant">
                             <div class="message-avatar">
                                 <i class="fas fa-robot"></i>
@@ -98,11 +98,18 @@
                             </button>
                         </div>
                     </div>
-                    
-                    <!-- 加载动画 -->
-                    <div id="loadingSpinner" class="loading-spinner" style="display: none;">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">加载中...</span>
+                </div>
+
+                <!-- 加载动画 - 移到聊天容器外面 -->
+                <div id="loadingSpinner" class="message assistant" style="display: none; position: absolute;">
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="message-content-wrapper">
+                        <div class="message-content typing-indicator">
+                            <span></span>
+                            <span></span>
+                            <span></span>
                         </div>
                     </div>
                 </div>
@@ -214,7 +221,7 @@
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="resetCaptcha" name="captcha_value" required>
                                         <input type="hidden" name="captcha_key" value="{{ hashkey }}">
-                                        <img class="captcha-image" src="{{ image_url }}" alt="验码">
+                                        <img class="captcha-image" src="{{ image_url }}" alt="��码">
                                     </div>
                                 </div>
                                 <div class="mb-3">
@@ -709,6 +716,47 @@
 
     .model-tooltip p {
         margin: 0.25rem 0;
+    }
+
+    /* 打字动画样式 */
+    .typing-indicator {
+        background-color: #fff !important;
+        padding: 12px 20px !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 3px !important;
+    }
+
+    .typing-indicator span {
+        width: 6px !important;
+        height: 6px !important;
+        background-color: #90959c !important;
+        border-radius: 50% !important;
+        display: inline-block !important;
+        animation: typing 1.4s infinite ease-in-out !important;
+    }
+
+    .typing-indicator span:nth-child(1) {
+        animation-delay: 0s !important;
+    }
+
+    .typing-indicator span:nth-child(2) {
+        animation-delay: 0.2s !important;
+    }
+
+    .typing-indicator span:nth-child(3) {
+        animation-delay: 0.4s !important;
+    }
+
+    @keyframes typing {
+        0%, 100% {
+            transform: scale(1);
+            opacity: 0.4;
+        }
+        50% {
+            transform: scale(1.2);
+            opacity: 1;
+        }
     }
     </style>
 

@@ -94,11 +94,30 @@ function sendMessage(message) {
 
 // 加载动画控制
 function showLoading() {
-    document.getElementById('loadingSpinner').style.display = 'block';
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const messagesDiv = document.getElementById('chatMessages');
+    
+    if (loadingSpinner && messagesDiv) {
+        // 克隆加载动画元素
+        const loadingClone = loadingSpinner.cloneNode(true);
+        loadingClone.style.display = 'flex';
+        loadingClone.style.position = 'relative';  // 改为相对定位
+        
+        // 添加到消息列表
+        messagesDiv.appendChild(loadingClone);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
 }
 
 function hideLoading() {
-    document.getElementById('loadingSpinner').style.display = 'none';
+    const messagesDiv = document.getElementById('chatMessages');
+    if (messagesDiv) {
+        // 移除所有加载动画
+        const loadingElements = messagesDiv.getElementsByClassName('typing-indicator');
+        while (loadingElements.length > 0) {
+            loadingElements[0].closest('.message').remove();
+        }
+    }
 }
 
 // 错误提示
