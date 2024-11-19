@@ -8,6 +8,7 @@ class ZhipuAIPlatform(BasePlatform):
         super().__init__()
         self.api_key = api_key
         self.client = ZhipuAI(api_key=api_key)
+        self.messages = []  # 保存对话历史
     
     def chat_completion(self, messages, **kwargs):
         """
@@ -15,20 +16,35 @@ class ZhipuAIPlatform(BasePlatform):
         默认使用glm-4-flash模型，可通过kwargs传入其他模型
         """
         model = kwargs.get('model', 'glm-4-flash')
+        
         try:
+            # 更新对话历史
+            self.messages = messages
+            
+            # 确保每条消息都有role字段
+            formatted_messages = []
+            for msg in self.messages:
+                if 'role' not in msg:
+                    msg['role'] = 'user'
+                formatted_messages.append(msg)
+            
             response = self.client.chat.completions.create(
                 model=model,
-                messages=messages
+                messages=formatted_messages
             )
+            
             # 将响应对象转换为字典
             response_dict = {
                 'choices': [{
                     'message': {
+                        'role': 'assistant',
                         'content': response.choices[0].message.content
                     }
                 }]
             }
+            
             return self.handle_response(response_dict)
+            
         except Exception as e:
             return self.handle_error(e)
     

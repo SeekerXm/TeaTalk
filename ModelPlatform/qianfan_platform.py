@@ -31,7 +31,17 @@ class QianFanPlatform(BasePlatform):
                 model=model,
                 messages=messages
             )
-            return self.handle_response(response)
+            
+            # 转换千帆的响应格式为统一格式
+            return self.handle_response({
+                'choices': [{
+                    'message': {
+                        'role': 'assistant',
+                        'content': response.get('result', '')
+                    }
+                }]
+            })
+            
         except Exception as e:
             return self.handle_error(e)
     
@@ -40,16 +50,12 @@ class QianFanPlatform(BasePlatform):
         千帆图像对话实现
         专门用于Fuyu-8B等图像理解模型
         :param image_path: 图片路径
-        :param prompt: 问题文本，默认为"分析一下图片画了什么？"
+        :param prompt: 问题文本
         """
         try:
             # 读取并编码图片
             with open(image_path, "rb") as image_file:
                 encoded_string = base64.b64encode(image_file.read()).decode()
-            
-            # 使用默认问题
-            if prompt is None:
-                prompt = "分析一下图片画了什么？"
             
             # 调用图像理解接口
             response = self.image_client.do(
@@ -57,7 +63,17 @@ class QianFanPlatform(BasePlatform):
                 prompt=prompt,
                 image=encoded_string
             )
-            return self.handle_response(response)
+            
+            # 转换响应格式
+            return self.handle_response({
+                'choices': [{
+                    'message': {
+                        'role': 'assistant',
+                        'content': response.get('result', '')
+                    }
+                }]
+            })
+            
         except Exception as e:
             return self.handle_error(e)
     
