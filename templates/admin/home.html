@@ -1,8 +1,164 @@
 {% extends 'admin/base_site.html' %}
 {% load static %}
 
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/custom_admin.css' %}">
+    <!-- 添加 highlight.js 样式 -->
+    <link href="{% static 'highlight/styles/github.min.css' %}" rel="stylesheet">
+    <style>
+        /* 系统概览页面特定样式 */
+        .dashboard-container {
+            padding: 20px;
+        }
+
+        /* 统计卡片样式 */
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            border: none;
+        }
+
+        .card-body {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .card i {
+            font-size: 2rem;
+            color: #3b82f6;
+        }
+
+        .card-info {
+            flex: 1;
+        }
+
+        .card-info h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .card-info p {
+            margin: 5px 0 0;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        /* 公告列表样式 */
+        .announcements {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+        }
+
+        .announcements h2 {
+            margin: 0 0 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .announcement-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .announcement-item {
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 15px;
+        }
+
+        .announcement-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .announcement-item h3 {
+            margin: 0 0 10px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+
+        .announcement-content {
+            color: #4b5563;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .announcement-item .time {
+            color: #6b7280;
+            font-size: 0.85rem;
+        }
+
+        /* Markdown 内容样式 */
+        .markdown-body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            word-wrap: break-word;
+            padding: 0;
+        }
+
+        .markdown-body img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+
+        .markdown-body p {
+            margin-bottom: 16px;
+        }
+
+        .markdown-body code {
+            padding: 0.2em 0.4em;
+            margin: 0;
+            font-size: 85%;
+            background-color: rgba(27, 31, 35, 0.05);
+            border-radius: 6px;
+        }
+
+        .markdown-body pre {
+            padding: 16px;
+            overflow: auto;
+            font-size: 85%;
+            line-height: 1.45;
+            background-color: #f6f8fa;
+            border-radius: 6px;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 15px;
+            }
+            
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
-<div class="dashboard">
+<div class="dashboard-container">
     <!-- 用户统计卡片 -->
     <div class="stats-cards">
         <div class="card">
@@ -50,7 +206,12 @@
             {% for announcement in latest_announcements %}
             <div class="announcement-item">
                 <h3>{{ announcement.title }}</h3>
-                <p>{{ announcement.content|truncatewords:30 }}</p>
+                <!-- 添加 markdown-body 类，并使用 textarea 存储原始内容 -->
+                <div class="announcement-content markdown-body">
+                    <textarea id="announcement-content-{{ announcement.id }}" 
+                            style="display: none;">{{ announcement.content }}</textarea>
+                    <div id="rendered-content-{{ announcement.id }}"></div>
+                </div>
                 <span class="time">{{ announcement.created_at|date:"Y-m-d H:i" }}</span>
             </div>
             {% empty %}
@@ -59,84 +220,55 @@
         </div>
     </div>
 </div>
+{% endblock %}
 
-<style>
-.dashboard {
-    padding: 20px;
-}
+{% block extrajs %}
+    {{ block.super }}
+    <!-- 添加 markdown-it 和 highlight.js -->
+    <script src="{% static 'js/markdown-it.min.js' %}"></script>
+    <script src="{% static 'highlight/highlight.min.js' %}"></script>
+    <script>
+        // 初始化 markdown-it
+        const md = window.markdownit({
+            html: true,
+            breaks: true,
+            linkify: true,
+            typographer: true,
+            highlight: function (str, lang) {
+                if (lang && hljs.getLanguage(lang)) {
+                    try {
+                        return hljs.highlight(str, { language: lang }).value;
+                    } catch (__) {}
+                }
+                return '';
+            }
+        });
 
-.stats-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
-}
+        // 渲染 Markdown 内容
+        function renderMarkdown() {
+            document.querySelectorAll('[id^="announcement-content-"]').forEach(element => {
+                const content = element.value || element.textContent;
+                if (content) {
+                    const renderedContent = md.render(content);
+                    const targetId = element.id.replace('announcement-content', 'rendered-content');
+                    const targetElement = document.getElementById(targetId);
+                    
+                    if (targetElement) {
+                        targetElement.innerHTML = renderedContent;
+                        console.log('渲染 Markdown 内容:', {
+                            sourceId: element.id,
+                            targetId: targetElement.id,
+                            content: content,
+                            renderedContent: renderedContent
+                        });
+                    }
+                }
+            });
+        }
 
-.card {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.card-body {
-    padding: 20px;
-    display: flex;
-    align-items: center;
-}
-
-.card i {
-    font-size: 2.5em;
-    margin-right: 20px;
-    color: #79aec8;
-}
-
-.card-info h3 {
-    margin: 0;
-    font-size: 24px;
-    color: #333;
-}
-
-.card-info p {
-    margin: 5px 0 0;
-    color: #666;
-}
-
-.announcements {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.announcements h2 {
-    margin-top: 0;
-    color: #333;
-    font-size: 18px;
-}
-
-.announcement-item {
-    padding: 15px 0;
-    border-bottom: 1px solid #eee;
-}
-
-.announcement-item:last-child {
-    border-bottom: none;
-}
-
-.announcement-item h3 {
-    margin: 0;
-    font-size: 16px;
-    color: #333;
-}
-
-.announcement-item p {
-    margin: 5px 0;
-    color: #666;
-}
-
-.announcement-item .time {
-    font-size: 12px;
-    color: #999;
-}
-</style>
+        // 页面加载完成后渲染 Markdown
+        document.addEventListener('DOMContentLoaded', function() {
+            renderMarkdown();
+        });
+    </script>
 {% endblock %} 
