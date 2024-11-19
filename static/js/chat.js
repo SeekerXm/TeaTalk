@@ -19,15 +19,40 @@ function handleKeyPress(event) {
 
 // 显示消息
 function appendMessage(role, content) {
+    console.log('Appending message:', role, content);
+    
     const messagesDiv = document.getElementById('chatMessages');
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${role}`;
     
+    // 创建头像
+    const avatarDiv = document.createElement('div');
+    avatarDiv.className = 'message-avatar';
+    const avatarIcon = document.createElement('i');
+    
+    if (role === 'user') {
+        // 用户头像使用用户图标
+        avatarIcon.className = 'fas fa-user';
+    } else {
+        // AI头像使用机器人图标
+        avatarIcon.className = 'fas fa-robot';
+    }
+    avatarDiv.appendChild(avatarIcon);
+    
+    // 创建消息内容包装器
+    const contentWrapper = document.createElement('div');
+    contentWrapper.className = 'message-content-wrapper';
+    
+    // 创建消息内容
     const contentDiv = document.createElement('div');
     contentDiv.className = 'message-content';
     contentDiv.textContent = content;
     
-    messageDiv.appendChild(contentDiv);
+    // 组装消息
+    contentWrapper.appendChild(contentDiv);
+    messageDiv.appendChild(avatarDiv);
+    messageDiv.appendChild(contentWrapper);
+    
     messagesDiv.appendChild(messageDiv);
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
