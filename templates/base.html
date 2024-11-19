@@ -93,8 +93,8 @@
                                      class="form-control" 
                                      placeholder="输入消息..." 
                                      onkeypress="handleKeyPress(event)"></textarea>
-                            <button class="btn btn-primary" onclick="sendUserMessage()">
-                                <i class="fas fa-paper-plane"></i> 发送
+                            <button class="btn btn-send" onclick="sendUserMessage()">
+                                <i class="fas fa-paper-plane"></i>
                             </button>
                         </div>
                     </div>
@@ -481,7 +481,7 @@
                         <h6 class="alert-heading">请注意！</h6>
                         <p>注销账号将会：</p>
                         <ul>
-                            <li>永久删除您的���号信息</li>
+                            <li>永久删除您的号信息</li>
                             <li>删除所有聊天记录和相关数据</li>
                             <li>此操作无法撤销</li>
                         </ul>
@@ -548,29 +548,80 @@
 
     .chat-input {
         padding: 1rem;
-        border-top: 1px solid #e5e7eb;
-        background: #fff;
+        background: #ffffff;
+        border-top: 1px solid rgba(229, 231, 235, 0.5);
+        box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.05);
     }
 
     .chat-input .input-group {
-        background: #fff;
-        border-radius: 0.5rem;
-        overflow: hidden;
+        background: #f8f9fa;
+        border-radius: 1.5rem;
+        padding: 0.25rem 0.5rem;
+        border: 1px solid rgba(229, 231, 235, 0.8);
+        transition: all 0.3s ease;
+        align-items: flex-end;
+        position: relative;
+        min-height: 50px;
     }
 
     .chat-input textarea {
         border: none;
         resize: none;
-        height: 50px;
-        padding: 0.75rem;
+        min-height: 24px;
+        max-height: 150px;
+        height: 24px;
+        padding: 0.5rem 3rem 0.5rem 0.75rem;
+        background: transparent;
+        font-size: 0.95rem;
+        line-height: 1.4;
+        overflow-y: auto;
+        transition: height 0.2s ease;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        width: 100%;
+        margin: 0;
+    }
+
+    .chat-input textarea::-webkit-scrollbar {
+        display: none;
     }
 
     .chat-input textarea:focus {
         box-shadow: none;
+        outline: none;
     }
 
-    .chat-input button {
-        padding: 0 1.5rem;
+    .chat-input .btn-send {
+        position: absolute;
+        right: 0.5rem;
+        bottom: 50%;
+        transform: translateY(50%);
+        background: transparent;
+        border: none;
+        padding: 0;
+        color: #007bff;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        margin: 0;
+        z-index: 10;
+    }
+
+    .chat-input .btn-send:hover {
+        background: rgba(0, 123, 255, 0.1);
+        color: #0056b3;
+    }
+
+    .chat-input .btn-send:active {
+        background: rgba(0, 123, 255, 0.2);
+    }
+
+    .chat-input .btn-send i {
+        font-size: 1rem;
     }
 
     .message {

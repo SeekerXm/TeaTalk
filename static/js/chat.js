@@ -1,3 +1,19 @@
+// 自动调整高度的函数
+function autoResizeTextarea(textarea) {
+    // 先将高度设为最小值，以便正确计算新的高度
+    textarea.style.height = '24px';
+    
+    // 根据内容计算新的高度
+    const newHeight = Math.min(textarea.scrollHeight, 150);  // 最大高度为150px
+    textarea.style.height = newHeight + 'px';
+}
+
+// 重置输入框高度的函数
+function resetTextareaHeight(textarea) {
+    textarea.style.height = '24px';  // 设置为初始高度
+    textarea.value = '';  // 清空内容
+}
+
 // 发送用户消息
 function sendUserMessage() {
     const input = document.getElementById('messageInput');
@@ -5,9 +21,64 @@ function sendUserMessage() {
     
     if (!message) return;
     
-    input.value = '';
+    // 重置输入框
+    resetTextareaHeight(input);
+    
+    // 发送消息
     sendMessage(message);
 }
+
+// 在 DOMContentLoaded 事件中添加监听器
+document.addEventListener('DOMContentLoaded', function() {
+    const messageInput = document.getElementById('messageInput');
+    if (messageInput) {
+        // 设置初始高度
+        messageInput.style.height = '24px';
+        
+        // 监听输���事件，包括输入和删除
+        messageInput.addEventListener('input', function() {
+            autoResizeTextarea(this);
+        });
+        
+        // 监听失焦事件
+        messageInput.addEventListener('blur', function() {
+            if (!this.value.trim()) {
+                // 如果内容为空，恢复初始高度
+                this.style.height = '24px';
+            } else {
+                // 如果有内容，根据内容调整高度
+                autoResizeTextarea(this);
+            }
+        });
+        
+        // 监听聚焦事件
+        messageInput.addEventListener('focus', function() {
+            // 聚焦时根据内容调整高度
+            autoResizeTextarea(this);
+        });
+        
+        // 监听键盘事件，处理退格键和删除键
+        messageInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Backspace' || e.key === 'Delete') {
+                // 使用 setTimeout 确保在内容更新后调整高度
+                setTimeout(() => autoResizeTextarea(this), 0);
+            }
+        });
+        
+        // 允许鼠标滚轮滚动
+        messageInput.addEventListener('wheel', function(e) {
+            const maxScroll = this.scrollHeight - this.clientHeight;
+            const currentScroll = this.scrollTop;
+            
+            if ((currentScroll === 0 && e.deltaY < 0) || 
+                (currentScroll >= maxScroll && e.deltaY > 0)) {
+                return true;
+            } else {
+                e.stopPropagation();
+            }
+        });
+    }
+});
 
 // 处理按键事件
 function handleKeyPress(event) {
