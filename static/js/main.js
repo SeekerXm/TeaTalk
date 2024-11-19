@@ -761,7 +761,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     </h5>
                                 </div>
                                 <div class="modal-body">
-                                    <p>密码已成功修改！系统将在 3 秒后自动退出登录。</p>
+                                    <p>密码已成功修改！系统将在 2 秒后自动退出登录。</p>
                                     <div class="progress">
                                         <div class="progress-bar progress-bar-striped progress-bar-animated" 
                                              role="progressbar" 
@@ -777,7 +777,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const bsSuccessModal = new bootstrap.Modal(successModal);
                     bsSuccessModal.show();
                     
-                    // 进度条动画
+                    // 进度条动画 - 2秒
                     const progressBar = successModal.querySelector('.progress-bar');
                     let progress = 0;
                     const interval = setInterval(() => {
@@ -786,12 +786,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         if (progress >= 100) {
                             clearInterval(interval);
                         }
-                    }, 60);  // 3000ms / 50steps = 60ms per step
+                    }, 40);  // 2000ms / 50steps = 40ms per step
                     
-                    // 3秒后退出登录
+                    // 2秒后退出登录
                     setTimeout(() => {
                         window.location.href = '/logout/';  // 退出登录后会自动跳转到首页
-                    }, 3000);
+                    }, 2000);
                 } else {
                     showError(data.message || '修改密码失败');
                 }
