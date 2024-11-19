@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="1.添加了 typeMessage 函数来实现打字效果&#10;2.修改了 appendMessage 函数，对AI回复使用打字效果&#10;3. 添加了随机延迟，使打字效果更自然&#10;4.在打字过程中保持滚动条在底部&#10;5.用户消息仍然是立即显示" />
+    <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="1.添加了失焦事件监听器，当输入框失去焦点时检查内容&#10;2.如果失焦时内容为空，恢复到初始高度&#10;3.如果失焦时有内容，保特适应内容的高度&#10;4.添加了聚焦事件监听器，确保聚焦时高度正确&#10;5.优化了高度调整的逻辑">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -353,7 +356,23 @@
       <option name="project" value="LOCAL" />
       <updated>1732032935978</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="更新了背景颜色和多个样式，调整了消息头像和内容的样式以提升用户体验。">
+      <option name="closed" value="true" />
+      <created>1732033571401</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1732033571401</updated>
+    </task>
+    <task id="LOCAL-00034" summary="1.添加了失焦事件监听器，当输入框失去焦点时检查内容&#10;2.如果失焦时内容为空，恢复到初始高度&#10;3.如果失焦时有内容，保特适应内容的高度&#10;4.添加了聚焦事件监听器，确保聚焦时高度正确&#10;5.优化了高度调整的逻辑">
+      <option name="closed" value="true" />
+      <created>1732036870288</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1732036870288</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -371,8 +390,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="新增公告管理界面的自定义模板，修改样式以增强用户体验；优化用户管理和公告管理功能。" />
-    <MESSAGE value="提交信息：更新用户模型，新增邮箱验证相关字段和方法；添加注册、登录和重置密码功能的表单及视图；集成验证码功能；优化用户管理和公告管理模块；增加基础页面模板及样式。" />
     <MESSAGE value="提交信息：更新用户模型，删除不必要字段，新增邮箱验证功能及相关表单；优化用户管理界面，调整管理员界面的字段显示顺序；增强前端表单的CSRF保护和错误处理，统一字段名称；更新基础模板中的Logo和样式；修复JavaScript逻辑，改进用户登录流程。" />
     <MESSAGE value="更新用户模型，删除不必要字段，新增邮箱验证功能及相关表单；优化用户管理界面，调整管理员界面的字段显示顺序；增强前端表单的CSRF保护和错误处理，统一字段名称；更新基础模板中的Logo和样式；修复JavaScript逻辑，改进用户登录流程。" />
     <MESSAGE value="更新用户管理员界面，增强状态和用户类型显示，新增样式文件以支持标签样式和动画效果，以及改善用户体验的前端交互；添加可自定义的 CSS 样式以优化管理界面的视觉效果。" />
@@ -396,7 +413,9 @@
     <MESSAGE value="更新聊天消息区域，增加了AI助手的欢迎消息并调整了样式；改进了验证码提示信息；添加了聊天功能的JS代码，增强了消息显示逻辑，添加了头像功能。" />
     <MESSAGE value="减小了滚动条的宽度&#10;使滚动条更加美观和现代化&#10;添加了悬停效果&#10;支持 Firefox 浏览器的滚动条样式&#10;使用半透明效果，让滚动条看起来更加柔和&#10;添加了圆角效果" />
     <MESSAGE value="1.添加了 typeMessage 函数来实现打字效果&#10;2.修改了 appendMessage 函数，对AI回复使用打字效果&#10;3. 添加了随机延迟，使打字效果更自然&#10;4.在打字过程中保持滚动条在底部&#10;5.用户消息仍然是立即显示" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.添加了 typeMessage 函数来实现打字效果&#10;2.修改了 appendMessage 函数，对AI回复使用打字效果&#10;3. 添加了随机延迟，使打字效果更自然&#10;4.在打字过程中保持滚动条在底部&#10;5.用户消息仍然是立即显示" />
+    <MESSAGE value="更新了背景颜色和多个样式，调整了消息头像和内容的样式以提升用户体验。" />
+    <MESSAGE value="1.添加了失焦事件监听器，当输入框失去焦点时检查内容&#10;2.如果失焦时内容为空，恢复到初始高度&#10;3.如果失焦时有内容，保特适应内容的高度&#10;4.添加了聚焦事件监听器，确保聚焦时高度正确&#10;5.优化了高度调整的逻辑" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.添加了失焦事件监听器，当输入框失去焦点时检查内容&#10;2.如果失焦时内容为空，恢复到初始高度&#10;3.如果失焦时有内容，保特适应内容的高度&#10;4.添加了聚焦事件监听器，确保聚焦时高度正确&#10;5.优化了高度调整的逻辑" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/TeaTalk$main.coverage" NAME="main 覆盖结果" MODIFIED="1731993364645" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ModelPlatform" />

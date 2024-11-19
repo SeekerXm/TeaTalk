@@ -274,7 +274,7 @@
                             <div class="list-group list-group-flush">
                                 {% if user.is_authenticated %}
                                 <a href="#" class="list-group-item list-group-item-action active" data-settings-target="user">
-                                    <i class="fas fa-user me-2"></i>用户信息
+                                    <i class="fas fa-user me-2"></i>用户信
                                 </a>
                                 {% endif %}
                                 <a href="#" class="list-group-item list-group-item-action {% if not user.is_authenticated %}active{% endif %}" data-settings-target="announcements">
@@ -531,12 +531,37 @@
 
     <!-- 在已有的 style 标签中添加聊天样式 -->
     <style>
-    /* 聊天区域样式 */
+    /* 容器样式优化 */
+    .container-fluid {
+        padding: 0;  /* 移除内边距 */
+        height: 100vh;  /* 使用视口高度 */
+    }
+
+    .row {
+        margin: 0;  /* 移除外边距 */
+        height: 100%;  /* 继承父容器高度 */
+    }
+
+    /* 左侧栏样式 */
+    .sidebar {
+        padding: 0;  /* 移除内边距 */
+        height: 100vh;  /* 使用视口高度 */
+    }
+
+    /* 右侧主内容区域样式 */
+    .main-content {
+        padding: 0;  /* 移除内边距 */
+        height: 100vh;  /* 使用视口高度 */
+        display: flex;  /* 使用flex布局 */
+    }
+
+    /* 聊天容器样式 */
     .chat-container {
-        height: calc(100vh - 60px);
+        flex: 1;  /* 占据所有可用空间 */
         display: flex;
         flex-direction: column;
         background-color: #ffffff;
+        width: 100%;  /* 确保宽度100% */
     }
 
     .chat-messages {
@@ -556,12 +581,13 @@
     .chat-input .input-group {
         background: #f8f9fa;
         border-radius: 1.5rem;
-        padding: 0.25rem 0.5rem;
+        padding: 0.5rem;  /* 统一内边距 */
         border: 1px solid rgba(229, 231, 235, 0.8);
         transition: all 0.3s ease;
-        align-items: flex-end;
         position: relative;
         min-height: 50px;
+        display: flex;  /* 使用flex布局 */
+        align-items: center;  /* 垂直居中 */
     }
 
     .chat-input textarea {
@@ -570,16 +596,23 @@
         min-height: 24px;
         max-height: 150px;
         height: 24px;
-        padding: 0.5rem 3rem 0.5rem 0.75rem;
+        padding: 0.25rem 3rem 0.25rem 0.75rem;  /* 调整内边距 */
         background: transparent;
         font-size: 0.95rem;
-        line-height: 1.4;
+        line-height: 24px;
         overflow-y: auto;
         transition: height 0.2s ease;
         scrollbar-width: none;
         -ms-overflow-style: none;
         width: 100%;
         margin: 0;
+        align-self: center;  /* 在flex容器中垂直居中 */
+    }
+
+    .chat-input textarea::placeholder {
+        line-height: 24px;  /* 与输入框行高一致 */
+        color: #6c757d;
+        opacity: 0.8;
     }
 
     .chat-input textarea::-webkit-scrollbar {
@@ -594,8 +627,8 @@
     .chat-input .btn-send {
         position: absolute;
         right: 0.5rem;
-        bottom: 50%;
-        transform: translateY(50%);
+        top: 50%;  /* 改为相对于父元素的50% */
+        transform: translateY(-50%);  /* 向上偏移自身高度的50%，实现垂直居中 */
         background: transparent;
         border: none;
         padding: 0;
