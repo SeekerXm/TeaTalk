@@ -303,7 +303,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // 确认密码验证
                 if (password1 !== password2) {
-                    showError('两次输入的新密码不一致');
+                    showError('两次输入的新码不一致');
                     return false;
                 }
 
@@ -392,7 +392,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     loginEmail.value = data.email;
                                 }
                                 
-                                // 聚焦到密码输入框
+                                // 聚焦���密码输入框
                                 const loginPassword = document.querySelector('#loginPassword');
                                 if (loginPassword) {
                                     loginPassword.focus();
@@ -557,9 +557,48 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // 初始化 markdown-it
+    const md = window.markdownit({
+        html: true,        // 启用 HTML 标签
+        breaks: true,      // 转换换行符为 <br>
+        linkify: true,     // 自动转换 URL 为链接
+        typographer: true, // 启用一些语言中立的替换和引号美化
+        highlight: function (str, lang) {
+            if (lang && hljs.getLanguage(lang)) {
+                try {
+                    return hljs.highlight(str, { language: lang }).value;
+                } catch (__) {}
+            }
+            return ''; // 使用默认的转义
+        }
+    });
+
+    // 渲染 Markdown 内容
+    function renderMarkdown() {
+        document.querySelectorAll('[id^="announcement-content"]').forEach(element => {
+            const content = element.value || element.textContent;
+            if (content) {
+                const renderedContent = md.render(content);
+                const targetId = element.id.replace('announcement-content', 'rendered-content');
+                const targetId2 = element.id.replace('announcement-content-list', 'rendered-content-list');
+                const targetElement = document.getElementById(targetId) || document.getElementById(targetId2);
+                
+                if (targetElement) {
+                    targetElement.innerHTML = renderedContent;
+                    console.log('渲染 Markdown 内容:', {
+                        sourceId: element.id,
+                        targetId: targetElement.id,
+                        content: content,
+                        renderedContent: renderedContent
+                    });
+                }
+            }
+        });
+    }
+
     // 公告折叠面板处理
     const announcementItems = document.querySelectorAll('.announcement-item');
-    console.log('找到公告项:', announcementItems.length);  // 调试日志
+    console.log('找到公告项:', announcementItems.length);
     
     announcementItems.forEach(item => {
         const header = item.querySelector('.announcement-header');
@@ -568,7 +607,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (header && content) {
             header.addEventListener('click', function(e) {
                 e.preventDefault();
-                console.log('点击公告标题');  // 调试日志
+                e.stopPropagation();
+                console.log('点击公告标题');
                 
                 // 关闭其他展开的公告
                 announcementItems.forEach(otherItem => {
@@ -584,7 +624,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 // 切换当前公告的展开状态
                 item.classList.toggle('expanded');
                 content.classList.toggle('show');
-                console.log('切换展开状态:', item.classList.contains('expanded'));  // 调试日志
+                
+                // 如果展开则渲染内容
+                if (content.classList.contains('show')) {
+                    renderMarkdown();
+                }
+                
+                console.log('切换展开状态:', item.classList.contains('expanded'));
             });
         }
     });
@@ -640,41 +686,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // 初始化 markdown-it
-    const md = window.markdownit({
-        html: true,        // 启用 HTML 标签
-        breaks: true,      // 转换换行符为 <br>
-        linkify: true,     // 自动转换 URL 为链接
-        typographer: true, // 启用一些语言中立的替换和引号美化
-        highlight: function (str, lang) {
-            if (lang && hljs.getLanguage(lang)) {
-                try {
-                    return hljs.highlight(str, { language: lang }).value;
-                } catch (__) {}
-            }
-            return ''; // 使用默认的转义
-        }
-    });
-
-    // 渲染 Markdown 内容
-    function renderMarkdown() {
-        document.querySelectorAll('[id^="announcement-content-"]').forEach(element => {
-            const content = element.value || element.textContent; // 获取原始内容
-            const renderedContent = md.render(content);
-            const targetId = element.id.replace('announcement-content-', 'rendered-content-');
-            const targetElement = document.getElementById(targetId);
-            if (targetElement) {
-                targetElement.innerHTML = renderedContent;
-            }
-            console.log('渲染 Markdown 内容:', {
-                原始内容: content,
-                渲染结果: renderedContent
-            });
-        });
-    }
-
-    // 初始渲染 Markdown 内容
-    console.log('页面加载完成，初始渲染 Markdown 内容');
+    // 初始渲染已展开的公告内容
     renderMarkdown();
 });
 
