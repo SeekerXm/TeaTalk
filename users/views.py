@@ -33,9 +33,7 @@ def index(request):
         ).exclude(
             userannouncementread__user=request.user
         ).first()
-        if popup_announcement:
-            print(f"已登录用户的弹出公告: {popup_announcement.title}")
-            print(f"公告内容: {popup_announcement.content}")
+        print(f"已登录用户的弹出公告: {popup_announcement}")
     else:
         print("未登录用户")
         # 获取最新的弹出公告
@@ -52,8 +50,7 @@ def index(request):
             # 如果最新公告未被读过，则显示
             if latest_popup.id not in read_announcements:
                 popup_announcement = latest_popup
-                print(f"未登录用户的弹出公告: {popup_announcement.title}")
-                print(f"公告内容: {popup_announcement.content}")
+                print(f"未登录用户的弹出公告: {popup_announcement}")
     
     print(f"最终弹出公告: {popup_announcement}")
     
@@ -253,7 +250,7 @@ def user_login(request):
             print(f"表单验证失败: {form.errors}")
             return JsonResponse({
                 'success': False,
-                'message': '邮箱或密码���式错误'
+                'message': '邮箱或密码式错误'
             })
                 
     except Exception as e:

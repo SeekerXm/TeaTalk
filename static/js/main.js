@@ -491,6 +491,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 公告相关功能
     document.addEventListener('DOMContentLoaded', function() {
+        renderMarkdown();
+        
         // 处理公告点击事件
         document.querySelectorAll('.announcement-item').forEach(item => {
             item.addEventListener('click', function(e) {
@@ -557,34 +559,46 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 公告折叠面板处理
     const announcementItems = document.querySelectorAll('.announcement-item');
+    console.log('找到公告项:', announcementItems.length);  // 调试日志
     
     announcementItems.forEach(item => {
         const header = item.querySelector('.announcement-header');
-        header.addEventListener('click', function() {
-            const content = item.querySelector('.announcement-content');
-            const isExpanded = item.classList.contains('expanded');
-            
-            // 关闭其他展开的公告
-            announcementItems.forEach(otherItem => {
-                if (otherItem !== item) {
-                    otherItem.classList.remove('expanded');
-                    otherItem.querySelector('.announcement-content').classList.remove('show');
-                }
+        const content = item.querySelector('.announcement-content');
+        
+        if (header && content) {
+            header.addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log('点击公告标题');  // 调试日志
+                
+                // 关闭其他展开的公告
+                announcementItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('expanded');
+                        const otherContent = otherItem.querySelector('.announcement-content');
+                        if (otherContent) {
+                            otherContent.classList.remove('show');
+                        }
+                    }
+                });
+                
+                // 切换当前公告的展开状态
+                item.classList.toggle('expanded');
+                content.classList.toggle('show');
+                console.log('切换展开状态:', item.classList.contains('expanded'));  // 调试日志
             });
-            
-            // 切换当前公告的展开状态
-            item.classList.toggle('expanded');
-            content.classList.toggle('show');
-        });
+        }
     });
 
     // 公告弹窗处理
     const announcementPopupModal = document.getElementById('announcementPopupModal');
-    console.log('找到公告弹窗元素:', announcementPopupModal);
-    
     if (announcementPopupModal) {
         const modal = new bootstrap.Modal(announcementPopupModal);
-        console.log('初始化公告弹窗');
+        
+        // 在模态框显示之前渲染 Markdown 内容
+        announcementPopupModal.addEventListener('show.bs.modal', function() {
+            console.log('模态框即将显示，渲染 Markdown 内容');
+            renderMarkdown();
+        });
         
         // 延迟一秒显示，确保页面完全加载
         setTimeout(() => {
@@ -592,7 +606,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('显示公告弹窗');
         }, 1000);
         
-        // 如果用���已登录，标记公告为已读
+        // 如果用户已登录，标记公告为已读
         if (document.body.classList.contains('user-authenticated')) {
             announcementPopupModal.addEventListener('hidden.bs.modal', function() {
                 const announcementId = this.dataset.announcementId;
@@ -607,42 +621,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         'X-Requested-With': 'XMLHttpRequest'
                     }
                 })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => {
                     console.log('标记公告已读结果:', data);
-                    if (!data.success) {
-                        console.error('标记公告已读失败:', data.message);
-                    }
                 })
                 .catch(error => {
                     console.error('标记公告已读失败:', error);
-                });
-            });
-        } else {
-            // 未登录用户，使用 session 记录已读状态
-            announcementPopupModal.addEventListener('hidden.bs.modal', function() {
-                const announcementId = this.dataset.announcementId;
-                const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
-                
-                fetch(`/mark-announcement-read/${announcementId}/`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-CSRFToken': csrfToken,
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('未登录用户标记公告已读结果:', data);
-                })
-                .catch(error => {
-                    console.error('未登录用户标记公告已读失败:', error);
                 });
             });
         }
@@ -655,6 +639,43 @@ document.addEventListener('DOMContentLoaded', function() {
             trigger: 'hover'  // 鼠标悬浮时显示
         });
     });
+
+    // 初始化 markdown-it
+    const md = window.markdownit({
+        html: true,        // 启用 HTML 标签
+        breaks: true,      // 转换换行符为 <br>
+        linkify: true,     // 自动转换 URL 为链接
+        typographer: true, // 启用一些语言中立的替换和引号美化
+        highlight: function (str, lang) {
+            if (lang && hljs.getLanguage(lang)) {
+                try {
+                    return hljs.highlight(str, { language: lang }).value;
+                } catch (__) {}
+            }
+            return ''; // 使用默认的转义
+        }
+    });
+
+    // 渲染 Markdown 内容
+    function renderMarkdown() {
+        document.querySelectorAll('[id^="announcement-content-"]').forEach(element => {
+            const content = element.value || element.textContent; // 获取原始内容
+            const renderedContent = md.render(content);
+            const targetId = element.id.replace('announcement-content-', 'rendered-content-');
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                targetElement.innerHTML = renderedContent;
+            }
+            console.log('渲染 Markdown 内容:', {
+                原始内容: content,
+                渲染结果: renderedContent
+            });
+        });
+    }
+
+    // 初始渲染 Markdown 内容
+    console.log('页面加载完成，初始渲染 Markdown 内容');
+    renderMarkdown();
 });
 
 function refreshCaptcha() {
