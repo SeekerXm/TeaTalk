@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="1.移除了按钮的实色背景，改用透明背景&#10;2,使用淡色边框和轻微阴影&#10;3.添加了悬浮效果和过渡动画&#10;4.优化了图标和文字的间距&#10;5.使用更柔和的颜色方案&#10;6.添加了微妙的上浮效果" />
+    <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="1.调整了L0g0区域的内边距和对齐方式&#10;2.增大了L0g0的尺寸&#10;3.优化了标题的字体大小和间距&#10;4.添加了字间距和防止换行的属性&#10;5.确保垂直和水平居中对齐" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -409,7 +409,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732040339369</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="1.调整了L0g0区域的内边距和对齐方式&#10;2.增大了L0g0的尺寸&#10;3.优化了标题的字体大小和间距&#10;4.添加了字间距和防止换行的属性&#10;5.确保垂直和水平居中对齐">
+      <option name="closed" value="true" />
+      <created>1732040739115</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1732040739115</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -427,7 +435,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="添加警告图标与提示功能，优化用户状态提示信息；修正代码注释中的小问题；初始化所有工具提示并定义相关样式。" />
     <MESSAGE value="修改验证码图片的alt文本，更新警告图标的类名，以及更正“注时间”为“注册时间”。" />
     <MESSAGE value="更新公告模型中的内容字段为Markdown字段，添加Markdown编辑器相关配置，修改项目设置以包含Markdown编辑器，更新URL配置以支持Markdown编辑器路径，并添加Markdown编辑器依赖到项目说明中。" />
     <MESSAGE value="更新公告模块，添加 Markdown 渲染功能以及代码高亮支持，提升公告内容展示效果；调整 JavaScript 逻辑以提高用户交互体验；新增 CSS 样式以美化 Markdown 内容展示。" />
@@ -452,7 +459,8 @@
     <MESSAGE value="1.添加了一个lex容器来包裹导航栏和聊天区域&#10;2.调整了导航栏的样式，确保其固定在顶部&#10;3.优化了聊天容器的布局&#10;4.添加了溢出控制，防止内容溢出&#10;5.确保了整体布局的稳定性" />
     <MESSAGE value="1.将左侧栏背景色改为f移9fa&#10;2.添加了右侧柔和阴影效果&#10;3.添加了淡色边框增加层次感&#10;4.优化了内部元素的内边距和边框&#10;5.调整了Z-index确保阴影效果正确显示&#10;6.微调了L0g0和标题的样式" />
     <MESSAGE value="1.移除了按钮的实色背景，改用透明背景&#10;2,使用淡色边框和轻微阴影&#10;3.添加了悬浮效果和过渡动画&#10;4.优化了图标和文字的间距&#10;5.使用更柔和的颜色方案&#10;6.添加了微妙的上浮效果" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.移除了按钮的实色背景，改用透明背景&#10;2,使用淡色边框和轻微阴影&#10;3.添加了悬浮效果和过渡动画&#10;4.优化了图标和文字的间距&#10;5.使用更柔和的颜色方案&#10;6.添加了微妙的上浮效果" />
+    <MESSAGE value="1.调整了L0g0区域的内边距和对齐方式&#10;2.增大了L0g0的尺寸&#10;3.优化了标题的字体大小和间距&#10;4.添加了字间距和防止换行的属性&#10;5.确保垂直和水平居中对齐" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.调整了L0g0区域的内边距和对齐方式&#10;2.增大了L0g0的尺寸&#10;3.优化了标题的字体大小和间距&#10;4.添加了字间距和防止换行的属性&#10;5.确保垂直和水平居中对齐" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/TeaTalk$main.coverage" NAME="main 覆盖结果" MODIFIED="1731993364645" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ModelPlatform" />
