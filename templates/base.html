@@ -54,9 +54,34 @@
             
             <!-- 右侧聊天区域 -->
             <div class="col-md-9 col-lg-10 chat-area">
+                {% if user.is_authenticated %}
                 <div class="chat-container">
-                    <!-- 聊天内容将在这里显示 -->
+                    <!-- 聊天消息区域 -->
+                    <div id="chatMessages" class="chat-messages">
+                        <!-- 消息将在这里动态添加 -->
+                    </div>
+                    
+                    <!-- 输入框区域 -->
+                    <div class="chat-input">
+                        <div class="input-group">
+                            <textarea id="messageInput" 
+                                     class="form-control" 
+                                     placeholder="输入消息..." 
+                                     onkeypress="handleKeyPress(event)"></textarea>
+                            <button class="btn btn-primary" onclick="sendUserMessage()">
+                                发送
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 加载动画 -->
+                    <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">加载中...</span>
+                        </div>
+                    </div>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -227,7 +252,7 @@
                             </div>
                         </div>
                         
-                        <!-- 右侧内容��� -->
+                        <!-- 右侧内容 -->
                         <div class="settings-content">
                             <!-- 用户信息面板 -->
                             {% if user.is_authenticated %}
@@ -457,6 +482,8 @@
     <script src="/static/bootstrap-5.3.0/js/bootstrap.bundle.min.js"></script>
     <!-- 自定义 JS -->
     <script src="/static/js/main.js"></script>
+    <!-- 聊天相关的 JS -->
+    <script src="/static/js/chat.js"></script>
 
     <!-- 在body末尾添加调试信息 -->
     <script>
@@ -469,5 +496,66 @@
             {% endif %}
         });
     </script>
+
+    <!-- 在已有的 style 标签中添加 -->
+    <style>
+    /* 聊天区域样式 */
+    .chat-container {
+        height: calc(100vh - 60px);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem;
+    }
+
+    .chat-input {
+        padding: 1rem;
+        border-top: 1px solid #e5e7eb;
+        background: #fff;
+    }
+
+    .message {
+        margin-bottom: 1rem;
+        max-width: 80%;
+    }
+
+    .message.user {
+        margin-left: auto;
+    }
+
+    .message.assistant {
+        margin-right: auto;
+    }
+
+    .message-content {
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+    }
+
+    .message.user .message-content {
+        background: #2563eb;
+        color: white;
+    }
+
+    .message.assistant .message-content {
+        background: #f3f4f6;
+        color: #1f2937;
+    }
+
+    .loading-spinner {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+        background: rgba(255, 255, 255, 0.8);
+        padding: 2rem;
+        border-radius: 1rem;
+    }
+    </style>
 </body>
 </html> 

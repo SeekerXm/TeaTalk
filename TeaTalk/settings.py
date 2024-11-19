@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
     'announcements.apps.AnnouncementsConfig',
+    'chat.apps.ChatConfig',
     'captcha',
     'mdeditor',
 ]
@@ -255,3 +256,6 @@ MDEDITOR_CONFIGS = {
         'lineNumbers': True  # 显示行号
     }
 }
+
+# 智谱AI配置
+ZHIPU_API_KEY = "8e1436a72f831bf54b6ae4ca43587788.sUsYvAEEXcNF84X0"  # 替换为实际的API密钥

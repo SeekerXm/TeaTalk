@@ -19,29 +19,31 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.static import serve
-from users import views
+from users import views as user_views
+from chat import views as chat_views
 
 admin.site.site_header = 'TeaTalk AI 聊天助手'
 admin.site.site_title = 'TeaTalk AI 聊天助手'
 admin.site.index_title = '管理后台'
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('verify-captcha/', views.verify_captcha, name='verify_captcha'),
-    path('send-email-code/', views.send_email_code, name='send_email_code'),
-    path('register/', views.register, name='register'),
-    path('login/', views.user_login, name='login'),
-    path('logout/', views.user_logout, name='logout'),
-    path('reset-password/', views.reset_password, name='reset_password'),
+    path('', user_views.index, name='index'),
+    path('verify-captcha/', user_views.verify_captcha, name='verify_captcha'),
+    path('send-email-code/', user_views.send_email_code, name='send_email_code'),
+    path('register/', user_views.register, name='register'),
+    path('login/', user_views.user_login, name='login'),
+    path('logout/', user_views.user_logout, name='logout'),
+    path('reset-password/', user_views.reset_password, name='reset_password'),
     path('captcha/', include('captcha.urls')),
-    path('admin/home/', views.home, name='admin_home'),
+    path('admin/home/', user_views.home, name='admin_home'),
     path('admin/', admin.site.urls),
-    path('captcha/refresh/', views.refresh_captcha, name='captcha-refresh'),
-    path('announcement/<int:announcement_id>/', views.get_announcement, name='get-announcement'),
-    path('mark-announcement-read/<int:announcement_id>/', views.mark_announcement_read, name='mark-announcement-read'),
+    path('captcha/refresh/', user_views.refresh_captcha, name='captcha-refresh'),
+    path('announcement/<int:announcement_id>/', user_views.get_announcement, name='get-announcement'),
+    path('mark-announcement-read/<int:announcement_id>/', user_views.mark_announcement_read, name='mark-announcement-read'),
     path('mdeditor/', include('mdeditor.urls')),
-    path('change-password/', views.change_password, name='change-password'),
-    path('delete-account/', views.delete_account, name='delete-account'),
+    path('change-password/', user_views.change_password, name='change-password'),
+    path('delete-account/', user_views.delete_account, name='delete-account'),
+    path('chat/send/', chat_views.send_message, name='send_message'),
 ]
 
 if settings.DEBUG:
