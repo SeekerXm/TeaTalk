@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="删除无用的初始文件和平台实现代码，新增聊天模块和相关前端功能，完善聊天功能的后端处理。">
+    <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="workspace.xml">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeaTalk/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/TeaTalk/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -299,7 +302,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732029307160</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="workspace.xml">
+      <option name="closed" value="true" />
+      <created>1732029573894</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1732029573894</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -341,7 +352,8 @@
     <MESSAGE value="添加修改密码和注销账号功能，包括前端表单、模态框、后端视图和路由配置。修正部分注释内容，增强用户体验与表单验证。" />
     <MESSAGE value="修复了部分文本内容中的乱码问题，优化了修改密码表单的提交逻辑，确保表单提交后能够正确处理响应并提供相应的用户反馈。" />
     <MESSAGE value="删除无用的初始文件和平台实现代码，新增聊天模块和相关前端功能，完善聊天功能的后端处理。" />
-    <option name="LAST_COMMIT_MESSAGE" value="删除无用的初始文件和平台实现代码，新增聊天模块和相关前端功能，完善聊天功能的后端处理。" />
+    <MESSAGE value="workspace.xml" />
+    <option name="LAST_COMMIT_MESSAGE" value="workspace.xml" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/TeaTalk$main.coverage" NAME="main 覆盖结果" MODIFIED="1731993364645" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ModelPlatform" />
