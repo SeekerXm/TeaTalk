@@ -200,6 +200,9 @@ SIMPLEUI_ICON = {
     '公告列表': 'fas fa-scroll'
 }
 
+# 添加浏览器图标配置
+SIMPLEUI_FAVICON = 'static/images/favicon.ico'
+
 # 禁用所有快速操作按钮
 SIMPLEUI_QUICK_BUTTON = False
 SIMPLEUI_IMPORT_EXPORT_BUTTON = False

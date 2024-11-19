@@ -57,7 +57,6 @@
             
             <!-- 右侧聊天区域 -->
             <div class="col-md-9 col-lg-10 main-content">
-                {% if user.is_authenticated %}
                 <div class="d-flex flex-column h-100">
                     <!-- 导航栏 -->
                     <div class="chat-nav">
@@ -98,14 +97,13 @@
                                          class="form-control" 
                                          placeholder="输入消息..." 
                                          onkeypress="handleKeyPress(event)"></textarea>
-                                <button class="btn btn-send" onclick="sendUserMessage()">
+                                <button class="btn btn-send" onclick="handleSendMessage()">
                                     <i class="fas fa-paper-plane"></i>
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
-                {% endif %}
             </div>
         </div>
     </div>

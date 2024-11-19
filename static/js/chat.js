@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // 设置初始高度
         messageInput.style.height = '24px';
         
-        // 监听输���事件，包括输入和删除
+        // 监听输事件，包括输入和删除
         messageInput.addEventListener('input', function() {
             autoResizeTextarea(this);
         });
@@ -80,11 +80,27 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// 处理发送消息
+function handleSendMessage() {
+    // 检查用户是否已登录
+    const isAuthenticated = document.body.classList.contains('user-authenticated');
+    
+    if (!isAuthenticated) {
+        // 如果未登录，显示登录模态框
+        const authModal = new bootstrap.Modal(document.getElementById('authModal'));
+        authModal.show();
+        return;
+    }
+    
+    // 如果已登录，正常发送消息
+    sendUserMessage();
+}
+
 // 处理按键事件
 function handleKeyPress(event) {
     if (event.key === 'Enter' && !event.shiftKey) {
         event.preventDefault();
-        sendUserMessage();
+        handleSendMessage();  // 使用新的处理函数
     }
 }
 
