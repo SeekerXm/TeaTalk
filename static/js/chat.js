@@ -1,3 +1,17 @@
+// 在文件开头初始化 markdown-it
+const md = window.markdownit({
+    breaks: true,  // 转换换行符为 <br>
+    linkify: true,  // 自动转换链接文本
+    highlight: function (str, lang) {  // 代码高亮
+        if (lang && hljs.getLanguage(lang)) {
+            try {
+                return hljs.highlight(str, { language: lang }).value;
+            } catch (__) {}
+        }
+        return '';  // 使用默认的转义
+    }
+});
+
 // 自动调整高度的函数
 function autoResizeTextarea(textarea) {
     // 先将高度设为最小值，以便正确计算新的高度
@@ -104,7 +118,7 @@ function handleKeyPress(event) {
     }
 }
 
-// 显示消息
+// 修改显示消息的函数
 function appendMessage(role, content) {
     console.log('Appending message:', role, content);
     
@@ -138,9 +152,9 @@ function appendMessage(role, content) {
     messageDiv.appendChild(contentWrapper);
     messagesDiv.appendChild(messageDiv);
     
-    // 如果是AI回复，使用打字效果
+    // 如果是AI回复，使用打字效果并渲染markdown
     if (role === 'assistant') {
-        typeMessage(content, contentDiv);
+        typeMessageWithMarkdown(content, contentDiv);
     } else {
         contentDiv.textContent = content;
     }
@@ -148,16 +162,23 @@ function appendMessage(role, content) {
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
-// 打字效果函数
-function typeMessage(text, element, index = 0) {
+// 修改打字效果函数以支持markdown
+function typeMessageWithMarkdown(text, element, index = 0) {
     if (index < text.length) {
-        element.textContent += text.charAt(index);
+        const currentText = text.substring(0, index + 1);
+        // 渲染markdown
+        element.innerHTML = md.render(currentText);
+        // 高亮代码块
+        element.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightElement(block);
+        });
+        
         const messagesDiv = document.getElementById('chatMessages');
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
         
         // 随机延迟，使打字效果更自然
         const delay = Math.random() * 30 + 20;  // 20-50ms之间的随机延迟
-        setTimeout(() => typeMessage(text, element, index + 1), delay);
+        setTimeout(() => typeMessageWithMarkdown(text, element, index + 1), delay);
     }
 }
 
