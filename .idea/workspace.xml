@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="更新聊天消息区域，增加了AI助手的欢迎消息并调整了样式；改进了验证码提示信息；添加了聊天功能的JS代码，增强了消息显示逻辑，添加了头像功能。" />
+    <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="1.添加了 typeMessage 函数来实现打字效果&#10;2.修改了 appendMessage 函数，对AI回复使用打字效果&#10;3. 添加了随机延迟，使打字效果更自然&#10;4.在打字过程中保持滚动条在底部&#10;5.用户消息仍然是立即显示" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -337,7 +337,23 @@
       <option name="project" value="LOCAL" />
       <updated>1732032388236</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="减小了滚动条的宽度&#10;使滚动条更加美观和现代化&#10;添加了悬停效果&#10;支持 Firefox 浏览器的滚动条样式&#10;使用半透明效果，让滚动条看起来更加柔和&#10;添加了圆角效果">
+      <option name="closed" value="true" />
+      <created>1732032617040</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1732032617040</updated>
+    </task>
+    <task id="LOCAL-00032" summary="1.添加了 typeMessage 函数来实现打字效果&#10;2.修改了 appendMessage 函数，对AI回复使用打字效果&#10;3. 添加了随机延迟，使打字效果更自然&#10;4.在打字过程中保持滚动条在底部&#10;5.用户消息仍然是立即显示">
+      <option name="closed" value="true" />
+      <created>1732032935978</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1732032935978</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -355,8 +371,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="更新用户模型的用户名字段，设置默认值并调整保存逻辑以适应新用户名约束；新增数据库迁移文件以反映模型更改。同时包含对多个AI平台的接口实现和功能优化。" />
-    <MESSAGE value="新增公告管理界面的自定义模板，修改样式以增强用户体验。" />
     <MESSAGE value="新增公告管理界面的自定义模板，修改样式以增强用户体验；优化用户管理和公告管理功能。" />
     <MESSAGE value="提交信息：更新用户模型，新增邮箱验证相关字段和方法；添加注册、登录和重置密码功能的表单及视图；集成验证码功能；优化用户管理和公告管理模块；增加基础页面模板及样式。" />
     <MESSAGE value="提交信息：更新用户模型，删除不必要字段，新增邮箱验证功能及相关表单；优化用户管理界面，调整管理员界面的字段显示顺序；增强前端表单的CSRF保护和错误处理，统一字段名称；更新基础模板中的Logo和样式；修复JavaScript逻辑，改进用户登录流程。" />
@@ -380,7 +394,9 @@
     <MESSAGE value="添加聊天模块及相关前端功能，包括聊天输入和消息显示，优化公告获取逻辑，移除冗余代码，更新样式以提升用户体验。" />
     <MESSAGE value="更新聊天消息区域，增加了AI助手的欢迎消息并调整了样式；改进了密码提示信息；添加了聊天功能的JS代码，增强了消息显示逻辑，添加了头像功能。" />
     <MESSAGE value="更新聊天消息区域，增加了AI助手的欢迎消息并调整了样式；改进了验证码提示信息；添加了聊天功能的JS代码，增强了消息显示逻辑，添加了头像功能。" />
-    <option name="LAST_COMMIT_MESSAGE" value="更新聊天消息区域，增加了AI助手的欢迎消息并调整了样式；改进了验证码提示信息；添加了聊天功能的JS代码，增强了消息显示逻辑，添加了头像功能。" />
+    <MESSAGE value="减小了滚动条的宽度&#10;使滚动条更加美观和现代化&#10;添加了悬停效果&#10;支持 Firefox 浏览器的滚动条样式&#10;使用半透明效果，让滚动条看起来更加柔和&#10;添加了圆角效果" />
+    <MESSAGE value="1.添加了 typeMessage 函数来实现打字效果&#10;2.修改了 appendMessage 函数，对AI回复使用打字效果&#10;3. 添加了随机延迟，使打字效果更自然&#10;4.在打字过程中保持滚动条在底部&#10;5.用户消息仍然是立即显示" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.添加了 typeMessage 函数来实现打字效果&#10;2.修改了 appendMessage 函数，对AI回复使用打字效果&#10;3. 添加了随机延迟，使打字效果更自然&#10;4.在打字过程中保持滚动条在底部&#10;5.用户消息仍然是立即显示" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/TeaTalk$main.coverage" NAME="main 覆盖结果" MODIFIED="1731993364645" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ModelPlatform" />
