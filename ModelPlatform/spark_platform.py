@@ -1,15 +1,16 @@
 from ModelPlatform.base_platform import BasePlatform
-import websocket  # 这里使用的是websocket-client包
+from websocket import create_connection
+from websocket._app import WebSocketApp
 import ssl
 import json
-import _thread as thread
 import time
-import hmac
 import base64
-from urllib.parse import urlencode, quote
+import hmac
+import _thread as thread
 from datetime import datetime
+from urllib.parse import urlencode, quote
+from email.utils import formatdate
 from time import mktime
-from wsgiref.handlers import format_date_time
 
 class SparkPlatform(BasePlatform):
     """讯飞星火平台实现类"""
@@ -26,8 +27,7 @@ class SparkPlatform(BasePlatform):
     def create_url(self):
         """生成鉴权url"""
         # 生成RFC1123格式的时间戳
-        now = datetime.now()
-        date = format_date_time(mktime(now.timetuple()))
+        date = formatdate(timeval=None, localtime=False, usegmt=True)
         
         # 拼接字符串
         signature_origin = "host: spark-api.xf-yun.com\n"
@@ -60,30 +60,46 @@ class SparkPlatform(BasePlatform):
     
     def on_message(self, ws, message):
         """处理服务器返回的消息"""
-        data = json.loads(message)
-        code = data['header']['code']
-        if code != 0:
-            print(f'请求错误: {code}, {data}')
-            ws.close()
-        else:
-            choices = data["payload"]["choices"]
-            status = choices["status"]
-            content = choices["text"][0]["content"]
-            self.answer += content
-            if status == 2:
+        try:
+            data = json.loads(message)
+            code = data['header']['code']
+            if code != 0:
                 ws.close()
+            else:
+                choices = data["payload"]["choices"]
+                status = choices["status"]
+                content = choices["text"][0]["content"]
+                self.answer += content
+                
+                # 当status为2时，表示响应完成
+                if status == 2:
+                    self.response_complete = True
+                    ws.close()
+        except Exception as e:
+            ws.close()
     
     def on_error(self, ws, error):
         """处理错误"""
-        print("错误:", error)
+        self.answer = ""  # 清空回答
+        self.ws_closed = True
+        self.response_complete = False
+        ws.close()
     
     def on_close(self, ws, *args):
         """连接关闭"""
-        pass
+        self.ws_closed = True
     
     def on_open(self, ws):
         """连接建立时发送数据"""
-        def run(*args):
+        try:
+            # 将消息列表转换为适合星火API的格式
+            formatted_messages = []
+            for msg in self.messages:
+                formatted_messages.append({
+                    "role": msg["role"],
+                    "content": msg["content"]
+                })
+            
             data = {
                 "header": {
                     "app_id": self.app_id,
@@ -98,33 +114,47 @@ class SparkPlatform(BasePlatform):
                 },
                 "payload": {
                     "message": {
-                        "text": self.messages
+                        "text": formatted_messages
                     }
                 }
             }
             ws.send(json.dumps(data))
-        thread.start_new_thread(run, ())
+        except Exception as e:
+            ws.close()
     
     def chat_completion(self, messages, **kwargs):
         """星火文本对话实现"""
         try:
             self.messages = messages  # 保存消息记录
             self.answer = ""  # 清空上次的回答
+            self.ws_connected = False  # 添加连接状态标志
+            self.ws_closed = False    # 添加关闭状态标志
+            self.response_complete = False  # 添加响应完成标志
             
             # 创建WebSocket连接
-            ws = websocket.WebSocketApp(
+            ws = WebSocketApp(
                 self.create_url(),
                 on_message=self.on_message,
                 on_error=self.on_error,
                 on_close=self.on_close,
                 on_open=self.on_open
             )
+            
+            # 启动WebSocket连接并等待完成
             ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE})
             
-            # 返回处理后的响应
-            return self.handle_response({
-                'content': self.answer
-            })
+            # 如果有回答，返回结果
+            if self.answer:
+                return self.handle_response({
+                    'choices': [{
+                        'message': {
+                            'role': 'assistant',
+                            'content': self.answer
+                        }
+                    }]
+                })
+            else:
+                return self.handle_error(Exception("模型未返回有效回复"))
             
         except Exception as e:
             return self.handle_error(e)
