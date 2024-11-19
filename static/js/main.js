@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => {
                 console.error('请求失败:', error);
                 showError(error.message || '网络错误，请稍后重试');
-                if (error.message === '验证码错误') {
+                if (error.message === '��证码错误') {
                     refreshCaptcha();
                 }
             });
@@ -419,7 +419,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .catch(error => {
                     console.error('请求失败:', error);
-                    showError('服务器错误，请稍后重试');
+                    showError('服务器错误，���稍后重试');
                 });
             });
         }
@@ -690,83 +690,81 @@ document.addEventListener('DOMContentLoaded', function() {
     renderMarkdown();
 
     // 修改密码表单处理
-    document.addEventListener('DOMContentLoaded', function() {
-        const changePasswordForm = document.getElementById('changePasswordForm');
-        if (changePasswordForm) {
-            console.log('找到修改密码表单');  // 调试日志
+    const changePasswordForm = document.getElementById('changePasswordForm');
+    if (changePasswordForm) {
+        console.log('找到修改密码表单');  // 调试日志
+        
+        changePasswordForm.addEventListener('submit', function(e) {
+            e.preventDefault();  // 阻止表单默认提交
+            console.log('修改密码表单提交');  // 调试日志
             
-            changePasswordForm.addEventListener('submit', function(e) {
-                e.preventDefault();  // 阻止表单默认提交
-                console.log('修改密码表单提交');  // 调试日志
-                
-                // 表单验证
-                if (!this.checkValidity()) {
-                    e.stopPropagation();
-                    this.classList.add('was-validated');
-                    return;
-                }
+            // 表单验证
+            if (!this.checkValidity()) {
+                e.stopPropagation();
+                this.classList.add('was-validated');
+                return;
+            }
 
-                // 获取表单数据
-                const formData = new FormData(this);
-                const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
-                
-                // 验证新密码是否一致
-                const newPassword1 = formData.get('new_password1');
-                const newPassword2 = formData.get('new_password2');
-                
-                if (newPassword1 !== newPassword2) {
-                    showError('两次输入的新密码不一致');
-                    return;
-                }
+            // 获取表单数据
+            const formData = new FormData(this);
+            const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+            
+            // 验证新密码是否一致
+            const newPassword1 = formData.get('new_password1');
+            const newPassword2 = formData.get('new_password2');
+            
+            if (newPassword1 !== newPassword2) {
+                showError('两次输入的新密码不一致');
+                return;
+            }
 
-                console.log('发送修改密码请求');  // 调试日志
-                
-                // 发送请求
-                fetch('/change-password/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-CSRFToken': csrfToken,
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    body: new URLSearchParams(formData)
-                })
-                .then(response => {
-                    console.log('收到响应:', response);  // 调试日志
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('修改密码响应:', data);  // 调试日志
-                    if (data.success) {
-                        // 显示成功消息
-                        showMessage('密码修改成功！请使用新密码重新登录。', 'success');
-                        
-                        // 关闭修改密码模态框
-                        const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
-                        modal.hide();
-                        
-                        // 重置表单
-                        this.reset();
-                        this.classList.remove('was-validated');
-                        
-                        // 延迟2秒后退出登录
-                        setTimeout(() => {
-                            window.location.href = '/logout/';  // 修改这里，使用 href 而不是直接提交表单
-                        }, 2000);
-                    } else {
-                        showError(data.message || '修改密码失败');
-                    }
-                })
-                .catch(error => {
-                    console.error('修改密码失败:', error);
-                    showError('服务器错误，请稍后重试');
-                });
+            console.log('发送修改密码请求');  // 调试日志
+            
+            // 发送请求
+            fetch('/change-password/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrfToken,
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: new URLSearchParams(formData)
+            })
+            .then(response => {
+                console.log('收到响应:', response);  // 调试日志
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('修改密码响应:', data);  // 调试日志
+                if (data.success) {
+                    // 关闭修改密码模态框
+                    const changePasswordModal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
+                    changePasswordModal.hide();
+                    
+                    // 重置表单
+                    this.reset();
+                    this.classList.remove('was-validated');
+                    
+                    // 显示成功消息
+                    showMessage('密码修改成功！请使用新密码重新登录。', 'success');
+                    
+                    // 延迟2秒后退出登录并跳转到首页
+                    setTimeout(() => {
+                        window.location.href = '/logout/';  // 退出登录后会自动跳转到首页
+                    }, 2000);
+                } else {
+                    showError(data.message || '修改密码失败');
+                }
+            })
+            .catch(error => {
+                console.error('修改密码失败:', error);
+                showError('服务器错误，请稍后重试');
             });
-        }
-    });
+        });
+    }
 
     // 注销账号表单处理
     const deleteAccountForm = document.getElementById('deleteAccountForm');

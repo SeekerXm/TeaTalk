@@ -227,7 +227,7 @@
                             </div>
                         </div>
                         
-                        <!-- 右侧内容域 -->
+                        <!-- 右侧内容��� -->
                         <div class="settings-content">
                             <!-- 用户信息面板 -->
                             {% if user.is_authenticated %}
@@ -372,7 +372,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="changePasswordForm" action="{% url 'change-password' %}" method="post" class="needs-validation" novalidate>
+                    <form id="changePasswordForm" class="needs-validation" novalidate onsubmit="return false">
                         {% csrf_token %}
                         <div class="mb-3">
                             <label for="oldPassword" class="form-label">当前密码</label>
