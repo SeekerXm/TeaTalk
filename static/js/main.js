@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => {
                 console.error('请求失败:', error);
                 showError(error.message || '网络错误，请稍后重试');
-                if (error.message === '��证码错误') {
+                if (error.message === '证码错误') {
                     refreshCaptcha();
                 }
             });
@@ -419,7 +419,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .catch(error => {
                     console.error('请求失败:', error);
-                    showError('服务器错误，���稍后重试');
+                    showError('服务器错误，稍后重试');
                 });
             });
         }
@@ -748,13 +748,50 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.reset();
                     this.classList.remove('was-validated');
                     
-                    // 显示成功消息
-                    showMessage('密码修改成功！请使用新密码重新登录。', 'success');
+                    // 创建成功提示模态框
+                    const successModal = document.createElement('div');
+                    successModal.className = 'modal fade';
+                    successModal.innerHTML = `
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        密码修改成功
+                                    </h5>
+                                </div>
+                                <div class="modal-body">
+                                    <p>密码已成功修改！系统将在 3 秒后自动退出登录。</p>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                             role="progressbar" 
+                                             style="width: 0%">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
                     
-                    // 延迟2秒后退出登录并跳转到首页
+                    document.body.appendChild(successModal);
+                    const bsSuccessModal = new bootstrap.Modal(successModal);
+                    bsSuccessModal.show();
+                    
+                    // 进度条动画
+                    const progressBar = successModal.querySelector('.progress-bar');
+                    let progress = 0;
+                    const interval = setInterval(() => {
+                        progress += 2;
+                        progressBar.style.width = `${progress}%`;
+                        if (progress >= 100) {
+                            clearInterval(interval);
+                        }
+                    }, 60);  // 3000ms / 50steps = 60ms per step
+                    
+                    // 3秒后退出登录
                     setTimeout(() => {
                         window.location.href = '/logout/';  // 退出登录后会自动跳转到首页
-                    }, 2000);
+                    }, 3000);
                 } else {
                     showError(data.message || '修改密码失败');
                 }
