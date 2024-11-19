@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'chat.apps.ChatConfig',
     'captcha',
     'mdeditor',
+    'chat.apps.ChatConfig',
 ]
 
 MIDDLEWARE = [
