@@ -31,10 +31,8 @@ function appendMessage(role, content) {
     const avatarIcon = document.createElement('i');
     
     if (role === 'user') {
-        // 用户头像使用用户图标
         avatarIcon.className = 'fas fa-user';
     } else {
-        // AI头像使用机器人图标
         avatarIcon.className = 'fas fa-robot';
     }
     avatarDiv.appendChild(avatarIcon);
@@ -46,15 +44,34 @@ function appendMessage(role, content) {
     // 创建消息内容
     const contentDiv = document.createElement('div');
     contentDiv.className = 'message-content';
-    contentDiv.textContent = content;
     
     // 组装消息
     contentWrapper.appendChild(contentDiv);
     messageDiv.appendChild(avatarDiv);
     messageDiv.appendChild(contentWrapper);
-    
     messagesDiv.appendChild(messageDiv);
+    
+    // 如果是AI回复，使用打字效果
+    if (role === 'assistant') {
+        typeMessage(content, contentDiv);
+    } else {
+        contentDiv.textContent = content;
+    }
+    
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+// 打字效果函数
+function typeMessage(text, element, index = 0) {
+    if (index < text.length) {
+        element.textContent += text.charAt(index);
+        const messagesDiv = document.getElementById('chatMessages');
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        
+        // 随机延迟，使打字效果更自然
+        const delay = Math.random() * 30 + 20;  // 20-50ms之间的随机延迟
+        setTimeout(() => typeMessage(text, element, index + 1), delay);
+    }
 }
 
 // 发送消息到服务器
