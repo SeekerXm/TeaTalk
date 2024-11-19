@@ -829,7 +829,52 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    showMessage('账号已注销，即将跳转到首页...', 'success');
+                    // 关闭注销账号模态框
+                    const deleteAccountModal = bootstrap.Modal.getInstance(document.getElementById('deleteAccountModal'));
+                    deleteAccountModal.hide();
+                    
+                    // 创建成功提示模态框
+                    const successModal = document.createElement('div');
+                    successModal.className = 'modal fade';
+                    successModal.innerHTML = `
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        账号注销成功
+                                    </h5>
+                                </div>
+                                <div class="modal-body">
+                                    <p>您的账号已成功注销，所有相关数据已被删除。</p>
+                                    <p>系统将在 2 秒后自动跳转到首页。</p>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                             role="progressbar" 
+                                             style="width: 0%">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(successModal);
+                    const bsSuccessModal = new bootstrap.Modal(successModal);
+                    bsSuccessModal.show();
+                    
+                    // 进度条动画 - 2秒
+                    const progressBar = successModal.querySelector('.progress-bar');
+                    let progress = 0;
+                    const interval = setInterval(() => {
+                        progress += 2;
+                        progressBar.style.width = `${progress}%`;
+                        if (progress >= 100) {
+                            clearInterval(interval);
+                        }
+                    }, 40);  // 2000ms / 50steps = 40ms per step
+                    
+                    // 2秒后跳转到首页
                     setTimeout(() => {
                         window.location.href = '/';
                     }, 2000);
