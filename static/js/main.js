@@ -381,7 +381,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         } else if (formId === 'registerForm' && data.email) {
                             // 延迟1.5秒后切换到登录表单
                             setTimeout(() => {
-                                // 切换到登录标���页
+                                // 切换到登录标页
                                 const loginTab = document.querySelector('[data-bs-target="#loginTab"]');
                                 const tabInstance = new bootstrap.Tab(loginTab);
                                 tabInstance.show();
@@ -592,7 +592,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('显示公告弹窗');
         }, 1000);
         
-        // 如果用户已登录，标记公告为已读
+        // 如果用���已登录，标记公告为已读
         if (document.body.classList.contains('user-authenticated')) {
             announcementPopupModal.addEventListener('hidden.bs.modal', function() {
                 const announcementId = this.dataset.announcementId;
@@ -647,6 +647,14 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
+
+    // 初始化所有 tooltips
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl, {
+            trigger: 'hover'  // 鼠标悬浮时显示
+        });
+    });
 });
 
 function refreshCaptcha() {

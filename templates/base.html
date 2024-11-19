@@ -239,7 +239,14 @@
                                                 {% if user.status == 'normal' %}
                                                     <span class="badge bg-success">正常</span>
                                                 {% elif user.status == 'warning' %}
-                                                    <span class="badge bg-warning">警告</span>
+                                                    <span class="badge bg-warning">
+                                                        警告
+                                                        <i class="fas fa-question-circle warning-icon" 
+                                                           data-bs-toggle="tooltip" 
+                                                           data-bs-placement="right" 
+                                                           title="系统发现您的账号异常，接口可能被盗用，或者模型调用量过高">
+                                                        </i>
+                                                    </span>
                                                 {% elif user.status == 'banned' %}
                                                     <span class="badge bg-danger">
                                                         {% if user.ban_until %}

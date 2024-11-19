@@ -329,4 +329,35 @@ body {
     #announcementPopupModal .modal-dialog {
         margin: 1rem;
     }
+}
+
+/* 警告图标样式 */
+.warning-icon {
+    margin-left: 5px;
+    font-size: 0.9rem;
+    color: #856404;  /* 深黄色 */
+    cursor: help;
+    transition: all 0.2s ease;
+}
+
+.warning-icon:hover {
+    color: #533f03;  /* 更深的黄色 */
+}
+
+/* Bootstrap tooltip 自定义样式 */
+.tooltip {
+    font-size: 0.85rem;
+    max-width: 250px;
+}
+
+.tooltip .tooltip-inner {
+    background-color: #2d3748;  /* 深色背景 */
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tooltip.bs-tooltip-end .tooltip-arrow::before {
+    border-right-color: #2d3748;
 } 
