@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="更新用户管理员界面，增强状态和用户类型显示，新增样式文件以支持标签样式和动画效果，以及改善用户体验的前端交互；添加可自定义的 CSS 样式以优化管理界面的视觉效果。">
+    <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="修复了部分文本内容中的乱码问题，优化了修改密码表单的提交逻辑，确保表单提交后能够正确处理响应并提供相应的用户反馈。">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/main.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,21 +16,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "SeekerXm"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;SeekerXm&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/SeekerXm/TeaTalk.git",
-    "accountId": "c4f067f0-adf0-4c6f-a3cc-ef82ddb47973"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/SeekerXm/TeaTalk.git&quot;,
+    &quot;accountId&quot;: &quot;c4f067f0-adf0-4c6f-a3cc-ef82ddb47973&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 2
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
   <component name="ProjectId" id="2p07cgbKTAG6okKwmDsrNvqv2BY" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -40,6 +39,10 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Django 服务器.TeaTalk.executor": "Run",
+    "Notification.DisplayName-DoNotAsk-Database detector": "数据库检测器",
+    "Notification.DoNotAsk-Database detector": "true",
+    "Python.main.executor": "Run",
     "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.pycharm.django.structure.promotion.once.per.project": "true",
@@ -60,6 +63,7 @@
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="TeaTalk.settings" />
       </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -184,7 +188,111 @@
       <option name="project" value="LOCAL" />
       <updated>1731933843396</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="删除多余的配置文件">
+      <option name="closed" value="true" />
+      <created>1731951609354</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1731951609354</updated>
+    </task>
+    <task id="LOCAL-00013" summary="完善了公告管理界面的 CSS 样式，添加了自定义样式以提高页面美观性，同时在更改列表视图中引入了额外的 CSS 类以增强可定制性。删除了一些过时的样式并优化了响应式设计。">
+      <option name="closed" value="true" />
+      <created>1731977493193</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1731977493193</updated>
+    </task>
+    <task id="LOCAL-00014" summary="添加警告图标与提示功能，优化用户状态提示信息；修正代码注释中的小问题；初始化所有工具提示并定义相关样式。">
+      <option name="closed" value="true" />
+      <created>1731978234454</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1731978234454</updated>
+    </task>
+    <task id="LOCAL-00015" summary="修改验证码图片的alt文本，更新警告图标的类名，以及更正“注时间”为“注册时间”。">
+      <option name="closed" value="true" />
+      <created>1731979162296</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1731979162296</updated>
+    </task>
+    <task id="LOCAL-00016" summary="更新公告模型中的内容字段为Markdown字段，添加Markdown编辑器相关配置，修改项目设置以包含Markdown编辑器，更新URL配置以支持Markdown编辑器路径，并添加Markdown编辑器依赖到项目说明中。">
+      <option name="closed" value="true" />
+      <created>1731983332229</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1731983332229</updated>
+    </task>
+    <task id="LOCAL-00017" summary="更新公告模块，添加 Markdown 渲染功能以及代码高亮支持，提升公告内容展示效果；调整 JavaScript 逻辑以提高用户交互体验；新增 CSS 样式以美化 Markdown 内容展示。">
+      <option name="closed" value="true" />
+      <created>1731984263316</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1731984263316</updated>
+    </task>
+    <task id="LOCAL-00018" summary="添加 Highlight.js 和 Markdown-it 支持，包括代码高亮和 Markdown 渲染功能；更新了相关样式文件；修正了一些拼写错误。">
+      <option name="closed" value="true" />
+      <created>1731987845716</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1731987845716</updated>
+    </task>
+    <task id="LOCAL-00019" summary="更新 `requirements.txt`，增加多个依赖项并更新部分版本号。">
+      <option name="closed" value="true" />
+      <created>1731988839233</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1731988839233</updated>
+    </task>
+    <task id="LOCAL-00020" summary="重构主要逻辑为主函数，移除多余的类和方法，简化平台和模型选择流程；在 `spark_platform.py` 中优化 WebSocket 处理逻辑，增强错误处理能力，调整数据格式化方式。">
+      <option name="closed" value="true" />
+      <created>1731991233953</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1731991233953</updated>
+    </task>
+    <task id="LOCAL-00021" summary="新增图像生成与理解功能，调整模型参数获取和处理逻辑，优化对话接口的响应格式，并整合对话历史管理。">
+      <option name="closed" value="true" />
+      <created>1731994679322</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1731994679322</updated>
+    </task>
+    <task id="LOCAL-00022" summary="更新依赖文件，添加多个新依赖项，移除不再需要的依赖，并整理版本号。">
+      <option name="closed" value="true" />
+      <created>1731994803215</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1731994803215</updated>
+    </task>
+    <task id="LOCAL-00023" summary="添加修改密码和注销账号功能，包括前端表单、模态框、后端视图和路由配置。修正部分注释内容，增强用户体验与表单验证。">
+      <option name="closed" value="true" />
+      <created>1731998751165</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1731998751165</updated>
+    </task>
+    <task id="LOCAL-00024" summary="修复了部分文本内容中的乱码问题，优化了修改密码表单的提交逻辑，确保表单提交后能够正确处理响应并提供相应的用户反馈。">
+      <option name="closed" value="true" />
+      <created>1731999607548</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1731999607548</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -212,6 +320,22 @@
     <MESSAGE value="提交信息：更新用户模型，删除不必要字段，新增邮箱验证功能及相关表单；优化用户管理界面，调整管理员界面的字段显示顺序；增强前端表单的CSRF保护和错误处理，统一字段名称；更新基础模板中的Logo和样式；修复JavaScript逻辑，改进用户登录流程。" />
     <MESSAGE value="更新用户模型，删除不必要字段，新增邮箱验证功能及相关表单；优化用户管理界面，调整管理员界面的字段显示顺序；增强前端表单的CSRF保护和错误处理，统一字段名称；更新基础模板中的Logo和样式；修复JavaScript逻辑，改进用户登录流程。" />
     <MESSAGE value="更新用户管理员界面，增强状态和用户类型显示，新增样式文件以支持标签样式和动画效果，以及改善用户体验的前端交互；添加可自定义的 CSS 样式以优化管理界面的视觉效果。" />
-    <option name="LAST_COMMIT_MESSAGE" value="更新用户管理员界面，增强状态和用户类型显示，新增样式文件以支持标签样式和动画效果，以及改善用户体验的前端交互；添加可自定义的 CSS 样式以优化管理界面的视觉效果。" />
+    <MESSAGE value="删除多余的配置文件" />
+    <MESSAGE value="完善了公告管理界面的 CSS 样式，添加了自定义样式以提高页面美观性，同时在更改列表视图中引入了额外的 CSS 类以增强可定制性。删除了一些过时的样式并优化了响应式设计。" />
+    <MESSAGE value="添加警告图标与提示功能，优化用户状态提示信息；修正代码注释中的小问题；初始化所有工具提示并定义相关样式。" />
+    <MESSAGE value="修改验证码图片的alt文本，更新警告图标的类名，以及更正“注时间”为“注册时间”。" />
+    <MESSAGE value="更新公告模型中的内容字段为Markdown字段，添加Markdown编辑器相关配置，修改项目设置以包含Markdown编辑器，更新URL配置以支持Markdown编辑器路径，并添加Markdown编辑器依赖到项目说明中。" />
+    <MESSAGE value="更新公告模块，添加 Markdown 渲染功能以及代码高亮支持，提升公告内容展示效果；调整 JavaScript 逻辑以提高用户交互体验；新增 CSS 样式以美化 Markdown 内容展示。" />
+    <MESSAGE value="添加 Highlight.js 和 Markdown-it 支持，包括代码高亮和 Markdown 渲染功能；更新了相关样式文件；修正了一些拼写错误。" />
+    <MESSAGE value="更新 `requirements.txt`，增加多个依赖项并更新部分版本号。" />
+    <MESSAGE value="重构主要逻辑为主函数，移除多余的类和方法，简化平台和模型选择流程；在 `spark_platform.py` 中优化 WebSocket 处理逻辑，增强错误处理能力，调整数据格式化方式。" />
+    <MESSAGE value="新增图像生成与理解功能，调整模型参数获取和处理逻辑，优化对话接口的响应格式，并整合对话历史管理。" />
+    <MESSAGE value="更新依赖文件，添加多个新依赖项，移除不再需要的依赖，并整理版本号。" />
+    <MESSAGE value="添加修改密码和注销账号功能，包括前端表单、模态框、后端视图和路由配置。修正部分注释内容，增强用户体验与表单验证。" />
+    <MESSAGE value="修复了部分文本内容中的乱码问题，优化了修改密码表单的提交逻辑，确保表单提交后能够正确处理响应并提供相应的用户反馈。" />
+    <option name="LAST_COMMIT_MESSAGE" value="修复了部分文本内容中的乱码问题，优化了修改密码表单的提交逻辑，确保表单提交后能够正确处理响应并提供相应的用户反馈。" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/TeaTalk$main.coverage" NAME="main 覆盖结果" MODIFIED="1731993364645" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ModelPlatform" />
   </component>
 </project>
