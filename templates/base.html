@@ -221,7 +221,7 @@
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="resetCaptcha" name="captcha_value" required>
                                         <input type="hidden" name="captcha_key" value="{{ hashkey }}">
-                                        <img class="captcha-image" src="{{ image_url }}" alt="��码">
+                                        <img class="captcha-image" src="{{ image_url }}" alt="码">
                                     </div>
                                 </div>
                                 <div class="mb-3">
@@ -757,6 +757,31 @@
             transform: scale(1.2);
             opacity: 1;
         }
+    }
+
+    /* 自定义滚动条样式 */
+    .chat-messages::-webkit-scrollbar {
+        width: 6px;  /* 滚动条宽度 */
+    }
+
+    .chat-messages::-webkit-scrollbar-track {
+        background: transparent;  /* 轨道背景透明 */
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.2);  /* 滚动条颜色 */
+        border-radius: 3px;  /* 圆角 */
+        transition: background-color 0.3s;  /* 过渡效果 */
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(0, 0, 0, 0.3);  /* 悬停时的颜色 */
+    }
+
+    /* Firefox 滚动条样式 */
+    .chat-messages {
+        scrollbar-width: thin;  /* 'thin' 或 'none' */
+        scrollbar-color: rgba(0, 0, 0, 0.2) transparent;  /* 滚动条颜色 轨道颜色 */
     }
     </style>
 
