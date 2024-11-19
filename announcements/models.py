@@ -1,9 +1,10 @@
 from django.db import models
 from django.utils import timezone
+from mdeditor.fields import MDTextField
 
 class Announcement(models.Model):
     title = models.CharField(max_length=200, verbose_name='标题')
-    content = models.TextField(verbose_name='内容')
+    content = MDTextField(verbose_name='内容')
     created_at = models.DateTimeField(default=timezone.now, verbose_name='创建时间')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='更新时间')
     is_active = models.BooleanField(default=True, verbose_name='是否启用')

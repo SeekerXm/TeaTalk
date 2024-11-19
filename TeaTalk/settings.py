@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'announcements.apps.AnnouncementsConfig',
     'captcha',
+    'mdeditor',
 ]
 
 MIDDLEWARE = [
@@ -224,3 +225,33 @@ CAPTCHA_LENGTH = 4  # 验证码长度
 CAPTCHA_TIMEOUT = 5  # 验证码过期时间（分钟）
 CAPTCHA_IMAGE_SIZE = (100, 30)  # 验证码图片大小
 CAPTCHA_FONT_SIZE = 28  # 验证码字体大小
+
+# Markdown编辑器配置
+MDEDITOR_CONFIGS = {
+    'default': {
+        'width': '100%',  # 编辑器宽度
+        'height': 500,    # 编辑器高度
+        'toolbar': ["undo", "redo", "|",
+                   "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|",
+                   "h1", "h2", "h3", "h5", "h6", "|",
+                   "list-ul", "list-ol", "hr", "|",
+                   "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime",
+                   "emoji", "html-entities", "pagebreak", "goto-line", "|",
+                   "help", "info",
+                   "||", "preview", "watch", "fullscreen"],
+        'upload_image_formats': ["jpg", "jpeg", "gif", "png", "bmp", "webp"],  # 图片上传格式类型
+        'image_folder': 'editor',  # 图片保存文件夹名称
+        'theme': 'default',  # 编辑器主题
+        'preview_theme': 'default',  # 预览区域主题
+        'editor_theme': 'default',  # edit区域主题
+        'toolbar_autofixed': True,  # 工具栏是否吸顶
+        'search_replace': True,  # 是否开启查找替换
+        'emoji': True,  # 是否开启表情功能
+        'tex': True,  # 是否开启 tex 图表功能
+        'flow_chart': True,  # 是否开启流程图功能
+        'sequence': True,  # 是否开启序列图功能
+        'watch': True,  # 实时预览
+        'lineWrapping': False,  # 自动换行
+        'lineNumbers': True  # 显示行号
+    }
+}
