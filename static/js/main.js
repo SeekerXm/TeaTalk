@@ -392,7 +392,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     loginEmail.value = data.email;
                                 }
                                 
-                                // 聚焦码输入框
+                                // 聚焦码入框
                                 const loginPassword = document.querySelector('#loginPassword');
                                 if (loginPassword) {
                                     loginPassword.focus();
@@ -640,7 +640,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (announcementPopupModal) {
         const modal = new bootstrap.Modal(announcementPopupModal);
         
-        // 在态框显示之前渲染 Markdown 内容
+        // 在模态框显示之前渲染 Markdown 内容
         announcementPopupModal.addEventListener('show.bs.modal', function() {
             console.log('模态框即将显示，渲染 Markdown 内容');
             renderMarkdown();
@@ -886,6 +886,79 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('注销账号失败:', error);
                 showError('服务器错误，请稍后重试');
             });
+        });
+    }
+
+    // 聊天功能处理
+    const messageInput = document.getElementById('messageInput');
+    const sendButton = document.getElementById('sendButton');
+    
+    if (messageInput && sendButton) {
+        // 发送消息处理
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+            
+            const currentModel = document.getElementById('modelSelect').value;
+            const sessionId = messageInput.dataset.sessionId;
+            const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+            
+            // 添加用户消息到界面
+            addMessage(message, 'user');
+            messageInput.value = '';
+            messageInput.style.height = 'auto';
+            
+            // 显示AI正在输入指示器
+            showTypingIndicator();
+            
+            // 发送请求
+            fetch('/chat/send/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrfToken,
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: new URLSearchParams({
+                    message: message,
+                    model: currentModel,
+                    session_id: sessionId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // 移除输入指示器
+                removeTypingIndicator();
+                
+                if (data.success) {
+                    // 添加AI响应
+                    addMessage(data.response, 'assistant');
+                } else {
+                    showError(data.message || '发送失败，请重试');
+                }
+            })
+            .catch(error => {
+                console.error('发送消息失败:', error);
+                removeTypingIndicator();
+                showError('网络错误，请重试');
+            });
+        }
+        
+        // 绑定发送按钮点击事件
+        sendButton.addEventListener('click', sendMessage);
+        
+        // 绑定回车发送
+        messageInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+        
+        // 自动调整输入框高度
+        messageInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
         });
     }
 });

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'announcements.apps.AnnouncementsConfig',
     'captcha',
     'mdeditor',
+    'chat.apps.ChatConfig',
 ]
 
 MIDDLEWARE = [

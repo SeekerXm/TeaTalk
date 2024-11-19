@@ -29,13 +29,62 @@
                         <h1>TeaTalk</h1>
                     </div>
                     
-                    <!-- 中间内容区域 -->
-                    <div class="sidebar-content flex-grow-1">
-                        <!-- 里可以添加其他内容 -->
+                    {% if user.is_authenticated %}
+                    <!-- 模型选择下拉菜单 -->
+                    <div class="model-selector">
+                        <select class="form-select" id="modelSelect">
+                            <optgroup label="智谱AI">
+                                <option value="glm-4-flash">GLM-4-Flash</option>
+                            </optgroup>
+                            <optgroup label="百度千帆">
+                                <option value="Yi-34B">Yi-34B</option>
+                                <option value="Fuyu-8B">Fuyu-8B (图像理解)</option>
+                            </optgroup>
+                            <optgroup label="讯飞星火">
+                                <option value="Spark-Lite">Spark Lite</option>
+                            </optgroup>
+                            <optgroup label="SiliconCloud">
+                                <option value="chatglm3-6b">ChatGLM3-6B</option>
+                                <option value="gemma-2-9b-it">Gemma-2-9B-IT</option>
+                                <option value="glm-4-9b-chat">GLM-4-9B-Chat</option>
+                                <option value="internlm2_5-7b-chat">InternLM2.5-7B-Chat</option>
+                                <option value="Meta-Llama-3.1-8B-Instruct">Meta-Llama-3.1-8B-Instruct</option>
+                                <option value="Meta-Llama-3-8B-Instruct">Meta-Llama-3-8B-Instruct</option>
+                                <option value="Qwen2.5-7B-Instruct">Qwen2.5-7B-Instruct</option>
+                                <option value="Qwen2.5-Coder-7B">Qwen2.5-Coder-7B</option>
+                                <option value="Qwen2-1.5B-Instruct">Qwen2-1.5B-Instruct</option>
+                                <option value="Qwen2-7B-Instruct">Qwen2-7B-Instruct</option>
+                                <option value="Yi-1.5-6B-Chat">Yi-1.5-6B-Chat</option>
+                                <option value="Yi-1.5-9B-Chat-16K">Yi-1.5-9B-Chat-16K</option>
+                            </optgroup>
+                        </select>
                     </div>
                     
-                    <!-- 底部按钮 -->
-                    <div class="sidebar-footer">
+                    <!-- 会话列表 -->
+                    <div class="chat-sessions flex-grow-1">
+                        <div class="sessions-header">
+                            <h6>历史会话</h6>
+                            <button class="btn btn-sm btn-primary new-chat-btn">
+                                <i class="fas fa-plus"></i> 新建会话
+                            </button>
+                        </div>
+                        <div class="sessions-list">
+                            {% for session in sessions %}
+                            <div class="session-item {% if session.id == current_session.id %}active{% endif %}" 
+                                 data-session-id="{{ session.id }}">
+                                <i class="fas fa-comments"></i>
+                                <span class="session-title">{{ session.title }}</span>
+                                <button class="btn btn-sm btn-link delete-session-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- 底部按钮 - 始终固定在底部 -->
+                    <div class="sidebar-footer mt-auto">
                         <button class="btn btn-outline-light w-100 mb-2" data-bs-toggle="modal" data-bs-target="#settingsModal">
                             <i class="fas fa-cog"></i> 设置
                         </button>
@@ -54,9 +103,48 @@
             
             <!-- 右侧聊天区域 -->
             <div class="col-md-9 col-lg-10 chat-area">
+                {% if user.is_authenticated %}
+                <!-- 聊天界面 -->
                 <div class="chat-container">
-                    <!-- 聊天内容将在这里显示 -->
+                    <!-- 聊天消息区域 -->
+                    <div class="chat-messages" id="chatMessages">
+                        {% for message in messages %}
+                        <div class="message {{ message.role }}">
+                            <div class="message-content">
+                                {{ message.content }}
+                            </div>
+                            <div class="message-time">
+                                {{ message.created_at|date:"H:i" }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- 输入区域 -->
+                    <div class="chat-input-container">
+                        <div class="input-group">
+                            <textarea class="form-control" id="messageInput" 
+                                      rows="1" placeholder="输入您的问题..."
+                                      data-session-id="{{ current_session.id }}"></textarea>
+                            <button class="btn btn-primary" id="sendButton">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
+                {% else %}
+                <!-- 未登录提示 -->
+                <div class="login-prompt">
+                    <div class="text-center">
+                        <i class="fas fa-robot mb-3" style="font-size: 48px; color: #3b82f6;"></i>
+                        <h4>欢迎使用 TeaTalk AI 天助手</h4>
+                        <p class="text-muted">请登录后开始对话</p>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#authModal">
+                            <i class="fas fa-sign-in-alt"></i> 立即登录
+                        </button>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -227,7 +315,7 @@
                             </div>
                         </div>
                         
-                        <!-- 右侧内容��� -->
+                        <!-- 右侧内容 -->
                         <div class="settings-content">
                             <!-- 用户信息面板 -->
                             {% if user.is_authenticated %}

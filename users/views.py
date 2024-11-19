@@ -11,6 +11,7 @@ from .utils import generate_email_code, send_verification_code, validate_email_d
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from announcements.models import Announcement, UserAnnouncementRead
+from chat.models import ChatSession, ChatMessage
 
 def index(request):
     """首页视图"""
@@ -20,45 +21,56 @@ def index(request):
     
     # 获取启用的公告列表
     announcements = Announcement.objects.filter(is_active=True).order_by('-created_at')
-    print(f"获取到的公告列表: {announcements}")
+    print(f"获取到的公告列表: {announcements}")  # 调试日志
     
     # 获取需要弹出显示的公告
     popup_announcement = None
     if request.user.is_authenticated:
-        print(f"当前用户: {request.user.email}")
-        # 获取用户未读的弹出公告
-        popup_announcement = announcements.filter(
-            show_popup=True,
-            is_active=True
+        print(f"当前用户: {request.user.email}")  # 调试日志
+        # 获取已登录用户未读的弹出公告
+        popup_announcement = Announcement.objects.filter(
+            is_active=True,
+            show_popup=True
         ).exclude(
             userannouncementread__user=request.user
-        ).first()
-        print(f"已登录用户的弹出公告: {popup_announcement}")
+        ).order_by('-created_at').first()
+        print(f"已登录用户的弹出公告: {popup_announcement}")  # 调试日志
     else:
-        print("未登录用户")
-        # 获取最新的弹出公告
-        latest_popup = announcements.filter(
-            show_popup=True,
-            is_active=True
-        ).first()
-        
-        if latest_popup:
-            # 获取session中存储的已读公告ID列表
-            read_announcements = request.session.get('read_announcements', [])
-            print(f"未登录用户的已读公告列表: {read_announcements}")
-            
-            # 如果最新公告未被读过，则显示
-            if latest_popup.id not in read_announcements:
-                popup_announcement = latest_popup
-                print(f"未登录用户的弹出公告: {popup_announcement}")
+        print("未登录用户")  # 调试日志
+        # 获取未登录用户未读的弹出公告
+        read_announcements = request.session.get('read_announcements', [])
+        print(f"未登录用户的已读公告列表: {read_announcements}")  # 调试日志
+        popup_announcement = Announcement.objects.filter(
+            is_active=True,
+            show_popup=True
+        ).exclude(
+            id__in=read_announcements
+        ).order_by('-created_at').first()
+        print(f"未登录用户的弹出公告: {popup_announcement}")  # 调试日志
     
-    print(f"最终弹出公告: {popup_announcement}")
+    print(f"最终弹出公告: {popup_announcement}")  # 调试日志
+    
+    # 如果用户已登录，获取聊天会话
+    sessions = []
+    current_session = None
+    messages = []
+    if request.user.is_authenticated:
+        # 获取用户的聊天会话
+        sessions = ChatSession.objects.filter(user=request.user).order_by('-updated_at')
+        # 获取当前会话
+        current_session = sessions.first()
+        if current_session:
+            # 获取当前会话的消息
+            messages = ChatMessage.objects.filter(session=current_session).order_by('created_at')
     
     context = {
         'hashkey': hashkey,
         'image_url': image_url,
         'announcements': announcements,
         'popup_announcement': popup_announcement,
+        'sessions': sessions,
+        'current_session': current_session,
+        'messages': messages,
     }
     return render(request, 'base.html', context)
 
@@ -143,7 +155,7 @@ def register(request):
                         'success': False,
                         'message': '邮箱验证码无效'
                     })
-                # 如果用户已存在且已验证
+                # 如果���户已存在且已验证
                 print("邮箱已被注册")
                 return JsonResponse({
                     'success': False,
@@ -259,7 +271,7 @@ def user_login(request):
         print(f"错误详情: {e.args}")
         return JsonResponse({
             'success': False,
-            'message': '服务器错误，请稍后重试'
+            'message': '服务器错，请稍后重试'
         })
 
 @require_POST
@@ -513,7 +525,7 @@ def delete_account(request):
             'message': '账号已注销'
         })
     except Exception as e:
-        print(f"注销账号时出错: {str(e)}")
+        print(f"销账号时出错: {str(e)}")
         return JsonResponse({
             'success': False,
             'message': '注销账号失败，请稍后重试'
