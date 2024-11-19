@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
@@ -398,7 +398,7 @@ def mark_announcement_read(request, announcement_id):
             )
             print(f"已登录用户 {request.user.email} 标记公告 {announcement_id} 为已读")
         else:
-            # 未登录用户：在session中记录已读状态
+            # 未登录用户：在session记录已读状态
             read_announcements = request.session.get('read_announcements', [])
             if announcement_id not in read_announcements:
                 read_announcements.append(announcement_id)
@@ -411,4 +411,110 @@ def mark_announcement_read(request, announcement_id):
         return JsonResponse({
             'success': False,
             'message': '公告不存在'
+        })
+
+@require_POST
+def change_password(request):
+    """修改密码"""
+    print("收到修改密码请求")  # 调试日志
+    print(f"请求方法: {request.method}")  # 调试日志
+    print(f"POST数据: {request.POST}")  # 调试日志
+    
+    if not request.user.is_authenticated:
+        return JsonResponse({
+            'success': False,
+            'message': '请先登录'
+        })
+    
+    old_password = request.POST.get('old_password')
+    new_password1 = request.POST.get('new_password1')
+    new_password2 = request.POST.get('new_password2')
+    
+    print(f"当前用户: {request.user.email}")  # 调试日志
+    print(f"旧密码验证结果: {request.user.check_password(old_password)}")  # 调试日志
+    
+    # 验证当前密码
+    if not request.user.check_password(old_password):
+        return JsonResponse({
+            'success': False,
+            'message': '当前密码错误'
+        })
+    
+    # 验证新密码
+    if new_password1 != new_password2:
+        return JsonResponse({
+            'success': False,
+            'message': '两次输入的新密码不一致'
+        })
+    
+    if len(new_password1) < 8:
+        return JsonResponse({
+            'success': False,
+            'message': '新密码长度至少为8个字符'
+        })
+    
+    # 验证密码强度
+    categories = 0
+    if any(c.islower() for c in new_password1): categories += 1
+    if any(c.isupper() for c in new_password1): categories += 1
+    if any(c.isdigit() for c in new_password1): categories += 1
+    if any(c in '!@#$%^&*()_+-=[]{}|;:,.<>?' for c in new_password1): categories += 1
+    
+    if categories < 3:
+        return JsonResponse({
+            'success': False,
+            'message': '新密码需要包含小写字母、大写字母、数字、特殊字符中的至少三类'
+        })
+    
+    try:
+        # 修改密码
+        request.user.set_password(new_password1)
+        request.user.save()
+        print("密码修改成功")  # 调试日志
+        
+        # 更新会话，避免用户被登出
+        update_session_auth_hash(request, request.user)
+        
+        return JsonResponse({
+            'success': True,
+            'message': '密码修改成功'
+        })
+    except Exception as e:
+        print(f"修改密码时出错: {str(e)}")  # 调试日志
+        return JsonResponse({
+            'success': False,
+            'message': '修改密码失败，请稍后重试'
+        })
+
+@require_POST
+def delete_account(request):
+    """注销账号"""
+    if not request.user.is_authenticated:
+        return JsonResponse({
+            'success': False,
+            'message': '请先登录'
+        })
+    
+    password = request.POST.get('password')
+    
+    # 验证密码
+    if not request.user.check_password(password):
+        return JsonResponse({
+            'success': False,
+            'message': '密码错误'
+        })
+    
+    try:
+        # 删除用户及相关数据
+        request.user.delete()
+        logout(request)
+        return JsonResponse({
+            'success': True,
+            'message': '账号已注销'
+        })
+    except Exception as e:
+        print(f"注销账号时出错: {str(e)}")
+        return JsonResponse({
+            'success': False,
+            'message': '注销账号失败，请稍后重试'
         }) 
