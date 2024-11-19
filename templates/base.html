@@ -239,7 +239,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary w-100">重置密码</button>
+                                <button type="submit" class="btn btn-primary w-100">重��密码</button>
                             </form>
                         </div>
                     </div>
@@ -328,7 +328,7 @@
                             </div>
                             {% endif %}
                             
-                            <!-- 公告列表面板 -->
+                            <!-- 公告列面板 -->
                             <div class="settings-panel {% if not user.is_authenticated %}active{% endif %}" id="announcementsPanel">
                                 <h6 class="settings-panel-title">公告列表</h6>
                                 <div class="settings-panel-content">
@@ -531,10 +531,46 @@
         height: 100%;  /* 继承父容器高度 */
     }
 
-    /* 左侧栏样式 */
+    /* 左侧栏样式优化 */
     .sidebar {
-        padding: 0;  /* 移除内边距 */
-        height: 100vh;  /* 使用视口高度 */
+        padding: 0;
+        height: 100vh;
+        background-color: #f8f9fa;  /* 修改背景色 */
+        border-right: 1px solid rgba(0, 0, 0, 0.05);  /* 添加淡色边框 */
+        box-shadow: 4px 0 6px -1px rgba(0, 0, 0, 0.05);  /* 添加右侧阴影 */
+        z-index: 1000;  /* 确保阴影显示在内容区域上方 */
+        position: relative;  /* 为阴影效果添加定位上下文 */
+    }
+
+    /* 左侧栏内容样式优化 */
+    .sidebar-header {
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .sidebar-content {
+        padding: 1rem;
+    }
+
+    .sidebar-footer {
+        padding: 1.5rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    /* Logo样式优化 */
+    .logo {
+        width: 32px;
+        height: 32px;
+    }
+
+    .sidebar h1 {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #1f2937;
     }
 
     /* 右侧主内容区域样式 */
@@ -763,26 +799,29 @@
 
     /* 导航栏样式优化 */
     .chat-nav {
-        padding: 0.75rem 0;
+        padding: 1rem 0;  /* 增加上下内边距 */
         border-bottom: 1px solid #e5e7eb;
         background: #f8f9fa;
         display: flex;
         justify-content: center;
         align-items: center;
         width: 100%;
-        flex-shrink: 0;  /* 防止导航栏被压缩 */
+        flex-shrink: 0;
+        position: relative;  /* 添加相对定位用于阴影效果 */
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);  /* 添加柔和阴影 */
+        height: 65px;  /* 设置固定高度 */
     }
 
     /* 导航栏内容样式 */
     .model-info {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
-        padding: 0 1rem;  /* 添加左右内边距 */
+        gap: 0.75rem;  /* 增加图标和文字间距 */
+        padding: 0 1.5rem;
     }
 
     .model-name {
-        font-size: 1.1rem;
+        font-size: 1.15rem;  /* 稍微增大字体 */
         font-weight: 500;
         color: #1f2937;
     }
@@ -791,6 +830,7 @@
         color: #6b7280;
         cursor: pointer;
         transition: color 0.2s;
+        font-size: 1.1rem;  /* 稍微增大图标 */
     }
 
     .model-info-icon:hover {
@@ -850,7 +890,7 @@
 
     /* 自定义滚动条样式 */
     .chat-messages::-webkit-scrollbar {
-        width: 6px;  /* 滚动条宽度 */
+        width: 6px;  /* 滚动���宽度 */
     }
 
     .chat-messages::-webkit-scrollbar-track {
