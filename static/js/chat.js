@@ -226,7 +226,6 @@ function showLoading() {
         // 克隆加载动画元素
         const loadingClone = loadingSpinner.cloneNode(true);
         loadingClone.style.display = 'flex';
-        loadingClone.style.position = 'relative';  // 改为相对定位
         
         // 添加到消息列表
         messagesDiv.appendChild(loadingClone);

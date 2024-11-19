@@ -90,6 +90,20 @@
                             </div>
                         </div>
                         
+                        <!-- 加载动画模板 -->
+                        <div id="loadingSpinner" class="message assistant" style="display: none;">
+                            <div class="message-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="message-content-wrapper">
+                                <div class="message-content typing-indicator">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <!-- 输入框区域 -->
                         <div class="chat-input">
                             <div class="input-group">
@@ -1001,7 +1015,7 @@
     /* 登录/退出按钮样式 */
     .sidebar-footer .btn-primary,
     .sidebar-footer .btn-danger {
-        background: transparent;  /* 透明背景 */
+        background: transparent;  /* 透���背景 */
         color: #2563eb;          /* 蓝色文字 */
         border: 1px solid rgba(37, 99, 235, 0.2);  /* 淡蓝色边框 */
         transition: all 0.3s ease;
