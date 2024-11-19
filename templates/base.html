@@ -582,12 +582,19 @@
         background: #f8f9fa;
         border-radius: 1.5rem;
         padding: 0.5rem;  /* 统一内边距 */
-        border: 1px solid rgba(229, 231, 235, 0.8);
+        border: 2px solid rgba(229, 231, 235, 0.8);  /* 加粗边框 */
         transition: all 0.3s ease;
         position: relative;
         min-height: 50px;
         display: flex;  /* 使用flex布局 */
         align-items: center;  /* 垂直居中 */
+    }
+
+    /* 输入框组聚焦状态 */
+    .chat-input .input-group:focus-within {
+        background: #ffffff;
+        border-color: #007bff;  /* 高亮边框颜色 */
+        box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.1);  /* 添加柔和的阴影效果 */
     }
 
     .chat-input textarea {
@@ -596,12 +603,12 @@
         min-height: 24px;
         max-height: 150px;
         height: 24px;
-        padding: 0.25rem 3rem 0.25rem 0.75rem;  /* 调整内边距 */
+        padding: 0.25rem 3.5rem 0.25rem 1rem;  /* 增加左右内边距 */
         background: transparent;
         font-size: 0.95rem;
         line-height: 24px;
         overflow-y: auto;
-        transition: height 0.2s ease;
+        transition: all 0.2s ease;
         scrollbar-width: none;
         -ms-overflow-style: none;
         width: 100%;
@@ -626,9 +633,9 @@
 
     .chat-input .btn-send {
         position: absolute;
-        right: 0.5rem;
-        top: 50%;  /* 改为相对于父元素的50% */
-        transform: translateY(-50%);  /* 向上偏移自身高度的50%，实现垂直居中 */
+        right: 0.75rem;  /* 增加右侧间距 */
+        top: 50%;
+        transform: translateY(-50%);
         background: transparent;
         border: none;
         padding: 0;
@@ -637,8 +644,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 32px;
-        height: 32px;
+        width: 38px;   /* 增加按钮大小 */
+        height: 38px;  /* 增加按钮大小 */
         border-radius: 50%;
         margin: 0;
         z-index: 10;
@@ -651,10 +658,11 @@
 
     .chat-input .btn-send:active {
         background: rgba(0, 123, 255, 0.2);
+        transform: translateY(-50%) scale(0.95);  /* 添加按下效果 */
     }
 
     .chat-input .btn-send i {
-        font-size: 1rem;
+        font-size: 1.2rem;  /* 增加图标大小 */
     }
 
     .message {
