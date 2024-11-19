@@ -17,8 +17,17 @@ class AnnouncementAdmin(admin.ModelAdmin):
 
     class Media:
         css = {
-            'all': ('css/announcement_edit.css',)
+            'all': (
+                'admin/css/changelists.css',  # 先加载系统默认样式
+                'css/announcement_admin.css',  # 再加载自定义样式
+            )
         }
+
+    def changelist_view(self, request, extra_context=None):
+        """添加自定义 CSS 类到 changelist 视图"""
+        extra_context = extra_context or {}
+        extra_context['extra_css_class'] = 'announcement-changelist'
+        return super().changelist_view(request, extra_context)
 
 @admin.register(UserAnnouncementRead)
 class UserAnnouncementReadAdmin(admin.ModelAdmin):
