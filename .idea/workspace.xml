@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="1.添加了markdown-t解析器的初始化&#10;2.修改了消息显示函数，支特markdown渲染&#10;3.为AI回复添加了打字效果的markdown渲染&#10;4.添加了代码高亮支持&#10;5.优化了markdown内容的样式&#10;6.添加了表格、列表等元素的样式">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="1.将加载动画模板放在聊天容器内部&#10;2.使用克隆的方式添加加载动画&#10;3.确保加载动画与消息样式一致&#10;4.优化了显示和隐藏的逻辑">
+      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -443,7 +443,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732042780560</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="1.将加载动画模板放在聊天容器内部&#10;2.使用克隆的方式添加加载动画&#10;3.确保加载动画与消息样式一致&#10;4.优化了显示和隐藏的逻辑">
+      <option name="closed" value="true" />
+      <created>1732043072009</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1732043072009</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -461,7 +469,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="添加 Highlight.js 和 Markdown-it 支持，包括代码高亮和 Markdown 渲染功能；更新了相关样式文件；修正了一些拼写错误。" />
     <MESSAGE value="更新 `requirements.txt`，增加多个依赖项并更新部分版本号。" />
     <MESSAGE value="重构主要逻辑为主函数，移除多余的类和方法，简化平台和模型选择流程；在 `spark_platform.py` 中优化 WebSocket 处理逻辑，增强错误处理能力，调整数据格式化方式。" />
     <MESSAGE value="新增图像生成与理解功能，调整模型参数获取和处理逻辑，优化对话接口的响应格式，并整合对话历史管理。" />
@@ -486,7 +493,8 @@
     <MESSAGE value="1.添加了favicon图标的两种引用方式&#10;2.使用了.ico格式的图标文件&#10;3.确保图示在各种浏览器中都能正确显示" />
     <MESSAGE value="1.未登录用户可以看到聊天界面和欢迎消息&#10;2.尝试发送消息时会弹出登录模态框&#10;3,只有登录后才能正常使用聊天功能" />
     <MESSAGE value="1.添加了markdown-t解析器的初始化&#10;2.修改了消息显示函数，支特markdown渲染&#10;3.为AI回复添加了打字效果的markdown渲染&#10;4.添加了代码高亮支持&#10;5.优化了markdown内容的样式&#10;6.添加了表格、列表等元素的样式" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.添加了markdown-t解析器的初始化&#10;2.修改了消息显示函数，支特markdown渲染&#10;3.为AI回复添加了打字效果的markdown渲染&#10;4.添加了代码高亮支持&#10;5.优化了markdown内容的样式&#10;6.添加了表格、列表等元素的样式" />
+    <MESSAGE value="1.将加载动画模板放在聊天容器内部&#10;2.使用克隆的方式添加加载动画&#10;3.确保加载动画与消息样式一致&#10;4.优化了显示和隐藏的逻辑" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.将加载动画模板放在聊天容器内部&#10;2.使用克隆的方式添加加载动画&#10;3.确保加载动画与消息样式一致&#10;4.优化了显示和隐藏的逻辑" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/TeaTalk$main.coverage" NAME="main 覆盖结果" MODIFIED="1731993364645" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ModelPlatform" />

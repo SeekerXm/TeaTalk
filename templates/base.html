@@ -311,7 +311,7 @@
                                                         <i class="fas fa-circle-question warning-icon" 
                                                            data-bs-toggle="tooltip" 
                                                            data-bs-placement="right" 
-                                                           title="系统发现您的账号异常，接口可能被盗用，或者模型调用量过高">
+                                                           title="系统发现您的账号异常，接���可能被盗用，或者模型调用量过高">
                                                         </i>
                                                     </span>
                                                 {% elif user.status == 'banned' %}
@@ -778,7 +778,8 @@
         position: relative;
         max-width: 100%;
         word-wrap: break-word;
-        display: inline-block;
+        display: block;  /* 改为 block 布局 */
+        min-height: 40px;  /* 保持最小高度 */
     }
 
     .message.user .message-content {
@@ -922,13 +923,14 @@
         margin: 0.25rem 0;
     }
 
-    /* 打字动画样式 */
+    /* 打字动画样式优化 */
     .typing-indicator {
         background-color: #fff !important;
         padding: 12px 20px !important;
-        display: flex !important;
+        display: inline-flex !important;  /* 改为 inline-flex */
         align-items: center !important;
         gap: 3px !important;
+        min-width: 60px !important;  /* 添加最小宽度 */
     }
 
     .typing-indicator span {
@@ -938,6 +940,7 @@
         border-radius: 50% !important;
         display: inline-block !important;
         animation: typing 1.4s infinite ease-in-out !important;
+        flex-shrink: 0 !important;  /* 防止点被压缩 */
     }
 
     .typing-indicator span:nth-child(1) {
@@ -953,13 +956,17 @@
     }
 
     @keyframes typing {
-        0%, 100% {
-            transform: scale(1);
+        0% {
+            transform: translateY(0);
             opacity: 0.4;
         }
         50% {
-            transform: scale(1.2);
+            transform: translateY(-4px);  /* 改为垂直方向的移动 */
             opacity: 1;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 0.4;
         }
     }
 
@@ -1015,7 +1022,7 @@
     /* 登录/退出按钮样式 */
     .sidebar-footer .btn-primary,
     .sidebar-footer .btn-danger {
-        background: transparent;  /* 透���背景 */
+        background: transparent;  /* 透背景 */
         color: #2563eb;          /* 蓝色文字 */
         border: 1px solid rgba(37, 99, 235, 0.2);  /* 淡蓝色边框 */
         transition: all 0.3s ease;
@@ -1047,6 +1054,47 @@
     .sidebar-footer .btn i {
         margin-right: 0.5rem;
         font-size: 0.9rem;
+    }
+
+    /* 消息内容样式优化 */
+    .message-content {
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        position: relative;
+        max-width: 100%;
+        word-wrap: break-word;
+        display: block;  /* 改为 block 布局 */
+        min-height: 40px;  /* 保持最小高度 */
+    }
+
+    /* AI消息内容样式 */
+    .message.assistant .message-content {
+        background: #f8f9fa;
+        color: #1f2937;
+        border: 1px solid #e5e7eb;
+        border-radius: 0 0.5rem 0.5rem 0.5rem;
+        margin-right: auto;
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    /* Markdown 内容样式优化 */
+    .message.assistant .message-content > * {
+        margin: 0.5rem 0;  /* 添加上下外边距 */
+    }
+
+    .message.assistant .message-content > *:first-child {
+        margin-top: 0;  /* 移除第一个元素的顶部外边距 */
+    }
+
+    .message.assistant .message-content > *:last-child {
+        margin-bottom: 0;  /* 移除最后一个元素的底部外边距 */
+    }
+
+    /* 确保段落正确显示 */
+    .message.assistant .message-content p {
+        display: block;  /* 使段落独占一行 */
+        margin: 0.5rem 0;  /* 添加段落间距 */
     }
     </style>
 
