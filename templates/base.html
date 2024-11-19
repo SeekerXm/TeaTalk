@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TeaTalk AI 聊天助手</title>
+    <title>TeaTalk AI</title>
     <!-- Bootstrap CSS -->
     <link href="/static/bootstrap-5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome CSS -->
@@ -542,13 +542,32 @@
         position: relative;  /* 为阴影效果添加定位上下文 */
     }
 
-    /* 左侧栏内容样式优化 */
+    /* Logo 区域样式优化 */
     .sidebar-header {
-        padding: 1.5rem;
+        padding: 1.25rem;  /* 调整内边距 */
         display: flex;
-        align-items: center;
-        gap: 1rem;
+        align-items: center;  /* 垂直居中 */
+        justify-content: center;  /* 水平居中 */
+        gap: 0.75rem;  /* Logo 和标题的间距 */
         border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        background: #f8f9fa;  /* 与侧边栏背景色保持一致 */
+    }
+
+    /* Logo 图片样式 */
+    .logo {
+        width: 35px;  /* 稍微增大 Logo 尺寸 */
+        height: 35px;
+        object-fit: contain;  /* 保持图片比例 */
+    }
+
+    /* 标题样式 */
+    .sidebar h1 {
+        margin: 0;
+        font-size: 1.35rem;  /* 稍微增大字体 */
+        font-weight: 600;
+        color: #1f2937;
+        letter-spacing: 0.5px;  /* 添加字间距 */
+        white-space: nowrap;  /* 防止标题换行 */
     }
 
     .sidebar-content {
@@ -559,19 +578,6 @@
         padding: 1.5rem;
         border-top: 1px solid rgba(0, 0, 0, 0.05);
         background: #f8f9fa;  /* 与左侧栏背景色保持一致 */
-    }
-
-    /* Logo样式优化 */
-    .logo {
-        width: 32px;
-        height: 32px;
-    }
-
-    .sidebar h1 {
-        margin: 0;
-        font-size: 1.25rem;
-        font-weight: 600;
-        color: #1f2937;
     }
 
     /* 右侧主内容区域样式 */
