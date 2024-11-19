@@ -55,8 +55,8 @@
             <!-- 右侧聊天区域 -->
             <div class="col-md-9 col-lg-10 main-content">
                 {% if user.is_authenticated %}
-                <div class="chat-container">
-                    <!-- 添加导航栏 -->
+                <div class="d-flex flex-column h-100">
+                    <!-- 导航栏 -->
                     <div class="chat-nav">
                         <div class="model-info">
                             <span class="model-name">GLM-4-Flash</span>
@@ -71,45 +71,34 @@
                         </div>
                     </div>
 
-                    <!-- 聊天消息区域 -->
-                    <div id="chatMessages" class="chat-messages">
-                        <!-- 欢迎消息 -->
-                        <div class="message assistant">
-                            <div class="message-avatar">
-                                <i class="fas fa-robot"></i>
-                            </div>
-                            <div class="message-content-wrapper">
-                                <div class="message-content">
-                                    你好！我是 TeaTalk AI 助手，有什么我可以帮你的吗？
+                    <!-- 聊天容器 -->
+                    <div class="chat-container">
+                        <!-- 聊天消息区域 -->
+                        <div id="chatMessages" class="chat-messages">
+                            <!-- 欢迎消息 -->
+                            <div class="message assistant">
+                                <div class="message-avatar">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="message-content-wrapper">
+                                    <div class="message-content">
+                                        你好！我是 TeaTalk AI 助手，有什么我可以帮你的吗？
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- 输入框区域 -->
-                    <div class="chat-input">
-                        <div class="input-group">
-                            <textarea id="messageInput" 
-                                     class="form-control" 
-                                     placeholder="输入消息..." 
-                                     onkeypress="handleKeyPress(event)"></textarea>
-                            <button class="btn btn-send" onclick="sendUserMessage()">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 加载动画 - 移到聊天容器外面 -->
-                <div id="loadingSpinner" class="message assistant" style="display: none; position: absolute;">
-                    <div class="message-avatar">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <div class="message-content-wrapper">
-                        <div class="message-content typing-indicator">
-                            <span></span>
-                            <span></span>
-                            <span></span>
+                        
+                        <!-- 输入框区域 -->
+                        <div class="chat-input">
+                            <div class="input-group">
+                                <textarea id="messageInput" 
+                                         class="form-control" 
+                                         placeholder="输入消息..." 
+                                         onkeypress="handleKeyPress(event)"></textarea>
+                                <button class="btn btn-send" onclick="sendUserMessage()">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -448,7 +437,7 @@
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
-                            <div class="form-text">密码需包含大小写字母、数字、特殊字符中的至少三类</div>
+                            <div class="form-text">密码需包含小写字母、数字、特殊字符中的至少三类</div>
                         </div>
                         <div class="mb-3">
                             <label for="confirmNewPassword" class="form-label">确认新密码</label>
@@ -479,7 +468,7 @@
                 <div class="modal-body">
                     <div class="alert alert-warning">
                         <h6 class="alert-heading">请注意！</h6>
-                        <p>注销账号将会：</p>
+                        <p>销账号将会：</p>
                         <ul>
                             <li>永久删除您的号信息</li>
                             <li>删除所有聊天记录和相关数据</li>
@@ -529,7 +518,7 @@
         });
     </script>
 
-    <!-- 在已有的 style 标签中添加聊天样式 -->
+    <!-- 已有的 style 标签中添加聊天样式 -->
     <style>
     /* 容器样式优化 */
     .container-fluid {
@@ -550,18 +539,18 @@
 
     /* 右侧主内容区域样式 */
     .main-content {
-        padding: 0;  /* 移除内边距 */
-        height: 100vh;  /* 使用视口高度 */
-        display: flex;  /* 使用flex布局 */
+        padding: 0;
+        height: 100vh;
+        overflow: hidden;
     }
 
     /* 聊天容器样式 */
     .chat-container {
-        flex: 1;  /* 占据所有可用空间 */
+        flex: 1;
         display: flex;
         flex-direction: column;
         background-color: #ffffff;
-        width: 100%;  /* 确保宽度100% */
+        overflow: hidden;  /* 防止内容溢出 */
     }
 
     .chat-messages {
@@ -772,20 +761,24 @@
         }
     }
 
-    /* 导航栏样式 */
+    /* 导航栏样式优化 */
     .chat-nav {
-        padding: 1rem;
+        padding: 0.75rem 0;
         border-bottom: 1px solid #e5e7eb;
         background: #f8f9fa;
         display: flex;
         justify-content: center;
         align-items: center;
+        width: 100%;
+        flex-shrink: 0;  /* 防止导航栏被压缩 */
     }
 
+    /* 导航栏内容样式 */
     .model-info {
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        padding: 0 1rem;  /* 添加左右内边距 */
     }
 
     .model-name {
