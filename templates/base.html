@@ -56,6 +56,21 @@
             <div class="col-md-9 col-lg-10 main-content">
                 {% if user.is_authenticated %}
                 <div class="chat-container">
+                    <!-- 添加导航栏 -->
+                    <div class="chat-nav">
+                        <div class="model-info">
+                            <span class="model-name">GLM-4-Flash</span>
+                            <i class="fas fa-question-circle model-info-icon" 
+                               data-bs-toggle="tooltip" 
+                               data-bs-html="true"
+                               data-bs-title="<div class='model-tooltip'>
+                                        <p><strong>模型平台：</strong>智谱AI</p>
+                                        <p><strong>模型类型：</strong>文本生成</p>
+                                    </div>">
+                            </i>
+                        </div>
+                    </div>
+
                     <!-- 聊天消息区域 -->
                     <div id="chatMessages" class="chat-messages">
                         <!-- 消息将在这里动态添加 -->
@@ -594,9 +609,72 @@
             max-width: 90%;
         }
     }
+
+    /* 导航栏样式 */
+    .chat-nav {
+        padding: 1rem;
+        border-bottom: 1px solid #e5e7eb;
+        background: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .model-info {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .model-name {
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: #1f2937;
+    }
+
+    .model-info-icon {
+        color: #6b7280;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+    .model-info-icon:hover {
+        color: #2563eb;
+    }
+
+    /* 提示框样式 */
+    .model-tooltip {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .model-tooltip p {
+        margin: 0.25rem 0;
+    }
     </style>
 
     <!-- 在 body 末尾添加 chat.js -->
     <script src="/static/js/chat.js"></script>
+
+    <!-- 在 body 末尾添加初始化提示框的脚本 -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 初始化所有提示框
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl, {
+                trigger: 'click',  // 改为点击触发
+                html: true
+            });
+        });
+
+        // 点击其他地方关闭提示框
+        document.addEventListener('click', function(event) {
+            if (!event.target.matches('.model-info-icon')) {
+                tooltipList.forEach(tooltip => tooltip.hide());
+            }
+        });
+    });
+    </script>
 </body>
 </html> 
