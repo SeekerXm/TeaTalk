@@ -239,7 +239,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary w-100">重��密码</button>
+                                <button type="submit" class="btn btn-primary w-100">重密码</button>
                             </form>
                         </div>
                     </div>
@@ -558,6 +558,7 @@
     .sidebar-footer {
         padding: 1.5rem;
         border-top: 1px solid rgba(0, 0, 0, 0.05);
+        background: #f8f9fa;  /* 与左侧栏背景色保持一致 */
     }
 
     /* Logo样式优化 */
@@ -890,7 +891,7 @@
 
     /* 自定义滚动条样式 */
     .chat-messages::-webkit-scrollbar {
-        width: 6px;  /* 滚动���宽度 */
+        width: 6px;  /* 滚动宽度 */
     }
 
     .chat-messages::-webkit-scrollbar-track {
@@ -911,6 +912,67 @@
     .chat-messages {
         scrollbar-width: thin;  /* 'thin' 或 'none' */
         scrollbar-color: rgba(0, 0, 0, 0.2) transparent;  /* 滚动条颜色 轨道颜色 */
+    }
+
+    /* 左侧栏底部按钮样式优化 */
+    .sidebar-footer {
+        padding: 1.5rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        background: #f8f9fa;  /* 与左侧栏背景色保持一致 */
+    }
+
+    /* 设置按钮样式 */
+    .sidebar-footer .btn-outline-light {
+        background: #ffffff;  /* 白色背景 */
+        color: #6c757d;      /* 灰色文字 */
+        border: 1px solid rgba(0, 0, 0, 0.1);  /* 淡色边框 */
+        transition: all 0.3s ease;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);  /* 轻微阴影 */
+    }
+
+    .sidebar-footer .btn-outline-light:hover {
+        background: #f8f9fa;
+        color: #2563eb;  /* 悬浮时变为蓝色 */
+        border-color: rgba(37, 99, 235, 0.1);
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    /* 登录/退出按钮样式 */
+    .sidebar-footer .btn-primary,
+    .sidebar-footer .btn-danger {
+        background: transparent;  /* 透明背景 */
+        color: #2563eb;          /* 蓝色文字 */
+        border: 1px solid rgba(37, 99, 235, 0.2);  /* 淡蓝色边框 */
+        transition: all 0.3s ease;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .sidebar-footer .btn-primary:hover {
+        background: rgba(37, 99, 235, 0.1);  /* 半透明蓝色背景 */
+        color: #1d4ed8;
+        border-color: rgba(37, 99, 235, 0.3);
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .sidebar-footer .btn-danger {
+        color: #dc3545;  /* 红色文字 */
+        border-color: rgba(220, 53, 69, 0.2);  /* 淡红色边框 */
+    }
+
+    .sidebar-footer .btn-danger:hover {
+        background: rgba(220, 53, 69, 0.1);  /* 半透明红色背景 */
+        color: #c82333;
+        border-color: rgba(220, 53, 69, 0.3);
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    /* 按钮内图标样式 */
+    .sidebar-footer .btn i {
+        margin-right: 0.5rem;
+        font-size: 0.9rem;
     }
     </style>
 

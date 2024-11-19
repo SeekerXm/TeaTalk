@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="1.添加了一个lex容器来包裹导航栏和聊天区域&#10;2.调整了导航栏的样式，确保其固定在顶部&#10;3.优化了聊天容器的布局&#10;4.添加了溢出控制，防止内容溢出&#10;5.确保了整体布局的稳定性">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="1.将左侧栏背景色改为f移9fa&#10;2.添加了右侧柔和阴影效果&#10;3.添加了淡色边框增加层次感&#10;4.优化了内部元素的内边距和边框&#10;5.调整了Z-index确保阴影效果正确显示&#10;6.微调了L0g0和标题的样式" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -395,7 +393,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732039331508</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="1.将左侧栏背景色改为f移9fa&#10;2.添加了右侧柔和阴影效果&#10;3.添加了淡色边框增加层次感&#10;4.优化了内部元素的内边距和边框&#10;5.调整了Z-index确保阴影效果正确显示&#10;6.微调了L0g0和标题的样式">
+      <option name="closed" value="true" />
+      <created>1732040029651</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1732040029651</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -413,7 +419,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="删除多余的配置文件" />
     <MESSAGE value="完善了公告管理界面的 CSS 样式，添加了自定义样式以提高页面美观性，同时在更改列表视图中引入了额外的 CSS 类以增强可定制性。删除了一些过时的样式并优化了响应式设计。" />
     <MESSAGE value="添加警告图标与提示功能，优化用户状态提示信息；修正代码注释中的小问题；初始化所有工具提示并定义相关样式。" />
     <MESSAGE value="修改验证码图片的alt文本，更新警告图标的类名，以及更正“注时间”为“注册时间”。" />
@@ -438,7 +443,8 @@
     <MESSAGE value="1.移除了容器和行的内外边距&#10;2.使用100h确保高度占满视口&#10;3.使用f1ex布局确保内容正确延伸&#10;4.确保所有父容器都有正确的高度设置&#10;5.移除了可能导致间隙的多余空间" />
     <MESSAGE value="1.增加了输入框组的边框粗细&#10;2.添加了聚焦时的高亮效果和阴影&#10;3.增大了发送按钮的尺寸&#10;4.增大了发送按钮图标的尺寸&#10;5.优化了按钮的悬浮和点击效果&#10;6.调整了内边距，使布局更加协调&#10;7.添加了平滑的过渡动画" />
     <MESSAGE value="1.添加了一个lex容器来包裹导航栏和聊天区域&#10;2.调整了导航栏的样式，确保其固定在顶部&#10;3.优化了聊天容器的布局&#10;4.添加了溢出控制，防止内容溢出&#10;5.确保了整体布局的稳定性" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.添加了一个lex容器来包裹导航栏和聊天区域&#10;2.调整了导航栏的样式，确保其固定在顶部&#10;3.优化了聊天容器的布局&#10;4.添加了溢出控制，防止内容溢出&#10;5.确保了整体布局的稳定性" />
+    <MESSAGE value="1.将左侧栏背景色改为f移9fa&#10;2.添加了右侧柔和阴影效果&#10;3.添加了淡色边框增加层次感&#10;4.优化了内部元素的内边距和边框&#10;5.调整了Z-index确保阴影效果正确显示&#10;6.微调了L0g0和标题的样式" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.将左侧栏背景色改为f移9fa&#10;2.添加了右侧柔和阴影效果&#10;3.添加了淡色边框增加层次感&#10;4.优化了内部元素的内边距和边框&#10;5.调整了Z-index确保阴影效果正确显示&#10;6.微调了L0g0和标题的样式" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/TeaTalk$main.coverage" NAME="main 覆盖结果" MODIFIED="1731993364645" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ModelPlatform" />
