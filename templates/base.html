@@ -653,7 +653,7 @@
     .chat-input .input-group {
         background: #f8f9fa;
         border-radius: 1.5rem;
-        padding: 0.5rem;  /* 统一内边距 */
+        padding: 0.5rem;  /* 统��内边距 */
         border: 2px solid rgba(229, 231, 235, 0.8);  /* 加粗边框 */
         transition: all 0.3s ease;
         position: relative;
@@ -1505,6 +1505,182 @@
             margin: 0.5rem 0.75rem;
         }
     }
+
+    /* 修改密码和注销账号模态框样式优化 */
+    #changePasswordModal .modal-content,
+    #deleteAccountModal .modal-content {
+        border: none;
+        border-radius: 1rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    #changePasswordModal .modal-header,
+    #deleteAccountModal .modal-header {
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+        background: #f8f9fa;
+        border-radius: 1rem 1rem 0 0;
+    }
+
+    #changePasswordModal .modal-title,
+    #deleteAccountModal .modal-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #1f2937;
+    }
+
+    #changePasswordModal .modal-body,
+    #deleteAccountModal .modal-body {
+        padding: 1.5rem;
+    }
+
+    /* 表单样式优化 */
+    .modal .form-label {
+        font-size: 0.95rem;
+        color: #4b5563;
+        margin-bottom: 0.5rem;
+    }
+
+    .modal .form-control {
+        border-radius: 0.5rem;
+        border: 1px solid #e5e7eb;
+        padding: 0.625rem 1rem;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+    }
+
+    .modal .form-control:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .modal .input-group {
+        border-radius: 0.5rem;
+    }
+
+    .modal .input-group .form-control {
+        border-right: none;
+    }
+
+    .modal .input-group .btn {
+        border-radius: 0 0.5rem 0.5rem 0;
+        border: 1px solid #e5e7eb;
+        border-left: none;
+        padding: 0.625rem 1rem;
+    }
+
+    .modal .form-text {
+        font-size: 0.85rem;
+        color: #6b7280;
+        margin-top: 0.5rem;
+    }
+
+    /* 警告提示样式优化 */
+    .modal .alert {
+        border: none;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .modal .alert-heading {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .modal .alert ul {
+        margin-bottom: 0;
+        padding-left: 1.25rem;
+    }
+
+    /* 按钮样式优化 */
+    .modal .btn {
+        padding: 0.625rem 1.25rem;
+        font-size: 0.95rem;
+        border-radius: 0.5rem;
+        transition: all 0.2s ease;
+    }
+
+    .modal .btn-primary {
+        background: #3b82f6;
+        border: none;
+    }
+
+    .modal .btn-primary:hover {
+        background: #2563eb;
+        transform: translateY(-1px);
+    }
+
+    .modal .btn-danger {
+        background: #ef4444;
+        border: none;
+    }
+
+    .modal .btn-danger:hover {
+        background: #dc2626;
+        transform: translateY(-1px);
+    }
+
+    /* 复选框样式优化 */
+    .modal .form-check {
+        padding-left: 1.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .modal .form-check-input {
+        width: 1.125rem;
+        height: 1.125rem;
+        margin-left: -1.75rem;
+        margin-top: 0.25rem;
+        border: 1px solid #e5e7eb;
+        transition: all 0.2s ease;
+    }
+
+    .modal .form-check-input:checked {
+        background-color: #3b82f6;
+        border-color: #3b82f6;
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+        #changePasswordModal .modal-content,
+        #deleteAccountModal .modal-content {
+            margin: 0.5rem;
+            border-radius: 0.75rem;
+        }
+        
+        #changePasswordModal .modal-header,
+        #deleteAccountModal .modal-header {
+            padding: 1rem;
+        }
+        
+        #changePasswordModal .modal-body,
+        #deleteAccountModal .modal-body {
+            padding: 1rem;
+        }
+        
+        .modal .form-label {
+            font-size: 0.9rem;
+        }
+        
+        .modal .form-control {
+            font-size: 0.9rem;
+            padding: 0.5rem 0.75rem;
+        }
+        
+        .modal .btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .modal .alert {
+            padding: 0.75rem;
+            font-size: 0.9rem;
+        }
+    }
+
+    /* 其他样式保持不变... */
     </style>
 
     <!-- 在 body 末尾添加 chat.js -->
