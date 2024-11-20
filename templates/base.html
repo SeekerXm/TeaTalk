@@ -542,11 +542,13 @@
     .container-fluid {
         padding: 0;  /* 移除内边距 */
         height: 100vh;  /* 使用视口高度 */
+        overflow-x: hidden;  /* 添加这行，防止水平滚动 */
     }
 
     .row {
         margin: 0;  /* 移除外边距 */
         height: 100%;  /* 继承父容器高度 */
+        flex-wrap: nowrap;  /* 添加这行，防止换行 */
     }
 
     /* 左侧栏样式优化 */
@@ -558,6 +560,17 @@
         box-shadow: 4px 0 6px -1px rgba(0, 0, 0, 0.05);  /* 添加右侧阴影 */
         z-index: 1000;  /* 确保阴影显示在内容区域上方 */
         position: relative;  /* 为阴影效果添加定位上下文 */
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        width: 280px;
+        background-color: #f8f9fa;
+        border-right: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: 4px 0 6px -1px rgba(0, 0, 0, 0.05);
+        z-index: 1040;
+        transition: transform 0.3s ease;
+        will-change: transform;  /* 添加这行，优化性能 */
     }
 
     /* Logo 区域样式优化 */
@@ -603,6 +616,10 @@
         padding: 0;
         height: 100vh;
         overflow: hidden;
+        margin-left: 280px;
+        transition: all 0.3s ease;  /* 改为 all，使过渡更平滑 */
+        width: calc(100% - 280px);
+        min-width: 0;  /* 添加这行，防止内容溢出 */
     }
 
     /* 聊天容器样式 */
@@ -1196,6 +1213,11 @@
     /* .sidebar-toggle {
         display: none;
     } */
+
+    /* 修改 body 样式 */
+    body {
+        overflow-x: hidden;  /* 添加这行，确保整个页面不会出现水平滚动 */
+    }
     </style>
 
     <!-- 在 body 末尾添加 chat.js -->
@@ -1213,7 +1235,7 @@
             });
         });
 
-        // 点���其他地方关闭提示框
+        // 点击其他地方关闭提示框
         document.addEventListener('click', function(event) {
             if (!event.target.matches('.model-info-icon')) {
                 tooltipList.forEach(tooltip => tooltip.hide());
