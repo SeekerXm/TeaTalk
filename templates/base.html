@@ -499,7 +499,7 @@
                         <ul>
                             <li>永久删除您的号信息</li>
                             <li>删除所有聊天记录和相关数据</li>
-                            <li>此操作���法撤销</li>
+                            <li>此操作法撤销</li>
                         </ul>
                     </div>
                     <form id="deleteAccountForm" class="needs-validation" novalidate>
@@ -1070,7 +1070,7 @@
         background: #f8f9fa;  /* 与左侧栏背景色保持一致 */
     }
 
-    /* 设置按钮��式 */
+    /* 设置按钮样式 */
     .sidebar-footer .btn-outline-light {
         background: #ffffff;  /* 白色背 */
         color: #6c757d;      /* 灰色文字 */
@@ -2046,6 +2046,119 @@
             height: 34px;
             padding: 0.5rem;
         }
+    }
+
+    /* 公告列表样式优化 */
+    .announcement-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .announcement-item {
+        border: 1px solid #e5e7eb;
+        border-radius: 0.75rem;
+        overflow: hidden;
+        background: #ffffff;
+        transition: all 0.2s ease;
+    }
+
+    .announcement-header {
+        padding: 1rem;
+        background: #f8f9fa;
+        border-bottom: 1px solid #e5e7eb;
+        cursor: pointer;
+    }
+
+    .announcement-title-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .announcement-toggle {
+        font-size: 0.875rem;
+        color: #6b7280;
+        transition: transform 0.3s ease;
+    }
+
+    .announcement-item.expanded .announcement-toggle {
+        transform: rotate(90deg);
+    }
+
+    .announcement-title {
+        margin: 0;
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: #1f2937;
+    }
+
+    .announcement-date {
+        color: #6b7280;
+        font-size: 0.8rem;
+    }
+
+    .announcement-content {
+        padding: 0 1rem;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        background-color: #f8f9fa;
+    }
+
+    .announcement-content.show {
+        padding: 1rem;
+        max-height: 500px;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    .announcement-content p {
+        margin: 0;
+        color: #4b5563;
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+        .announcement-header {
+            padding: 0.875rem;
+        }
+        
+        .announcement-title {
+            font-size: 0.875rem;
+        }
+        
+        .announcement-date {
+            font-size: 0.75rem;
+        }
+        
+        .announcement-content.show {
+            padding: 0.875rem;
+        }
+        
+        .announcement-content p {
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+        
+        .announcement-toggle {
+            font-size: 0.8rem;
+        }
+        
+        .announcement-title-wrapper {
+            gap: 0.5rem;
+        }
+    }
+
+    /* 添加一些视觉效果 */
+    .announcement-item:hover {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transform: translateY(-1px);
+    }
+
+    .announcement-header:hover .announcement-title {
+        color: #2563eb;
     }
     </style>
 
