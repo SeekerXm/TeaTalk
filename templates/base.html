@@ -1326,6 +1326,130 @@
     .sidebar-toggle:active {
         transform: scale(0.95);
     }
+
+    /* 设置模态框容器样式 */
+    .settings-container {
+        display: flex;
+        height: 500px;  /* 设置固定高度 */
+        min-height: 500px;  /* 设置最小高度 */
+    }
+
+    /* 左侧菜单样式 */
+    .settings-menu {
+        width: 200px;
+        flex-shrink: 0;
+        border-right: 1px solid #e5e7eb;
+        overflow-y: auto;
+        scrollbar-width: none;  /* Firefox */
+        -ms-overflow-style: none;  /* IE and Edge */
+    }
+
+    .settings-menu::-webkit-scrollbar {
+        display: none;  /* Chrome, Safari, Opera */
+    }
+
+    /* 右侧内容区域样式 */
+    .settings-content {
+        flex: 1;
+        overflow-y: auto;
+        scrollbar-width: none;  /* Firefox */
+        -ms-overflow-style: none;  /* IE and Edge */
+    }
+
+    .settings-content::-webkit-scrollbar {
+        display: none;  /* Chrome, Safari, Opera */
+    }
+
+    /* 设置面板样式 */
+    .settings-panel {
+        display: none;
+        padding: 1.5rem;
+        height: 100%;
+    }
+
+    .settings-panel.active {
+        display: block;
+    }
+
+    /* 面板标题样式 */
+    .settings-panel-title {
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+        color: #1f2937;
+    }
+
+    /* 面板内容样式 */
+    .settings-panel-content {
+        height: calc(100% - 3rem);  /* 减去标题的高度 */
+        overflow-y: auto;
+        scrollbar-width: none;  /* Firefox */
+        -ms-overflow-style: none;  /* IE and Edge */
+    }
+
+    .settings-panel-content::-webkit-scrollbar {
+        display: none;  /* Chrome, Safari, Opera */
+    }
+
+    /* 用户信息样式 */
+    .user-info {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .info-label {
+        min-width: 80px;
+        color: #6b7280;
+    }
+
+    .info-value {
+        color: #1f2937;
+    }
+
+    /* 公告列表样式 */
+    .announcement-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .announcement-item {
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+        .settings-container {
+            height: 450px;  /* 移动端稍微降低高度 */
+            min-height: 450px;
+        }
+        
+        .settings-menu {
+            width: 60px;  /* 移动端减小菜单宽度 */
+        }
+        
+        .settings-menu .list-group-item {
+            padding: 0.75rem;
+            text-align: center;
+        }
+        
+        .settings-menu .list-group-item i {
+            font-size: 1.25rem;
+            margin: 0;
+        }
+        
+        .settings-menu .list-group-item span {
+            display: none;
+        }
+    }
     </style>
 
     <!-- 在 body 末尾添加 chat.js -->

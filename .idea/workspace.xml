@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="1.添加了nav-center容器用于居中定位&#10;2.使用绝对定位实现水平居中&#10;3.添加了nav-spacer保持布局平衡&#10;4.优化了响应式样式&#10;5.确保文字不会换行&#10;6.调整了各元素的层级" />
+    <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="1.确保使用的是正确的三横线图标&#10;2.在移动端时隐藏设置菜单的文字，只显示图标&#10;3.优化了菜单项的样式和交互效果&#10;4.调整了图标大小和间距&#10;5.改进了响应式布局">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -34,24 +37,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Django 服务器.TeaTalk.executor&quot;: &quot;Run&quot;,
-    &quot;Notification.DisplayName-DoNotAsk-Database detector&quot;: &quot;数据库检测器&quot;,
-    &quot;Notification.DoNotAsk-Database detector&quot;: &quot;true&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.pycharm.django.structure.promotion.once.per.project&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Django 服务器.TeaTalk.executor": "Run",
+    "Notification.DisplayName-DoNotAsk-Database detector": "数据库检测器",
+    "Notification.DoNotAsk-Database detector": "true",
+    "Python.main.executor": "Run",
+    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.pycharm.django.structure.promotion.once.per.project": "true",
+    "django.template.preview.state": "SHOW_EDITOR_AND_PREVIEW",
+    "git-widget-placeholder": "master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="TeaTalk" type="Python.DjangoServer" factoryName="Django server">
       <module name="TeaTalk" />
@@ -96,14 +100,6 @@
       <option name="presentableId" value="Default" />
       <updated>1731891219373</updated>
       <workItem from="1731891221476" duration="23360000" />
-    </task>
-    <task id="LOCAL-00001" summary="提交信息：实现了多个AI平台的接口，新增智谱AI、百度千帆、讯飞星火及SiliconCloud平台支持，包含文本对话和图像生成功能。添加配置管理类及平台工厂类，配置文件整合了各平台的API密钥与可用模型。优化了用户管理和公告管理功能，更新部分项目功能说明文档。">
-      <option name="closed" value="true" />
-      <created>1731895472621</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1731895472621</updated>
     </task>
     <task id="LOCAL-00002" summary="更新依赖项；优化数据库配置为MySQL并添加用户自定义设置；添加媒体文件和静态文件配置；设置Django语言和时区；配置邮箱设置和Simple UI选项。">
       <option name="closed" value="true" />
@@ -489,7 +485,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732071032891</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="1.确保使用的是正确的三横线图标&#10;2.在移动端时隐藏设置菜单的文字，只显示图标&#10;3.优化了菜单项的样式和交互效果&#10;4.调整了图标大小和间距&#10;5.改进了响应式布局">
+      <option name="closed" value="true" />
+      <created>1732071444225</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1732071444225</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -507,7 +511,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="修复了部分文本内容中的乱码问题，优化了修改密码表单的提交逻辑，确保表单提交后能够正确处理响应并提供相应的用户反馈。" />
     <MESSAGE value="删除无用的初始文件和平台实现代码，新增聊天模块和相关前端功能，完善聊天功能的后端处理。" />
     <MESSAGE value="workspace.xml" />
     <MESSAGE value="添加聊天模块及相关前端功能，包括聊天输入和消息显示，优化公告获取逻辑，移除冗余代码，更新样式以提升用户体验。" />
@@ -532,7 +535,8 @@
     <MESSAGE value="1.添加了对sidebar和mainContent元素的直接操作&#10;2.分离了移动端和PC端的侧边栏切换逻辑&#10;3.使用transform和margin来控制侧边栏的显示/隐藏&#10;4.优化了窗口大小变化时的响应逻辑" />
     <MESSAGE value="1.添加了overflow-x:hidden到容器和body&#10;2.添加了min-width:0到住内容区域&#10;3.优化了过渡动画&#10;4.添加了wiLL-change属性优化性能&#10;5.修改了f1lex布局的换行行为" />
     <MESSAGE value="1.添加了nav-center容器用于居中定位&#10;2.使用绝对定位实现水平居中&#10;3.添加了nav-spacer保持布局平衡&#10;4.优化了响应式样式&#10;5.确保文字不会换行&#10;6.调整了各元素的层级" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.添加了nav-center容器用于居中定位&#10;2.使用绝对定位实现水平居中&#10;3.添加了nav-spacer保持布局平衡&#10;4.优化了响应式样式&#10;5.确保文字不会换行&#10;6.调整了各元素的层级" />
+    <MESSAGE value="1.确保使用的是正确的三横线图标&#10;2.在移动端时隐藏设置菜单的文字，只显示图标&#10;3.优化了菜单项的样式和交互效果&#10;4.调整了图标大小和间距&#10;5.改进了响应式布局" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.确保使用的是正确的三横线图标&#10;2.在移动端时隐藏设置菜单的文字，只显示图标&#10;3.优化了菜单项的样式和交互效果&#10;4.调整了图标大小和间距&#10;5.改进了响应式布局" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/TeaTalk$main.coverage" NAME="main 覆盖结果" MODIFIED="1731993364645" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ModelPlatform" />
