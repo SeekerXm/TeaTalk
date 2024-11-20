@@ -455,7 +455,7 @@
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
-                            <div class="form-text">密码需包含小写字母、数字、特殊字符中的至少三类</div>
+                            <div class="form-text">密码需包含���写字母、数字、特殊字符中的至少三类</div>
                         </div>
                         <div class="mb-3">
                             <label for="confirmNewPassword" class="form-label">确认新密码</label>
@@ -995,10 +995,10 @@
     /* Firefox 滚动条样式 */
     .chat-messages {
         scrollbar-width: thin;  /* 'thin' 或 'none' */
-        scrollbar-color: rgba(0, 0, 0, 0.2) transparent;  /* 滚动条颜色 轨道���色 */
+        scrollbar-color: rgba(0, 0, 0, 0.2) transparent;  /* 滚动条颜色 轨道色 */
     }
 
-    /* ���侧栏底部按钮样式优化 */
+    /* 侧边栏底部按钮样式优化 */
     .sidebar-footer {
         padding: 1.5rem;
         border-top: 1px solid rgba(0, 0, 0, 0.05);
@@ -1123,24 +1123,24 @@
 
     /* 汉堡菜单按钮样式 */
     .sidebar-toggle {
-        display: none;  /* 默认隐藏 */
         padding: 0.5rem;
         color: #6b7280;
-        transition: color 0.2s;
+        transition: all 0.2s ease;
+        display: flex;  /* 始终显示 */
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 0.5rem;
     }
 
     .sidebar-toggle:hover {
         color: #2563eb;
+        background: rgba(37, 99, 235, 0.1);  /* 添加悬浮背景色 */
     }
 
-    /* 侧边栏关闭状态 */
-    body.sidebar-closed .sidebar {
-        transform: translateX(-100%);
-    }
-
-    body.sidebar-closed .main-content {
-        margin-left: 0;
-        width: 100%;
+    .sidebar-toggle:active {
+        transform: scale(0.95);  /* 添加点击效果 */
     }
 
     /* 导航栏样式优化 */
@@ -1150,6 +1150,9 @@
         display: flex;
         align-items: center;
         gap: 1rem;
+        background: #f8f9fa;
+        border-bottom: 1px solid #e5e7eb;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
 
     .model-info {
@@ -1166,10 +1169,6 @@
         .main-content {
             margin-left: 0;
             width: 100%;
-        }
-        
-        .sidebar-toggle {
-            display: block;  /* 显示汉堡菜单 */
         }
         
         body.sidebar-open .sidebar {
@@ -1193,21 +1192,10 @@
         }
     }
 
-    @media (max-width: 768px) {
-        /* 移动端 */
-        .sidebar {
-            width: 100%;
-            max-width: 280px;
-        }
-        
-        .chat-nav {
-            padding: 0 0.75rem;
-        }
-        
-        .model-info {
-            font-size: 0.9rem;
-        }
-    }
+    /* 移除之前的 display: none */
+    /* .sidebar-toggle {
+        display: none;
+    } */
     </style>
 
     <!-- 在 body 末尾添加 chat.js -->
@@ -1250,8 +1238,11 @@
                 body.classList.remove('sidebar-closed');
                 body.classList.remove('sidebar-open');
             } else {
-                body.classList.remove('sidebar-open');
-                body.classList.remove('sidebar-closed');
+                // 大屏幕时保持当前状态，不自动改变
+                if (!body.classList.contains('sidebar-closed') && !body.classList.contains('sidebar-open')) {
+                    // 只在初始化时设置默认展开状态
+                    body.classList.remove('sidebar-closed');
+                }
             }
         }
         
