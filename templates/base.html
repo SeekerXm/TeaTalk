@@ -130,6 +130,8 @@
 
     <!-- 登录/注册/找回密码模态框 -->
     <div class="modal fade" id="authModal" tabindex="-1" aria-hidden="true">
+        <!-- 关闭按钮移到 modal-dialog 外面 -->
+        <button type="button" class="auth-modal-close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header border-0">
@@ -144,7 +146,6 @@
                             <button class="nav-link w-100" data-bs-toggle="tab" data-bs-target="#resetTab" type="button">找回密码</button>
                         </li>
                     </ul>
-                    <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="tab-content">
@@ -586,7 +587,7 @@
         justify-content: center;  /* 水平居中 */
         gap: 0.75rem;  /* Logo 和标题的间距 */
         border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        background: #f8f9fa;  /* 与侧边栏背景色保��一致 */
+        background: #f8f9fa;  /* 与侧边栏背景色保一致 */
     }
 
     /* Logo 图片样式 */
@@ -1068,7 +1069,7 @@
 
     /* 设置按钮样式 */
     .sidebar-footer .btn-outline-light {
-        background: #ffffff;  /* 白色背景 */
+        background: #ffffff;  /* 白色背�� */
         color: #6c757d;      /* 灰色文字 */
         border: 1px solid rgba(0, 0, 0, 0.1);  /* 淡色边框 */
         transition: all 0.3s ease;
@@ -1296,7 +1297,7 @@
         }
         
         .settings-menu .list-group-item span {
-            display: none;  /* 隐藏文字 */
+            display: none;  /* 隐藏文�� */
         }
     }
 
@@ -1680,7 +1681,246 @@
         }
     }
 
-    /* 其他样式保持不变... */
+    /* 登录模态框样式优化 */
+    #authModal .modal-header {
+        border: none;
+        padding: 1.5rem 1.5rem 0.75rem;
+        position: relative;
+        min-height: 60px;  /* 确保有足够的高度 */
+    }
+
+    /* 导航标签样式优化 */
+    #authModal .nav-tabs {
+        border: none;
+        gap: 0.5rem;
+        padding: 0;
+        margin-bottom: 0;
+        width: calc(100% - 50px);  /* 为关闭按钮留出更多空间 */
+    }
+
+    /* 关闭按钮样式优化 */
+    #authModal .btn-close {
+        position: absolute;
+        right: 1.25rem;  /* 向右移动 */
+        top: 0.75rem;    /* 向上移动 */
+        padding: 0.5rem;
+        width: 32px;     /* 设置固定宽度 */
+        height: 32px;    /* 设置固定高度 */
+        border-radius: 50%;  /* 圆形按钮 */
+        background-color: #f3f4f6;  /* 淡灰色背景 */
+        opacity: 1;      /* 不透明度设为1 */
+        transition: all 0.2s ease;  /* 平滑过渡效果 */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform-origin: center;  /* 设置变换原点为中心 */
+        z-index: 1050;
+    }
+
+    #authModal .btn-close:hover {
+        background-color: #e5e7eb;  /* 悬浮时背景色变深 */
+        transform: rotate(90deg);   /* 旋转效果 */
+    }
+
+    #authModal .btn-close:active {
+        transform: rotate(90deg) scale(0.95);  /* 点击时缩小效果 */
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+        #authModal .modal-header {
+            padding: 1rem 1rem 0.5rem;
+        }
+        
+        #authModal .nav-tabs {
+            width: calc(100% - 40px);  /* 移动端稍微调整宽度 */
+        }
+        
+        #authModal .btn-close {
+            right: 1rem;
+            top: 0.5rem;
+            width: 28px;  /* 移动端稍微小一点 */
+            height: 28px;
+        }
+    }
+
+    /* 登录模态框样式优化 */
+    #authModal .modal-dialog {
+        position: relative;  /* 为绝对定位的关闭按钮提供参考 */
+    }
+
+    /* 关闭按钮样式优化 */
+    #authModal .btn-close {
+        position: absolute;
+        right: 0.5rem;
+        top: -3.5rem;  /* 将按钮移到模态框上方 */
+        padding: 0.5rem;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: #ffffff;  /* 改为白色背景 */
+        opacity: 1;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform-origin: center;
+        z-index: 1050;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);  /* 添加阴影效果 */
+    }
+
+    #authModal .btn-close:hover {
+        background-color: #f3f4f6;
+        transform: rotate(90deg);
+    }
+
+    #authModal .btn-close:active {
+        transform: rotate(90deg) scale(0.95);
+    }
+
+    /* 导航标签样式优化 */
+    #authModal .nav-tabs {
+        border: none;
+        gap: 0.5rem;
+        padding: 0;
+        margin-bottom: 0;
+        width: 100%;  /* 现在可以占据全部宽度 */
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+        #authModal .btn-close {
+            top: -3rem;  /* 移动端稍微靠近一点 */
+            right: 0.25rem;
+            width: 28px;
+            height: 28px;
+        }
+    }
+
+    /* 登录模态框样式优化 */
+    #authModal {
+        padding-top: 3rem !important;
+    }
+
+    #authModal .modal-dialog {
+        position: relative;  /* 为绝对定位的关闭按钮提供参考 */
+        margin-top: 2rem;   /* 为关闭按钮留出空间 */
+    }
+
+    /* 关闭按钮样式优化 */
+    #authModal .modal-content .btn-close {
+        position: absolute !important;
+        right: -1rem !important;
+        top: -4rem !important;  /* 将按钮移到模态框上方 */
+        padding: 0.75rem !important;
+        width: 38px !important;
+        height: 38px !important;
+        border-radius: 50% !important;
+        background-color: #ffffff !important;
+        opacity: 1 !important;
+        transition: all 0.2s ease !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        transform-origin: center !important;
+        z-index: 1060 !important;  /* 确保在最上层 */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+        border: none !important;
+    }
+
+    #authModal .modal-content .btn-close:hover {
+        background-color: #f3f4f6 !important;
+        transform: rotate(90deg) !important;
+    }
+
+    #authModal .modal-content .btn-close:active {
+        transform: rotate(90deg) scale(0.95) !important;
+    }
+
+    /* 导航标签样式优化 */
+    #authModal .nav-tabs {
+        border: none;
+        gap: 0.5rem;
+        padding: 0;
+        margin-bottom: 0;
+        width: 100%;  /* 现在可以占据全部宽度 */
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+        #authModal {
+            padding-top: 2rem !important;
+        }
+        
+        #authModal .modal-dialog {
+            margin-top: 1.5rem;
+        }
+        
+        #authModal .modal-content .btn-close {
+            right: -0.5rem !important;
+            top: -3.5rem !important;
+            width: 34px !important;
+            height: 34px !important;
+            padding: 0.5rem !important;
+        }
+    }
+
+    /* 登录模态框样式优化 */
+    #authModal .auth-modal-close {
+        position: absolute;
+        right: calc(50% - 19px);  /* 水平居中 */
+        top: 1rem;
+        width: 38px;
+        height: 38px;
+        padding: 0.75rem;
+        border-radius: 50%;
+        background-color: #ffffff;
+        opacity: 1;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform-origin: center;
+        z-index: 1060;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        border: none;
+    }
+
+    #authModal .auth-modal-close:hover {
+        background-color: #f3f4f6;
+        transform: rotate(90deg);
+    }
+
+    #authModal .auth-modal-close:active {
+        transform: rotate(90deg) scale(0.95);
+    }
+
+    /* 导航标签样式优化 */
+    #authModal .nav-tabs {
+        border: none;
+        gap: 0.5rem;
+        padding: 0;
+        margin-bottom: 0;
+        width: 100%;
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+        #authModal {
+            padding-top: 2rem !important;
+        }
+        
+        #authModal .modal-dialog {
+            margin-top: 1.5rem;
+        }
+        
+        #authModal .modal-content .btn-close {
+            width: 34px;
+            height: 34px;
+            padding: 0.5rem;
+            right: calc(50% - 17px);  /* 调整水平居中位置 */
+        }
+    }
     </style>
 
     <!-- 在 body 末尾添加 chat.js -->
