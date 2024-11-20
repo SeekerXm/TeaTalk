@@ -1327,118 +1327,64 @@
         transform: scale(0.95);
     }
 
-    /* 设置模态框容器样式 */
+    /* 设置模态框容器样式优化 */
     .settings-container {
         display: flex;
-        height: 500px;  /* 设置固定高度 */
-        min-height: 500px;  /* 设置最小高度 */
+        height: 450px;
+        min-height: 450px;
+        width: 100%;  /* 确保容器占满宽度 */
+        position: relative;  /* 添加相对定位 */
+        overflow: hidden;  /* 防止内容溢出 */
     }
 
-    /* 左侧菜单样式 */
+    /* 左侧菜单样式优化 */
     .settings-menu {
-        width: 200px;
-        flex-shrink: 0;
+        width: 200px;  /* 固定宽度 */
+        min-width: 200px;  /* 最小宽度 */
+        max-width: 200px;  /* 最大宽度 */
+        flex: 0 0 200px;  /* 禁止伸缩 */
         border-right: 1px solid #e5e7eb;
+        background: #f8f9fa;
         overflow-y: auto;
-        scrollbar-width: none;  /* Firefox */
-        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;
+        -ms-overflow-style: none;
     }
 
-    .settings-menu::-webkit-scrollbar {
-        display: none;  /* Chrome, Safari, Opera */
-    }
-
-    /* 右侧内容区域样式 */
+    /* 右侧内容区域样式优化 */
     .settings-content {
-        flex: 1;
+        flex: 1;  /* 占据剩余空间 */
+        min-width: 0;  /* 允许内容区域被压缩 */
         overflow-y: auto;
-        scrollbar-width: none;  /* Firefox */
-        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        background: #ffffff;
     }
 
-    .settings-content::-webkit-scrollbar {
-        display: none;  /* Chrome, Safari, Opera */
-    }
-
-    /* 设置面板样式 */
-    .settings-panel {
-        display: none;
-        padding: 1.5rem;
-        height: 100%;
-    }
-
-    .settings-panel.active {
-        display: block;
-    }
-
-    /* 面板标题样式 */
-    .settings-panel-title {
-        margin-bottom: 1.5rem;
-        font-weight: 600;
-        color: #1f2937;
-    }
-
-    /* 面板内容样式 */
-    .settings-panel-content {
-        height: calc(100% - 3rem);  /* 减去标题的高度 */
-        overflow-y: auto;
-        scrollbar-width: none;  /* Firefox */
-        -ms-overflow-style: none;  /* IE and Edge */
-    }
-
-    .settings-panel-content::-webkit-scrollbar {
-        display: none;  /* Chrome, Safari, Opera */
-    }
-
-    /* 用户信息样式 */
-    .user-info {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .info-item {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .info-label {
-        min-width: 80px;
+    /* 菜单项样式优化 */
+    .settings-menu .list-group-item {
+        border: none;
+        border-radius: 0;
+        padding: 0.75rem 1rem;
         color: #6b7280;
-    }
-
-    .info-value {
-        color: #1f2937;
-    }
-
-    /* 公告列表样式 */
-    .announcement-list {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .announcement-item {
-        border: 1px solid #e5e7eb;
-        border-radius: 0.5rem;
-        overflow: hidden;
+        transition: all 0.2s ease;
+        white-space: nowrap;  /* 防止文字换行 */
+        overflow: hidden;  /* 隐藏溢出内容 */
+        text-overflow: ellipsis;  /* 显示省略号 */
     }
 
     /* 响应式调整 */
     @media (max-width: 768px) {
-        .settings-container {
-            height: 450px;  /* 移动端稍微降低高度 */
-            min-height: 450px;
-        }
-        
         .settings-menu {
-            width: 60px;  /* 移动端减小菜单宽度 */
+            width: 60px;  /* 移动端固定宽度 */
+            min-width: 60px;
+            max-width: 60px;
+            flex: 0 0 60px;
         }
         
         .settings-menu .list-group-item {
             padding: 0.75rem;
             text-align: center;
+            justify-content: center;
         }
         
         .settings-menu .list-group-item i {
@@ -1448,6 +1394,115 @@
         
         .settings-menu .list-group-item span {
             display: none;
+        }
+    }
+
+    /* 面板内容样式优化 */
+    .settings-panel {
+        display: none;
+        padding: 1rem;
+        height: 100%;
+        width: 100%;  /* 确保面板占满容器 */
+    }
+
+    .settings-panel.active {
+        display: block;
+    }
+
+    /* 确保模态框内容不会被挤压 */
+    .modal-dialog.modal-lg {
+        max-width: 800px;  /* 设置最大宽度 */
+        margin: 1.75rem auto;
+    }
+
+    .modal-content {
+        width: 100%;
+        height: auto;
+    }
+
+    .modal-body {
+        padding: 0;
+        overflow: hidden;  /* 防止内容溢出 */
+    }
+
+    /* 设置面板内容样式优化 */
+    .settings-panel-content {
+        height: calc(100% - 3rem);  /* 减去标题的高度 */
+        overflow-y: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    /* 在移动端时移除内边距 */
+    @media (max-width: 768px) {
+        .settings-panel-content {
+            padding: 0;  /* 移动端移除内边距 */
+        }
+        
+        /* 调整移动端其他相关样式 */
+        .user-info {
+            gap: 0.5rem;  /* 减小间距 */
+        }
+        
+        .info-item {
+            margin: 0 0.75rem;  /* 添加左右边距代替内边距 */
+        }
+        
+        .info-actions {
+            margin: 0.5rem 0.75rem;  /* 添加左右边距 */
+        }
+        
+        .announcement-item {
+            margin: 0 0.75rem;  /* 添加左右边距 */
+        }
+    }
+
+    /* 确保滚动条隐藏 */
+    .settings-panel-content::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* 用户信息基础样式 */
+    .user-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    /* 用户信息项样式 */
+    .info-item {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 0.75rem;
+    }
+
+    /* PC端样式 */
+    @media (min-width: 769px) {
+        .user-info {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .info-item {
+            margin: 0;
+        }
+    }
+
+    /* 移动端样式 - 使用更高的优先级 */
+    @media (max-width: 768px) {
+        .settings-panel-content .user-info {
+            padding: 0 !important;  /* 使用 !important 确保覆盖其他样式 */
+            background-color: transparent !important;
+            border-radius: 0 !important;
+        }
+        
+        .settings-panel-content .info-item {
+            margin: 0 0.75rem;
+        }
+        
+        .settings-panel-content .info-actions {
+            margin: 0.5rem 0.75rem;
         }
     }
     </style>
