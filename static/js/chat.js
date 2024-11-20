@@ -1,14 +1,23 @@
 // 在文件开头初始化 markdown-it
-const md = window.markdownit({
+const chatMd = window.markdownit({
     breaks: true,  // 转换换行符为 <br>
     linkify: true,  // 自动转换链接文本
     highlight: function (str, lang) {  // 代码高亮
         if (lang && hljs.getLanguage(lang)) {
             try {
-                return hljs.highlight(str, { language: lang }).value;
+                // 添加安全处理
+                const escapedStr = str
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+                    
+                return hljs.highlight(escapedStr, { language: lang }).value;
             } catch (__) {}
         }
-        return '';  // 使用默认的转义
+        // 如果没有指定语言或语言不支持，使用普通文本
+        return hljs.highlightAuto(str).value;  // 使用自动检测
     }
 });
 
@@ -120,8 +129,6 @@ function handleKeyPress(event) {
 
 // 修改显示消息的函数
 function appendMessage(role, content) {
-    console.log('Appending message:', role, content);
-    
     const messagesDiv = document.getElementById('chatMessages');
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${role}`;
@@ -166,19 +173,41 @@ function appendMessage(role, content) {
 function typeMessageWithMarkdown(text, element, index = 0) {
     if (index < text.length) {
         const currentText = text.substring(0, index + 1);
-        // 渲染markdown
-        element.innerHTML = md.render(currentText);
-        // 高亮代码块
-        element.querySelectorAll('pre code').forEach((block) => {
-            hljs.highlightElement(block);
-        });
-        
-        const messagesDiv = document.getElementById('chatMessages');
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        
-        // 随机延迟，使打字效果更自然
-        const delay = Math.random() * 30 + 20;  // 20-50ms之间的随机延迟
-        setTimeout(() => typeMessageWithMarkdown(text, element, index + 1), delay);
+        try {
+            // 渲染markdown
+            element.innerHTML = chatMd.render(currentText);
+            
+            // 只在完整的代码块上应用高亮
+            if (index === text.length - 1) {
+                element.querySelectorAll('pre code').forEach((block) => {
+                    // 添加安全处理
+                    const escapedCode = block.textContent
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                        .replace(/"/g, '&quot;')
+                        .replace(/'/g, '&#039;');
+                    block.textContent = escapedCode;
+                    
+                    // 应用高亮
+                    hljs.highlightElement(block);
+                });
+            }
+            
+            // 滚动到底部
+            const messagesDiv = document.getElementById('chatMessages');
+            if (messagesDiv) {
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }
+            
+            // 使用 requestAnimationFrame 代替 setTimeout
+            requestAnimationFrame(() => {
+                const delay = Math.random() * 30 + 20;
+                setTimeout(() => typeMessageWithMarkdown(text, element, index + 1), delay);
+            });
+        } catch (error) {
+            console.error('Markdown rendering error:', error);
+        }
     }
 }
 
