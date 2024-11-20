@@ -1836,7 +1836,7 @@
         }
     }
 
-    /* 登录模态框样式优化 */
+    /* 登录��态框样式优�� */
     #authModal {
         padding-top: 2rem !important;  /* 减小顶部内边距 */
     }
@@ -2294,13 +2294,16 @@
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const authModal = document.getElementById('authModal');
-        const closeButton = authModal.querySelector('.auth-modal-close');
+        let closeButton = authModal.querySelector('.auth-modal-close');
         const modalContent = authModal.querySelector('.modal-content');
-        const offset = 45; // 增加偏移量，确保按钮与模态框有足够距离
+        const offset = 45;
 
         // 更新关闭按钮位置
         function updateCloseButtonPosition() {
-            if (modalContent) {
+            // 更新关闭按钮引用
+            closeButton = authModal.querySelector('.auth-modal-close');
+            
+            if (modalContent && closeButton) {
                 const rect = modalContent.getBoundingClientRect();
                 closeButton.style.top = (rect.top - offset) + 'px';
             }
@@ -2321,7 +2324,37 @@
                 setTimeout(updateCloseButtonPosition, 0);
             });
         });
+
+        // 监听 Alert 组件的关闭事件
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('btn-close')) {
+                // 如果是 Alert 组件的关闭按钮，不执行任何操作
+                if (e.target.closest('.alert')) {
+                    return;
+                }
+            }
+        });
     });
     </script>
+
+    <!-- 修改 Alert 组件的样式 -->
+    <style>
+    /* Alert 组件的关闭按钮样式 */
+    .alert .btn-close {
+        position: static !important;  /* 覆盖可能的绝对定位 */
+        transform: none !important;  /* 移除任何变换 */
+        opacity: 0.5;
+        padding: 0.5rem !important;
+        margin: -0.5rem -0.5rem -0.5rem auto !important;
+        width: auto !important;
+        height: auto !important;
+        background: none !important;
+        box-shadow: none !important;
+    }
+
+    .alert .btn-close:hover {
+        opacity: 0.75;
+    }
+    </style>
 </body>
 </html> 
