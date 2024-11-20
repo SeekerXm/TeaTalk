@@ -130,10 +130,9 @@
 
     <!-- 登录/注册/找回密码模态框 -->
     <div class="modal fade" id="authModal" tabindex="-1" aria-hidden="true">
-        <!-- 关闭按钮移到 modal-dialog 外面 -->
-        <button type="button" class="auth-modal-close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
+                <!-- 移除原始的关闭按钮 -->
                 <div class="modal-header border-0">
                     <ul class="nav nav-tabs w-100" role="tablist">
                         <li class="nav-item flex-grow-1" role="presentation">
@@ -268,6 +267,10 @@
                 </div>
             </div>
         </div>
+        <!-- 将关闭按钮移到这里 -->
+        <button type="button" class="auth-modal-close" data-bs-dismiss="modal" aria-label="Close">
+            <i class="fas fa-times"></i>
+        </button>
     </div>
 
     <!-- 设置模态框 -->
@@ -496,7 +499,7 @@
                         <ul>
                             <li>永久删除您的号信息</li>
                             <li>删除所有聊天记录和相关数据</li>
-                            <li>此操作无法撤销</li>
+                            <li>此操作���法撤销</li>
                         </ul>
                     </div>
                     <form id="deleteAccountForm" class="needs-validation" novalidate>
@@ -1067,7 +1070,7 @@
         background: #f8f9fa;  /* 与左侧栏背景色保持一致 */
     }
 
-    /* 设置按钮样式 */
+    /* 设置按钮��式 */
     .sidebar-footer .btn-outline-light {
         background: #ffffff;  /* 白色背 */
         color: #6c757d;      /* 灰色文字 */
@@ -1899,7 +1902,7 @@
 
     /* 登录模态框样式优化 */
     #authModal .modal-dialog {
-        position: relative;
+        position: relative;  /* 为关闭按钮提供定位参考 */
         margin-top: 4rem;  /* 增加顶部外边距 */
     }
 
