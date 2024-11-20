@@ -249,7 +249,7 @@
                                             <i class="fas fa-eye"></i>
                                         </button>
                                     </div>
-                                    <div class="form-text">密码需包含大小写字母、数字、特��符中的至少三类</div>
+                                    <div class="form-text">密码需包含大小写字母、数字、特殊符号中的至少三类</div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="resetConfirmPassword" class="form-label">确认新密码</label>
@@ -260,7 +260,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary w-100">重密码</button>
+                                <button type="submit" class="btn btn-primary w-100">重置密码</button>
                             </form>
                         </div>
                     </div>
@@ -495,17 +495,17 @@
                 <div class="modal-body">
                     <div class="alert alert-warning">
                         <h6 class="alert-heading">请注意！</h6>
-                        <p>销账号将会：</p>
+                        <p>注销账号将会：</p>
                         <ul>
-                            <li>永久删除您的号信息</li>
+                            <li>永久删除您的账号信息</li>
                             <li>删除所有聊天记录和相关数据</li>
-                            <li>此操作法撤销</li>
+                            <li>此操作不可撤销</li>
                         </ul>
                     </div>
                     <form id="deleteAccountForm" class="needs-validation" novalidate>
                         {% csrf_token %}
                         <div class="mb-3">
-                            <label for="confirmPassword" class="form-label">请��入密码确认</label>
+                            <label for="confirmPassword" class="form-label">请输入密码确认</label>
                             <div class="input-group">
                                 <input type="password" class="form-control" id="confirmPassword" name="password" required>
                                 <button class="btn btn-outline-secondary toggle-password" type="button">
@@ -1105,7 +1105,7 @@
         background: #f8f9fa;  /* 与左侧栏背景色保持一致 */
     }
 
-    /* 设置按钮样式 */
+    /* 设置按钮样 */
     .sidebar-footer .btn-outline-light {
         background: #ffffff;  /* 白色背 */
         color: #6c757d;      /* 灰色文字 */
@@ -1472,7 +1472,7 @@
         -ms-overflow-style: none;
     }
 
-    /* 在移动端时移除内边距 */
+    /* 在移动端时���除内边距 */
     @media (max-width: 768px) {
         .settings-panel-content {
             padding: 0;  /* 移动端移除内边距 */
