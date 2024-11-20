@@ -447,7 +447,7 @@ body {
     background-color: #f6f8fa;
 }
 
-/* 用户信息操作按钮样式 */
+/* 用户��息操作按钮样式 */
 .info-actions {
     display: flex;
     gap: 10px;
@@ -661,4 +661,255 @@ body {
     background-color: white;
     border-top: 1px solid #eee;
     margin-top: auto;
-} 
+}
+
+/* 登录模态框样式 */
+#authModal .modal-content {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+#authModal .modal-header {
+    border: none;
+    padding: 1.5rem 1.5rem 0.75rem;
+    position: relative;
+}
+
+/* 导航标签样式 */
+#authModal .nav-tabs {
+    border: none;
+    gap: 0.5rem;
+    padding: 0;
+    margin-bottom: 0;
+}
+
+#authModal .nav-item {
+    flex: 1;
+}
+
+#authModal .nav-link {
+    border: none;
+    padding: 0.75rem;
+    color: #6b7280;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    border-radius: 0.5rem;
+    text-align: center;
+    width: 100%;
+}
+
+#authModal .nav-link:hover {
+    color: #2563eb;
+    background: rgba(37, 99, 235, 0.05);
+}
+
+#authModal .nav-link.active {
+    color: #2563eb;
+    background: rgba(37, 99, 235, 0.1);
+    font-weight: 500;
+}
+
+/* 表单容器样式 */
+#authModal .modal-body {
+    padding: 1.5rem;
+    background: #ffffff;
+}
+
+#authModal .tab-content {
+    margin-top: 1rem;
+}
+
+/* 表单组样式 */
+#authModal .form-label {
+    font-size: 0.9rem;
+    color: #4b5563;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+#authModal .form-control {
+    padding: 0.75rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    background: #f9fafb;
+}
+
+#authModal .form-control:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    background: #ffffff;
+}
+
+/* 输入组合样式 */
+#authModal .input-group {
+    border-radius: 0.5rem;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    transition: all 0.2s ease;
+}
+
+#authModal .input-group:focus-within {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    background: #ffffff;
+}
+
+#authModal .input-group .form-control {
+    border: none;
+    background: transparent;
+}
+
+#authModal .input-group .btn {
+    border: none;
+    background: transparent;
+    color: #6b7280;
+    padding: 0 1rem;
+}
+
+#authModal .input-group .btn:hover {
+    color: #4b5563;
+}
+
+/* 验证码样式 */
+#authModal .captcha-image {
+    height: 46px;
+    border-radius: 0 0.5rem 0.5rem 0;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+#authModal .captcha-image:hover {
+    opacity: 0.8;
+}
+
+/* 发送验证码按钮样式 */
+#authModal .send-code-btn {
+    min-width: 120px;
+    background: #f3f4f6;
+    border: none;
+    color: #4b5563;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    padding: 0 1rem;
+}
+
+#authModal .send-code-btn:hover:not(:disabled) {
+    background: #e5e7eb;
+    color: #1f2937;
+}
+
+#authModal .send-code-btn:disabled {
+    background: #f3f4f6;
+    color: #9ca3af;
+    cursor: not-allowed;
+}
+
+/* 提交按钮样式 */
+#authModal .btn-primary {
+    width: 100%;
+    padding: 0.75rem;
+    background: #2563eb;
+    border: none;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    margin-top: 1rem;
+}
+
+#authModal .btn-primary:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+/* 帮助文本样式 */
+#authModal .form-text {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-top: 0.5rem;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    #authModal .modal-content {
+        margin: 0.5rem;
+        border-radius: 0.75rem;
+    }
+    
+    #authModal .modal-header {
+        padding: 1rem 1rem 0.5rem;
+    }
+    
+    #authModal .modal-body {
+        padding: 1rem;
+    }
+    
+    #authModal .nav-link {
+        padding: 0.6rem;
+        font-size: 0.9rem;
+    }
+    
+    #authModal .form-control {
+        padding: 0.6rem 0.75rem;
+        font-size: 0.9rem;
+    }
+    
+    #authModal .send-code-btn {
+        min-width: 100px;
+        font-size: 0.85rem;
+    }
+    
+    #authModal .captcha-image {
+        height: 42px;
+    }
+    
+    #authModal .btn-primary {
+        padding: 0.6rem;
+    }
+    
+    #authModal .form-text {
+        font-size: 0.8rem;
+    }
+}
+
+/* 表单间距优化 */
+#authModal .mb-3 {
+    margin-bottom: 1.25rem;
+}
+
+#authModal .mb-3:last-child {
+    margin-bottom: 0;
+}
+
+/* 动画效果 */
+#authModal .tab-pane {
+    transition: opacity 0.3s ease;
+}
+
+#authModal .tab-pane.show {
+    opacity: 1;
+}
+
+#authModal .tab-pane:not(.show) {
+    opacity: 0;
+}
+
+/* iPad 响应式调整 */
+@media (min-width: 769px) and (max-width: 1024px) {
+    #authModal .modal-dialog {
+        max-width: 500px;
+        margin: 1.75rem auto;
+    }
+    
+    #authModal .modal-content {
+        margin: 0 1rem;
+    }
+    
+    #authModal .nav-link {
+        font-size: 1rem;
+    }
+}
+  
