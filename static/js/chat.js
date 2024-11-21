@@ -436,4 +436,119 @@ function decodeHTMLEntities(text) {
         .replace(/&#x2F;/g, '/');
     
     return decodedText;
-} 
+}
+
+// 添加邮箱验证函数
+function validateEmail(email) {
+    // 支持的邮箱后缀
+    const allowedDomains = ['qq.com', '126.com', '163.com', 'sina.com'];
+    // 邮箱格式正则表达式
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    
+    if (!emailRegex.test(email)) return false;
+    
+    // 检查邮箱后缀是否在允许列表中
+    const domain = email.split('@')[1];
+    return allowedDomains.includes(domain);
+}
+
+// 添加密码验证函数
+function validatePassword(password) {
+    // 至少包含三类字符
+    let types = 0;
+    if (/[A-Z]/.test(password)) types++; // 大写字母
+    if (/[a-z]/.test(password)) types++; // 小写字母
+    if (/[0-9]/.test(password)) types++; // 数字
+    if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) types++; // 特殊字符
+    
+    return types >= 3;
+}
+
+// 添加输入框验证样式
+function setInputValidation(input, isValid) {
+    if (isValid) {
+        input.classList.remove('is-invalid');
+        input.classList.add('is-valid');
+    } else {
+        input.classList.remove('is-valid');
+        input.classList.add('is-invalid');
+    }
+}
+
+// 在 DOMContentLoaded 事件中添加表单验证
+document.addEventListener('DOMContentLoaded', function() {
+    // 登录表单邮箱验证
+    const loginEmail = document.getElementById('loginEmail');
+    if (loginEmail) {
+        loginEmail.addEventListener('input', function() {
+            const isValid = validateEmail(this.value);
+            setInputValidation(this, isValid);
+        });
+    }
+    
+    // 注册表单验证
+    const registerEmail = document.getElementById('registerEmail');
+    const registerPassword = document.getElementById('registerPassword');
+    const registerConfirmPassword = document.getElementById('registerConfirmPassword');
+    
+    if (registerEmail) {
+        registerEmail.addEventListener('input', function() {
+            const isValid = validateEmail(this.value);
+            setInputValidation(this, isValid);
+        });
+    }
+    
+    if (registerPassword) {
+        registerPassword.addEventListener('input', function() {
+            const isValid = validatePassword(this.value);
+            setInputValidation(this, isValid);
+            
+            // 同时验证确认密码
+            if (registerConfirmPassword.value) {
+                setInputValidation(registerConfirmPassword, 
+                    this.value === registerConfirmPassword.value && isValid);
+            }
+        });
+    }
+    
+    if (registerConfirmPassword) {
+        registerConfirmPassword.addEventListener('input', function() {
+            const isValid = this.value === registerPassword.value && 
+                          validatePassword(registerPassword.value);
+            setInputValidation(this, isValid);
+        });
+    }
+    
+    // 找回密码表单验证
+    const resetEmail = document.getElementById('resetEmail');
+    const resetPassword = document.getElementById('resetPassword');
+    const resetConfirmPassword = document.getElementById('resetConfirmPassword');
+    
+    if (resetEmail) {
+        resetEmail.addEventListener('input', function() {
+            const isValid = validateEmail(this.value);
+            setInputValidation(this, isValid);
+        });
+    }
+    
+    if (resetPassword) {
+        resetPassword.addEventListener('input', function() {
+            const isValid = validatePassword(this.value);
+            setInputValidation(this, isValid);
+            
+            // 同时验证确认密码
+            if (resetConfirmPassword.value) {
+                setInputValidation(resetConfirmPassword, 
+                    this.value === resetConfirmPassword.value && isValid);
+            }
+        });
+    }
+    
+    if (resetConfirmPassword) {
+        resetConfirmPassword.addEventListener('input', function() {
+            const isValid = this.value === resetPassword.value && 
+                          validatePassword(resetPassword.value);
+            setInputValidation(this, isValid);
+        });
+    }
+}); 
