@@ -932,7 +932,7 @@ body {
     cursor: pointer !important;
     transition: all 0.2s ease !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-    z-index: 1050 !important;  /* 提高 z-index 确保按钮显示在最上层 */
+    z-index: 1050 !important;  /* 提高 z-index 确���按钮显示在最上层 */
     padding: 0 !important;  /* 重置内边距 */
     margin: 0 !important;  /* 重置外边距 */
 }
@@ -1182,5 +1182,77 @@ body {
 .input-group > .form-control.is-invalid ~ .input-group-text,
 .input-group > .form-control.is-valid ~ .input-group-text {
     padding-left: 0.5rem;
+}
+
+/* 提醒弹窗样式 */
+#alertModal .modal-content {
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+#alertModal .modal-body {
+    padding: 1.5rem;
+}
+
+#alertModal .alert-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+#alertModal .alert-content {
+    min-width: 0;
+}
+
+#alertModal .alert-content h5 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+#alertModal .alert-content p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+#alertModal .btn-close {
+    padding: 0.5rem;
+    margin: -0.5rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    opacity: 0.6;
+}
+
+#alertModal .btn-close:hover {
+    opacity: 1;
+    background-color: #f3f4f6;
+    transform: scale(1.1);
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    #alertModal .modal-dialog {
+        margin: 1rem;
+    }
+    
+    #alertModal .modal-body {
+        padding: 1.25rem;
+    }
+    
+    #alertModal .alert-icon {
+        width: 32px;
+        height: 32px;
+    }
+    
+    #alertModal .alert-content h5 {
+        font-size: 1rem;
+    }
+    
+    #alertModal .alert-content p {
+        font-size: 0.9rem;
+    }
 }
   

@@ -102,7 +102,129 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// 处理发送消息
+// 修改用户状态检查函数
+function checkUserStatus() {
+    const userInfo = document.querySelector('.user-info');
+    if (userInfo) {
+        const statusBadge = userInfo.querySelector('.badge.bg-danger');
+        // 检查是否存在封禁状态的徽章
+        if (statusBadge && statusBadge.textContent.includes('封禁')) {
+            // 找到修改密码按钮并禁用
+            const changePasswordBtn = document.querySelector('[data-bs-target="#changePasswordModal"]');
+            if (changePasswordBtn) {
+                changePasswordBtn.disabled = true;
+                changePasswordBtn.classList.add('disabled');
+                changePasswordBtn.style.opacity = '0.5';
+                changePasswordBtn.style.cursor = 'not-allowed';
+                // 移除模态框触发器
+                changePasswordBtn.removeAttribute('data-bs-target');
+                changePasswordBtn.removeAttribute('data-bs-toggle');
+            }
+            return false;
+        }
+    }
+    return true;
+}
+
+// 添加页面加载时的状态检查
+document.addEventListener('DOMContentLoaded', function() {
+    // 初始检查用户状态
+    checkUserStatus();
+
+    // 修改密码表单提交事件
+    const changePasswordForm = document.getElementById('changePasswordForm');
+    if (changePasswordForm) {
+        changePasswordForm.addEventListener('submit', function(e) {
+            // 再次检查用户状态
+            if (!checkUserStatus()) {
+                e.preventDefault();
+                e.stopPropagation();
+                showAlertModal('您的账号已被封禁，无法修改密码', 'danger');
+                // 关闭修改密码模态框
+                const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
+                if (modal) {
+                    modal.hide();
+                }
+                return false;
+            }
+        });
+    }
+
+    // 监听设置模态框的显示事件
+    const settingsModal = document.getElementById('settingsModal');
+    if (settingsModal) {
+        settingsModal.addEventListener('show.bs.modal', function() {
+            // 每次打开设置面板时检查用户状态
+            checkUserStatus();
+        });
+    }
+
+    // 监听修改密码模态框的显示事件
+    const changePasswordModal = document.getElementById('changePasswordModal');
+    if (changePasswordModal) {
+        changePasswordModal.addEventListener('show.bs.modal', function(e) {
+            // 在模态框打开前检查用户状态
+            if (!checkUserStatus()) {
+                e.preventDefault();
+                showAlertModal('您的账号已被封禁，无法修改密码', 'danger');
+            }
+        });
+    }
+});
+
+// 添加显示提醒弹窗的函数
+function showAlertModal(message, type = 'danger') {
+    // 移除可能存在的旧弹窗
+    const existingModal = document.getElementById('alertModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+
+    // 创建新的弹窗HTML
+    const modalHTML = `
+        <div class="modal fade" id="alertModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0">
+                    <div class="modal-body p-4">
+                        <div class="d-flex align-items-center">
+                            <div class="alert-icon me-3">
+                                <i class="fas fa-exclamation-circle text-${type} fs-4"></i>
+                            </div>
+                            <div class="alert-content flex-grow-1">
+                                <h5 class="mb-1">提示</h5>
+                                <p class="mb-0 text-secondary">${message}</p>
+                            </div>
+                            <button type="button" class="btn-close ms-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // 添加弹窗到页面
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+    // 获取弹窗实例
+    const alertModal = new bootstrap.Modal(document.getElementById('alertModal'), {
+        backdrop: 'static',
+        keyboard: false
+    });
+
+    // 显示弹窗
+    alertModal.show();
+
+    // 3秒后自动关闭
+    setTimeout(() => {
+        alertModal.hide();
+        // 弹窗关闭后移除DOM
+        setTimeout(() => {
+            document.getElementById('alertModal').remove();
+        }, 500);
+    }, 3000);
+}
+
+// 修改发送消息处理函数
 function handleSendMessage() {
     // 检查用户是否已登录
     const isAuthenticated = document.body.classList.contains('user-authenticated');
@@ -114,7 +236,14 @@ function handleSendMessage() {
         return;
     }
     
-    // 如果已登录，正常发送消息
+    // 检查用户状态
+    if (!checkUserStatus()) {
+        // 使用新的提醒弹窗替代 alert
+        showAlertModal('您的账号已被封禁，无法发送消息', 'danger');
+        return;
+    }
+    
+    // 如果已登录且状态正常，正常发送消息
     sendUserMessage();
 }
 
@@ -603,6 +732,38 @@ document.addEventListener('DOMContentLoaded', function() {
             const isValid = this.value === newPassword.value && 
                           validatePassword(newPassword.value);
             setInputValidation(this, isValid, '', false);  // 不显示消息，只显示红色边框
+        });
+    }
+});
+
+// 修改修改密码按钮点击事件
+document.addEventListener('DOMContentLoaded', function() {
+    const changePasswordBtn = document.querySelector('[data-bs-target="#changePasswordModal"]');
+    if (changePasswordBtn) {
+        changePasswordBtn.addEventListener('click', function(e) {
+            // 检查用户状态
+            if (!checkUserStatus()) {
+                e.preventDefault();  // 阻止模态框打开
+                showAlertModal('您的账号已被封禁，无法修改密码', 'danger');
+            }
+        });
+    }
+});
+
+// 修改表单提交事件
+document.addEventListener('DOMContentLoaded', function() {
+    const changePasswordForm = document.getElementById('changePasswordForm');
+    if (changePasswordForm) {
+        changePasswordForm.addEventListener('submit', function(e) {
+            // 检查用户状态
+            if (!checkUserStatus()) {
+                e.preventDefault();
+                showAlertModal('您的账号已被封禁，无法修改密码', 'danger');
+                const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
+                if (modal) {
+                    modal.hide();
+                }
+            }
         });
     }
 }); 
