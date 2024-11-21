@@ -2,22 +2,21 @@
 const chatMd = window.markdownit({
     breaks: true,  // 转换换行符为 <br>
     linkify: true,  // 自动转换链接文本
+    html: true,  // 允许 HTML
     highlight: function (str, lang) {  // 代码高亮
         if (lang && hljs.getLanguage(lang)) {
             try {
-                // 添加安全处理
-                const escapedStr = str
-                    .replace(/&/g, '&amp;')
-                    .replace(/</g, '&lt;')
-                    .replace(/>/g, '&gt;')
-                    .replace(/"/g, '&quot;')
-                    .replace(/'/g, '&#039;');
-                    
-                return hljs.highlight(escapedStr, { language: lang }).value;
-            } catch (__) {}
+                // 先解码 HTML 实体
+                const decodedStr = decodeHTMLEntities(str);
+                // 然后进行代码高亮
+                return hljs.highlight(decodedStr, { language: lang }).value;
+            } catch (__) {
+                // 如果高亮失败，返回原始字符串
+                return str;
+            }
         }
-        // 如果没有指定语言或语言不支持，使用普通文本
-        return hljs.highlightAuto(str).value;  // 使用自动检测
+        // 对于没有指定语言或不支持的语言，进行自动检测
+        return hljs.highlightAuto(str).value;
     }
 });
 
@@ -127,69 +126,24 @@ function handleKeyPress(event) {
     }
 }
 
-// 修改显示消息的函数
-function appendMessage(role, content) {
-    const messagesDiv = document.getElementById('chatMessages');
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `message ${role}`;
-    
-    // 创建头像
-    const avatarDiv = document.createElement('div');
-    avatarDiv.className = 'message-avatar';
-    const avatarIcon = document.createElement('i');
-    
-    if (role === 'user') {
-        avatarIcon.className = 'fas fa-user';
-    } else {
-        avatarIcon.className = 'fas fa-robot';
-    }
-    avatarDiv.appendChild(avatarIcon);
-    
-    // 创建消息内容包装器
-    const contentWrapper = document.createElement('div');
-    contentWrapper.className = 'message-content-wrapper';
-    
-    // 创建消息内容
-    const contentDiv = document.createElement('div');
-    contentDiv.className = 'message-content';
-    
-    // 组装消息
-    contentWrapper.appendChild(contentDiv);
-    messageDiv.appendChild(avatarDiv);
-    messageDiv.appendChild(contentWrapper);
-    messagesDiv.appendChild(messageDiv);
-    
-    // 如果是AI回复，使用打字效果并渲染markdown
-    if (role === 'assistant') {
-        typeMessageWithMarkdown(content, contentDiv);
-    } else {
-        contentDiv.textContent = content;
-    }
-    
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-}
-
-// 修改打字效果函数以支持markdown
+// 修改打字效果函数
 function typeMessageWithMarkdown(text, element, index = 0) {
-    if (index < text.length) {
-        const currentText = text.substring(0, index + 1);
+    // 首先解码 HTML 实体
+    const decodedText = decodeHTMLEntities(text);
+    
+    if (index < decodedText.length) {
+        const currentText = decodedText.substring(0, index + 1);
         try {
-            // 渲染markdown
+            // 渲染 markdown
             element.innerHTML = chatMd.render(currentText);
             
             // 只在完整的代码块上应用高亮
-            if (index === text.length - 1) {
+            if (index === decodedText.length - 1) {
                 element.querySelectorAll('pre code').forEach((block) => {
-                    // 添加安全处理
-                    const escapedCode = block.textContent
-                        .replace(/&/g, '&amp;')
-                        .replace(/</g, '&lt;')
-                        .replace(/>/g, '&gt;')
-                        .replace(/"/g, '&quot;')
-                        .replace(/'/g, '&#039;');
-                    block.textContent = escapedCode;
-                    
-                    // 应用高亮
+                    // 确保代码块内容是纯文本
+                    const code = block.textContent;
+                    // 重新设置内容并应用高亮
+                    block.textContent = code;
                     hljs.highlightElement(block);
                 });
             }
@@ -200,15 +154,55 @@ function typeMessageWithMarkdown(text, element, index = 0) {
                 messagesDiv.scrollTop = messagesDiv.scrollHeight;
             }
             
-            // 使用 requestAnimationFrame 代替 setTimeout
             requestAnimationFrame(() => {
                 const delay = Math.random() * 30 + 20;
                 setTimeout(() => typeMessageWithMarkdown(text, element, index + 1), delay);
             });
         } catch (error) {
             console.error('Markdown rendering error:', error);
+            // 发生错误时，直接显示原始文本
+            element.textContent = text;
         }
     }
+}
+
+// 修改用户消息显示函数
+function appendMessage(role, content) {
+    const messagesDiv = document.getElementById('chatMessages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${role}`;
+    
+    // 创建头像
+    const avatarDiv = document.createElement('div');
+    avatarDiv.className = 'message-avatar';
+    const avatarIcon = document.createElement('i');
+    avatarIcon.className = `fas fa-${role === 'user' ? 'user' : 'robot'}`;
+    avatarDiv.appendChild(avatarIcon);
+    
+    // 创建消息内容包装器
+    const contentWrapper = document.createElement('div');
+    contentWrapper.className = 'message-content-wrapper';
+    
+    // 创建消息内容
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'message-content';
+    
+    // 如果是AI回复，使用打字效果并渲染markdown
+    if (role === 'assistant') {
+        typeMessageWithMarkdown(content, contentDiv);
+    } else {
+        // 对用户消息也进行解码
+        contentDiv.textContent = decodeHTMLEntities(content);
+    }
+    
+    // 组装消息
+    contentWrapper.appendChild(contentDiv);
+    messageDiv.appendChild(avatarDiv);
+    messageDiv.appendChild(contentWrapper);
+    messagesDiv.appendChild(messageDiv);
+    
+    // 滚动到底部
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
 // 发送消息到服务器
@@ -292,4 +286,25 @@ function getCookie(name) {
         }
     }
     return cookieValue;
+}
+
+// HTML 解码函数保持不变
+function decodeHTMLEntities(text) {
+    if (!text) return '';
+    
+    const textArea = document.createElement('textarea');
+    textArea.innerHTML = text;
+    let decodedText = textArea.value;
+    
+    // 额外的解码处理
+    decodedText = decodedText
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#039;/g, "'")
+        .replace(/&#x27;/g, "'")
+        .replace(/&#x2F;/g, '/');
+    
+    return decodedText;
 } 
