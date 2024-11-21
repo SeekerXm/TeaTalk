@@ -138,7 +138,12 @@ function typeMessageWithMarkdown(text, element, index = 0) {
     // 首先解码 HTML 实体
     const decodedText = decodeHTMLEntities(text);
     
-    if (index < decodedText.length && !isPaused) {
+    if (index < decodedText.length) {
+        // 如果暂停了，就不继续输出
+        if (isPaused) {
+            return;
+        }
+
         const currentText = decodedText.substring(0, index + 1);
         try {
             // 渲染 markdown
@@ -172,6 +177,7 @@ function typeMessageWithMarkdown(text, element, index = 0) {
                 messagesDiv.scrollTop = messagesDiv.scrollHeight;
             }
             
+            // 使用 requestAnimationFrame 优化动画性能
             requestAnimationFrame(() => {
                 const delay = Math.random() * 30 + 20;
                 setTimeout(() => typeMessageWithMarkdown(text, element, index + 1), delay);
@@ -184,59 +190,7 @@ function typeMessageWithMarkdown(text, element, index = 0) {
     }
 }
 
-// 添加暂停/继续功能
-function toggleTyping() {
-    isPaused = !isPaused;
-    updatePauseButton();
-    
-    if (!isPaused && currentTypingTask) {
-        // 继续输出
-        typeMessageWithMarkdown(
-            currentTypingTask.text,
-            currentTypingTask.element,
-            currentTypingTask.index
-        );
-    }
-}
-
-// 显示暂停按钮
-function showPauseButton() {
-    const chatInput = document.querySelector('.chat-input');
-    let pauseButton = document.querySelector('.pause-button');
-    
-    if (!pauseButton) {
-        pauseButton = document.createElement('button');
-        pauseButton.className = 'pause-button';
-        pauseButton.innerHTML = '<i class="fas fa-pause"></i>';
-        pauseButton.onclick = toggleTyping;
-        chatInput.insertBefore(pauseButton, chatInput.firstChild);
-    }
-    
-    updatePauseButton();
-}
-
-// 隐藏暂停按钮
-function hidePauseButton() {
-    const pauseButton = document.querySelector('.pause-button');
-    if (pauseButton) {
-        pauseButton.remove();
-    }
-    isPaused = false;
-    currentTypingTask = null;
-}
-
-// 更新暂停按钮状态
-function updatePauseButton() {
-    const pauseButton = document.querySelector('.pause-button');
-    if (pauseButton) {
-        pauseButton.innerHTML = isPaused ? 
-            '<i class="fas fa-play"></i>' : 
-            '<i class="fas fa-pause"></i>';
-        pauseButton.title = isPaused ? '继续' : '暂停';
-    }
-}
-
-// 修改用户消息显示函数
+// 修改 appendMessage 函数
 function appendMessage(role, content) {
     const messagesDiv = document.getElementById('chatMessages');
     const messageDiv = document.createElement('div');
@@ -257,8 +211,12 @@ function appendMessage(role, content) {
     const contentDiv = document.createElement('div');
     contentDiv.className = 'message-content';
     
-    // 如果是AI回复，使用打字效果并渲染markdown
+    // 如果是AI回复，显示暂停按钮并使用打字效果
     if (role === 'assistant') {
+        // 重置暂停状态
+        isPaused = false;
+        // 显示暂停按钮
+        showPauseButton();
         typeMessageWithMarkdown(content, contentDiv);
     } else {
         contentDiv.textContent = decodeHTMLEntities(content);
@@ -278,6 +236,62 @@ function appendMessage(role, content) {
     
     // 滚动到底部
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+// 修改暂停/继续功能
+function toggleTyping() {
+    isPaused = !isPaused;
+    updatePauseButton();
+    
+    if (!isPaused && currentTypingTask) {
+        // 继续输出
+        typeMessageWithMarkdown(
+            currentTypingTask.text,
+            currentTypingTask.element,
+            currentTypingTask.index
+        );
+    }
+}
+
+// 修改显示暂停按钮函数
+function showPauseButton() {
+    const chatInput = document.querySelector('.chat-input');
+    let pauseButton = document.querySelector('.pause-button');
+    
+    if (!pauseButton) {
+        pauseButton = document.createElement('button');
+        pauseButton.className = 'pause-button';
+        pauseButton.title = '暂停';
+        pauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+        pauseButton.onclick = toggleTyping;
+        chatInput.insertBefore(pauseButton, chatInput.firstChild);
+    }
+    
+    updatePauseButton();
+}
+
+// 修改更新暂停按钮状态函数
+function updatePauseButton() {
+    const pauseButton = document.querySelector('.pause-button');
+    if (pauseButton) {
+        if (isPaused) {
+            pauseButton.innerHTML = '<i class="fas fa-play"></i>';
+            pauseButton.title = '继续';
+        } else {
+            pauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+            pauseButton.title = '暂停';
+        }
+    }
+}
+
+// 隐藏暂停按钮
+function hidePauseButton() {
+    const pauseButton = document.querySelector('.pause-button');
+    if (pauseButton) {
+        pauseButton.remove();
+    }
+    isPaused = false;
+    currentTypingTask = null;
 }
 
 // 修改复制功能

@@ -744,7 +744,7 @@ body {
     background: #ffffff;
 }
 
-/* 输入组合样式 */
+/* 输入���合样式 */
 #authModal .input-group {
     border-radius: 0.5rem;
     background: #f9fafb;
@@ -913,50 +913,62 @@ body {
     }
 }
 
-/* 暂停按钮样式 */
-.pause-button {
-    position: absolute;
-    top: -2.5rem;
-    left: 50%;  /* 水平居中 */
-    transform: translateX(-50%);  /* 确保完全居中 */
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    color: #6c757d;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 10;
+/* 暂停按钮样式 - 使用更具体的选择器提高优先级 */
+.chat-input .pause-button,
+.chat-container .chat-input .pause-button {
+    position: absolute !important;  /* 使用 !important 确保位置正确 */
+    top: -2.5rem !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    color: #6c757d !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    z-index: 1050 !important;  /* 提高 z-index 确保按钮显示在最上层 */
+    padding: 0 !important;  /* 重置内边距 */
+    margin: 0 !important;  /* 重置外边距 */
 }
 
-.pause-button:hover {
-    transform: translateX(-50%) scale(1.1);  /* 保持水平居中的同时添加缩放效果 */
-    background: #f8f9fa;
-    color: #2563eb;
-    border-color: rgba(37, 99, 235, 0.2);
+/* 悬浮效果 */
+.chat-input .pause-button:hover,
+.chat-container .chat-input .pause-button:hover {
+    transform: translateX(-50%) scale(1.1) !important;
+    background: #f8f9fa !important;
+    color: #2563eb !important;
+    border-color: rgba(37, 99, 235, 0.2) !important;
 }
 
-.pause-button:active {
-    transform: translateX(-50%) scale(0.95);  /* 保持水平居中的同时添加按下效果 */
+/* 点击效果 */
+.chat-input .pause-button:active,
+.chat-container .chat-input .pause-button:active {
+    transform: translateX(-50%) scale(0.95) !important;
 }
 
-/* 确保输入框容器有相对定位 */
+/* 确保输入框容器有正确的定位 */
 .chat-input {
-    position: relative;
+    position: relative !important;
+    padding: 1rem !important;
+    background: #ffffff !important;
+    border-top: 1px solid rgba(229, 231, 235, 0.5) !important;
+    box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.05) !important;
 }
 
 /* 移动端适配 */
 @media (max-width: 768px) {
-    .pause-button {
-        top: -2rem;
-        width: 28px;
-        height: 28px;
-        font-size: 0.875rem;
+    .chat-input .pause-button,
+    .chat-container .chat-input .pause-button {
+        top: -2rem !important;
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 0.875rem !important;
     }
 }
 
