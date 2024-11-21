@@ -447,7 +447,7 @@ body {
     background-color: #f6f8fa;
 }
 
-/* 用户操作按钮样式 */
+/* 用户按钮样式 */
 .info-actions {
     display: flex;
     gap: 10px;
@@ -808,7 +808,7 @@ body {
     cursor: not-allowed;
 }
 
-/* 提交按钮样式 */
+/* 提交按样式 */
 #authModal .btn-primary {
     width: 100%;
     padding: 0.75rem;
@@ -965,7 +965,9 @@ body {
     position: absolute;
     left: 0;
     bottom: -28px;  /* 位于消息气泡下方 */
-    padding: 4px 8px;
+    width: 48px;    /* 固定宽度 */
+    height: 24px;   /* 固定高度 */
+    padding: 0;     /* 移除内边距 */
     border: none;
     background: #ffffff;
     color: #6c757d;
@@ -974,16 +976,13 @@ body {
     cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: center;  /* 内容居中 */
     gap: 4px;
     border-radius: 4px;
     font-size: 0.75rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     z-index: 10;
-}
-
-/* 确保消息内容有相对定位 */
-.message-content {
-    position: relative;
+    white-space: nowrap;  /* 防止文字换行 */
 }
 
 /* 用户消息的复制按钮位置调整 */
@@ -1034,23 +1033,57 @@ body {
     margin-right: auto;
     font-size: 0.95rem;
     line-height: 1.5;
-    display: flex;  /* 添加 flex 布局 */
-    align-items: center;  /* 垂直居中 */
+    display: block;  /* 改为 block 布局，而不是 flex */
     min-height: 40px;
+    position: relative;  /* 保持相对定位 */
+    padding: 0.75rem 1rem;
 }
 
-/* 确保 AI 消息中段落的边距 - 使用更具体的选择器提高优先级 */
-.message.assistant .message-content p,
-.message.assistant .message-content-wrapper .message-content p {
+/* 调整 AI 消息中段落的样式 */
+.message.assistant .message-content p {
     display: block;
-    margin: -0.1rem 0 !important;  /* 使用 !important 确保覆盖其他样式 */
+    margin: -0.1rem 0 !important;
 }
 
-/* 保持其他特殊内容的边距不变 */
-.message.assistant .message-content pre,
-.message.assistant .message-content blockquote,
-.message.assistant .message-content ul,
-.message.assistant .message-content ol {
-    margin: 0.5rem 0;
+/* 复制按钮样式 */
+.message .copy-button {
+    position: absolute;
+    left: 0;
+    bottom: -28px;
+    width: 48px;
+    height: 24px;
+    padding: 0;
+    border: none;
+    background: #ffffff;
+    color: #6c757d;
+    opacity: 0;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    white-space: nowrap;
+}
+
+/* 用户消息的复制按钮位置调整 */
+.message.user .copy-button {
+    right: 0;
+    left: auto;
+}
+
+/* 悬浮效果 */
+.message:hover .copy-button {
+    opacity: 1;
+}
+
+.message .copy-button:hover {
+    background: #f8f9fa;
+    color: #007bff;
+    transform: translateY(-1px);
 }
   
