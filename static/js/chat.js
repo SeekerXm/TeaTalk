@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // 如果内容为空，恢复初始高度
                 this.style.height = '24px';
             } else {
-                // 如果有内容，根据内容调整高度
+                // 如果有内容，根据内容调���高度
                 autoResizeTextarea(this);
             }
         });
@@ -126,29 +126,33 @@ function handleKeyPress(event) {
     }
 }
 
+// 添加暂停状态变量
+let isPaused = false;
+let currentTypingTask = null;
+
 // 修改打字效果函数
 function typeMessageWithMarkdown(text, element, index = 0) {
+    // 保存当前任务的引用
+    currentTypingTask = { text, element, index };
+    
     // 首先解码 HTML 实体
     const decodedText = decodeHTMLEntities(text);
     
-    if (index < decodedText.length) {
+    if (index < decodedText.length && !isPaused) {
         const currentText = decodedText.substring(0, index + 1);
         try {
-            // 渲染 markdown
             element.innerHTML = chatMd.render(currentText);
             
-            // 只在完整的代码块上应用高亮
             if (index === decodedText.length - 1) {
                 element.querySelectorAll('pre code').forEach((block) => {
-                    // 确保代码块内容是纯文本
                     const code = block.textContent;
-                    // 重新设置内容并应用高亮
                     block.textContent = code;
                     hljs.highlightElement(block);
                 });
+                // 输出完成，隐藏暂停按钮
+                hidePauseButton();
             }
             
-            // 滚动到底部
             const messagesDiv = document.getElementById('chatMessages');
             if (messagesDiv) {
                 messagesDiv.scrollTop = messagesDiv.scrollHeight;
@@ -160,9 +164,61 @@ function typeMessageWithMarkdown(text, element, index = 0) {
             });
         } catch (error) {
             console.error('Markdown rendering error:', error);
-            // 发生错误时，直接显示原始文本
             element.textContent = text;
+            hidePauseButton();
         }
+    }
+}
+
+// 添加暂停/继续功能
+function toggleTyping() {
+    isPaused = !isPaused;
+    updatePauseButton();
+    
+    if (!isPaused && currentTypingTask) {
+        // 继续输出
+        typeMessageWithMarkdown(
+            currentTypingTask.text,
+            currentTypingTask.element,
+            currentTypingTask.index
+        );
+    }
+}
+
+// 显示暂停按钮
+function showPauseButton() {
+    const chatInput = document.querySelector('.chat-input');
+    let pauseButton = document.querySelector('.pause-button');
+    
+    if (!pauseButton) {
+        pauseButton = document.createElement('button');
+        pauseButton.className = 'pause-button';
+        pauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+        pauseButton.onclick = toggleTyping;
+        chatInput.insertBefore(pauseButton, chatInput.firstChild);
+    }
+    
+    updatePauseButton();
+}
+
+// 隐藏暂停按钮
+function hidePauseButton() {
+    const pauseButton = document.querySelector('.pause-button');
+    if (pauseButton) {
+        pauseButton.remove();
+    }
+    isPaused = false;
+    currentTypingTask = null;
+}
+
+// 更新暂停按钮状态
+function updatePauseButton() {
+    const pauseButton = document.querySelector('.pause-button');
+    if (pauseButton) {
+        pauseButton.innerHTML = isPaused ? 
+            '<i class="fas fa-play"></i>' : 
+            '<i class="fas fa-pause"></i>';
+        pauseButton.title = isPaused ? '继续' : '暂停';
     }
 }
 
@@ -187,8 +243,9 @@ function appendMessage(role, content) {
     const contentDiv = document.createElement('div');
     contentDiv.className = 'message-content';
     
-    // 如果是AI回复，使用打字效果并渲染markdown
+    // 如果是AI回复，显示暂停按钮
     if (role === 'assistant') {
+        showPauseButton();
         typeMessageWithMarkdown(content, contentDiv);
     } else {
         // 对用户消息也进行解码

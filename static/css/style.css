@@ -447,7 +447,7 @@ body {
     background-color: #f6f8fa;
 }
 
-/* 用户��息操作按钮样式 */
+/* 用户操作按钮样式 */
 .info-actions {
     display: flex;
     gap: 10px;
@@ -910,6 +910,53 @@ body {
     
     #authModal .nav-link {
         font-size: 1rem;
+    }
+}
+
+/* 暂停按钮样式 */
+.pause-button {
+    position: absolute;
+    top: -2.5rem;
+    left: 50%;  /* 水平居中 */
+    transform: translateX(-50%);  /* 确保完全居中 */
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.pause-button:hover {
+    transform: translateX(-50%) scale(1.1);  /* 保持水平居中的同时添加缩放效果 */
+    background: #f8f9fa;
+    color: #2563eb;
+    border-color: rgba(37, 99, 235, 0.2);
+}
+
+.pause-button:active {
+    transform: translateX(-50%) scale(0.95);  /* 保持水平居中的同时添加按下效果 */
+}
+
+/* 确保输入框容器有相对定位 */
+.chat-input {
+    position: relative;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .pause-button {
+        top: -2rem;
+        width: 28px;
+        height: 28px;
+        font-size: 0.875rem;
     }
 }
   
