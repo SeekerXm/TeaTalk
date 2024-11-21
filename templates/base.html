@@ -116,7 +116,8 @@
                                 <textarea id="messageInput" 
                                          class="form-control" 
                                          placeholder="输入消息..." 
-                                         onkeypress="handleKeyPress(event)"></textarea>
+                                         onkeypress="handleKeyPress(event)"
+                                         spellcheck="false"></textarea>  <!-- 添加 spellcheck="false" -->
                                 <button class="btn btn-send" onclick="handleSendMessage()">
                                     <i class="fas fa-paper-plane"></i>
                                 </button>
