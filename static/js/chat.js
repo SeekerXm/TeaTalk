@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // 如果内容为空，恢复初始高度
                 this.style.height = '24px';
             } else {
-                // 如果有内容，根据内容调高度
+                // 如果有内容，根据内容调度
                 autoResizeTextarea(this);
             }
         });
@@ -438,8 +438,37 @@ function decodeHTMLEntities(text) {
     return decodedText;
 }
 
-// 添加邮箱验证函数
+// 修改输入框验证样式函数
+function setInputValidation(input, isValid, message = '', showMessage = true) {
+    if (isValid) {
+        input.classList.remove('is-invalid');
+        input.classList.add('is-valid');
+        // 移除错误提示
+        const feedbackElement = input.parentElement.querySelector('.invalid-feedback');
+        if (feedbackElement) {
+            feedbackElement.style.display = 'none';
+        }
+    } else {
+        input.classList.remove('is-valid');
+        input.classList.add('is-invalid');
+        // 只在需要显示消息时添加反馈元素
+        if (showMessage && message) {
+            let feedbackElement = input.parentElement.querySelector('.invalid-feedback');
+            if (!feedbackElement) {
+                feedbackElement = document.createElement('div');
+                feedbackElement.className = 'invalid-feedback';
+                input.parentElement.appendChild(feedbackElement);
+            }
+            feedbackElement.textContent = message;
+            feedbackElement.style.display = 'block';
+        }
+    }
+}
+
+// 修改邮箱验证函数
 function validateEmail(email) {
+    if (!email) return false;
+    
     // 支持的邮箱后缀
     const allowedDomains = ['qq.com', '126.com', '163.com', 'sina.com'];
     // 邮箱格式正则表达式
@@ -452,8 +481,10 @@ function validateEmail(email) {
     return allowedDomains.includes(domain);
 }
 
-// 添加密码验证函数
+// 修改密码验证函数
 function validatePassword(password) {
+    if (!password) return false;
+    
     // 至少包含三类字符
     let types = 0;
     if (/[A-Z]/.test(password)) types++; // 大写字母
@@ -464,29 +495,27 @@ function validatePassword(password) {
     return types >= 3;
 }
 
-// 添加输入框验证样式
-function setInputValidation(input, isValid) {
-    if (isValid) {
-        input.classList.remove('is-invalid');
-        input.classList.add('is-valid');
-    } else {
-        input.classList.remove('is-valid');
-        input.classList.add('is-invalid');
-    }
-}
-
-// 在 DOMContentLoaded 事件中添加表单验证
+// 修改表单验证事件监听
 document.addEventListener('DOMContentLoaded', function() {
-    // 登录表单邮箱验证
+    // 登录表单验证（保持显示消息）
     const loginEmail = document.getElementById('loginEmail');
+    const loginPassword = document.getElementById('loginPassword');
+    
     if (loginEmail) {
         loginEmail.addEventListener('input', function() {
             const isValid = validateEmail(this.value);
-            setInputValidation(this, isValid);
+            setInputValidation(this, isValid, '请输入有效的邮箱地址', true);  // 显示消息
         });
     }
     
-    // 注册表单验证
+    if (loginPassword) {
+        loginPassword.addEventListener('input', function() {
+            const isValid = this.value.length > 0;
+            setInputValidation(this, isValid, '请输入密码', true);  // 显示消息
+        });
+    }
+    
+    // 注册表单验证（不显示消息）
     const registerEmail = document.getElementById('registerEmail');
     const registerPassword = document.getElementById('registerPassword');
     const registerConfirmPassword = document.getElementById('registerConfirmPassword');
@@ -494,19 +523,19 @@ document.addEventListener('DOMContentLoaded', function() {
     if (registerEmail) {
         registerEmail.addEventListener('input', function() {
             const isValid = validateEmail(this.value);
-            setInputValidation(this, isValid);
+            setInputValidation(this, isValid, '', false);  // 不显示消息
         });
     }
     
     if (registerPassword) {
         registerPassword.addEventListener('input', function() {
             const isValid = validatePassword(this.value);
-            setInputValidation(this, isValid);
+            setInputValidation(this, isValid, '', false);  // 不显示消息，只显示红色边框
             
             // 同时验证确认密码
             if (registerConfirmPassword.value) {
-                setInputValidation(registerConfirmPassword, 
-                    this.value === registerConfirmPassword.value && isValid);
+                const confirmIsValid = this.value === registerConfirmPassword.value && isValid;
+                setInputValidation(registerConfirmPassword, confirmIsValid, '', false);
             }
         });
     }
@@ -515,11 +544,11 @@ document.addEventListener('DOMContentLoaded', function() {
         registerConfirmPassword.addEventListener('input', function() {
             const isValid = this.value === registerPassword.value && 
                           validatePassword(registerPassword.value);
-            setInputValidation(this, isValid);
+            setInputValidation(this, isValid, '', false);  // 不显示消息，只显示红色边框
         });
     }
     
-    // 找回密码表单验证
+    // 找回密码表单验证（不显示消息）
     const resetEmail = document.getElementById('resetEmail');
     const resetPassword = document.getElementById('resetPassword');
     const resetConfirmPassword = document.getElementById('resetConfirmPassword');
@@ -527,19 +556,19 @@ document.addEventListener('DOMContentLoaded', function() {
     if (resetEmail) {
         resetEmail.addEventListener('input', function() {
             const isValid = validateEmail(this.value);
-            setInputValidation(this, isValid);
+            setInputValidation(this, isValid, '', false);  // 不显示消息
         });
     }
     
     if (resetPassword) {
         resetPassword.addEventListener('input', function() {
             const isValid = validatePassword(this.value);
-            setInputValidation(this, isValid);
+            setInputValidation(this, isValid, '', false);  // 不显示消息，只显示红色边框
             
             // 同时验证确认密码
             if (resetConfirmPassword.value) {
-                setInputValidation(resetConfirmPassword, 
-                    this.value === resetConfirmPassword.value && isValid);
+                const confirmIsValid = this.value === resetConfirmPassword.value && isValid;
+                setInputValidation(resetConfirmPassword, confirmIsValid, '', false);
             }
         });
     }
@@ -548,7 +577,32 @@ document.addEventListener('DOMContentLoaded', function() {
         resetConfirmPassword.addEventListener('input', function() {
             const isValid = this.value === resetPassword.value && 
                           validatePassword(resetPassword.value);
-            setInputValidation(this, isValid);
+            setInputValidation(this, isValid, '', false);  // 不显示消息，只显示红色边框
+        });
+    }
+
+    // 修改密码表单验证
+    const newPassword = document.getElementById('newPassword');
+    const confirmNewPassword = document.getElementById('confirmNewPassword');
+    
+    if (newPassword) {
+        newPassword.addEventListener('input', function() {
+            const isValid = validatePassword(this.value);
+            setInputValidation(this, isValid, '', false);  // 不显示消息，只显示红色边框
+            
+            // 同时验证确认密码
+            if (confirmNewPassword.value) {
+                const confirmIsValid = this.value === confirmNewPassword.value && isValid;
+                setInputValidation(confirmNewPassword, confirmIsValid, '', false);
+            }
+        });
+    }
+    
+    if (confirmNewPassword) {
+        confirmNewPassword.addEventListener('input', function() {
+            const isValid = this.value === newPassword.value && 
+                          validatePassword(newPassword.value);
+            setInputValidation(this, isValid, '', false);  // 不显示消息，只显示红色边框
         });
     }
 }); 
