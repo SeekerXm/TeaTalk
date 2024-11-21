@@ -1024,4 +1024,33 @@ body {
     85% { opacity: 1; transform: translate(-50%, 0); }
     100% { opacity: 0; transform: translate(-50%, -10px); }
 }
+
+/* 修改 AI 消息内容样式 */
+.message.assistant .message-content {
+    background: #f8f9fa;
+    color: #1f2937;
+    border: 1px solid #e5e7eb;
+    border-radius: 0 0.5rem 0.5rem 0.5rem;
+    margin-right: auto;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    display: flex;  /* 添加 flex 布局 */
+    align-items: center;  /* 垂直居中 */
+    min-height: 40px;
+}
+
+/* 确保 AI 消息中段落的边距 - 使用更具体的选择器提高优先级 */
+.message.assistant .message-content p,
+.message.assistant .message-content-wrapper .message-content p {
+    display: block;
+    margin: -0.1rem 0 !important;  /* 使用 !important 确保覆盖其他样式 */
+}
+
+/* 保持其他特殊内容的边距不变 */
+.message.assistant .message-content pre,
+.message.assistant .message-content blockquote,
+.message.assistant .message-content ul,
+.message.assistant .message-content ol {
+    margin: 0.5rem 0;
+}
   
