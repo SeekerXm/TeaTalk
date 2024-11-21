@@ -959,4 +959,69 @@ body {
         font-size: 0.875rem;
     }
 }
+
+/* 复制按钮样式 */
+.message .copy-button {
+    position: absolute;
+    left: 0;
+    bottom: -28px;  /* 位于消息气泡下方 */
+    padding: 4px 8px;
+    border: none;
+    background: #ffffff;
+    color: #6c757d;
+    opacity: 0;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+/* 确保消息内容有相对定位 */
+.message-content {
+    position: relative;
+}
+
+/* 用户消息的复制按钮位置调整 */
+.message.user .copy-button {
+    right: 0;
+    left: auto;
+}
+
+/* 悬浮效果 */
+.message:hover .copy-button {
+    opacity: 1;
+}
+
+.message .copy-button:hover {
+    background: #f8f9fa;
+    color: #007bff;
+    transform: translateY(-1px);
+}
+
+/* 复制成功提示框样式 */
+.copy-tooltip {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    z-index: 1000;
+    animation: tooltipFadeInOut 1.5s ease forwards;
+}
+
+@keyframes tooltipFadeInOut {
+    0% { opacity: 0; transform: translate(-50%, 10px); }
+    15% { opacity: 1; transform: translate(-50%, 0); }
+    85% { opacity: 1; transform: translate(-50%, 0); }
+    100% { opacity: 0; transform: translate(-50%, -10px); }
+}
   

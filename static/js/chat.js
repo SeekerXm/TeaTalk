@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // 如果内容为空，恢复初始高度
                 this.style.height = '24px';
             } else {
-                // 如果有内容，根据内容调���高度
+                // 如果有内容，根据内容调高度
                 autoResizeTextarea(this);
             }
         });
@@ -141,18 +141,32 @@ function typeMessageWithMarkdown(text, element, index = 0) {
     if (index < decodedText.length && !isPaused) {
         const currentText = decodedText.substring(0, index + 1);
         try {
+            // 渲染 markdown
             element.innerHTML = chatMd.render(currentText);
             
+            // 在完成渲染后添加复制按钮
             if (index === decodedText.length - 1) {
+                // 创建复制按钮
+                const copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.innerHTML = '<i class="fas fa-copy"></i> 复制';
+                copyButton.onclick = () => copyMessageContent(element);
+                
+                // 添加复制按钮到消息内容
+                element.appendChild(copyButton);
+                
+                // 应用代码高亮
                 element.querySelectorAll('pre code').forEach((block) => {
                     const code = block.textContent;
                     block.textContent = code;
                     hljs.highlightElement(block);
                 });
+                
                 // 输出完成，隐藏暂停按钮
                 hidePauseButton();
             }
             
+            // 滚动到底部
             const messagesDiv = document.getElementById('chatMessages');
             if (messagesDiv) {
                 messagesDiv.scrollTop = messagesDiv.scrollHeight;
@@ -243,13 +257,17 @@ function appendMessage(role, content) {
     const contentDiv = document.createElement('div');
     contentDiv.className = 'message-content';
     
-    // 如果是AI回复，显示暂停按钮
+    // 如果是AI回复，使用打字效果并渲染markdown
     if (role === 'assistant') {
-        showPauseButton();
         typeMessageWithMarkdown(content, contentDiv);
     } else {
-        // 对用户消息也进行解码
         contentDiv.textContent = decodeHTMLEntities(content);
+        // 为用户消息添加复制按钮
+        const copyButton = document.createElement('button');
+        copyButton.className = 'copy-button';
+        copyButton.innerHTML = '<i class="fas fa-copy"></i> 复制';
+        copyButton.onclick = () => copyMessageContent(contentDiv);
+        contentDiv.appendChild(copyButton);
     }
     
     // 组装消息
@@ -260,6 +278,46 @@ function appendMessage(role, content) {
     
     // 滚动到底部
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+// 修改复制功能
+function copyMessageContent(contentElement) {
+    // 获取消息内容（不包括复制按钮的文本）
+    let content = '';
+    
+    // 遍历所有子节点，排除复制按钮
+    contentElement.childNodes.forEach(node => {
+        if (!node.classList || !node.classList.contains('copy-button')) {
+            content += node.textContent;
+        }
+    });
+    
+    // 复制到剪贴板
+    navigator.clipboard.writeText(content.trim()).then(() => {
+        showCopyTooltip('复制成功');
+    }).catch(() => {
+        showCopyTooltip('复制失败，请重试');
+    });
+}
+
+// 显示复制提示
+function showCopyTooltip(message) {
+    // 移除现有提示
+    const existingTooltip = document.querySelector('.copy-tooltip');
+    if (existingTooltip) {
+        existingTooltip.remove();
+    }
+    
+    // 创建新提示
+    const tooltip = document.createElement('div');
+    tooltip.className = 'copy-tooltip';
+    tooltip.textContent = message;
+    document.body.appendChild(tooltip);
+    
+    // 自动移除提示
+    setTimeout(() => {
+        tooltip.remove();
+    }, 1500);
 }
 
 // 发送消息到服务器
