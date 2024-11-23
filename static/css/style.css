@@ -932,7 +932,7 @@ body {
     cursor: pointer !important;
     transition: all 0.2s ease !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-    z-index: 1050 !important;  /* 提高 z-index 确���按钮显示在最上层 */
+    z-index: 1050 !important;  /* 提高 z-index 确按钮显示在最上层 */
     padding: 0 !important;  /* 重置内边距 */
     margin: 0 !important;  /* 重置外边距 */
 }
@@ -1167,7 +1167,7 @@ body {
     display: block;
 }
 
-/* 输入组中的验证样式 */
+/* 输入组中的证样式 */
 .input-group > .form-control:not(:focus).is-invalid,
 .input-group > .form-control:not(:focus).is-valid {
     z-index: 3;
@@ -1254,5 +1254,64 @@ body {
     #alertModal .alert-content p {
         font-size: 0.9rem;
     }
+}
+
+/* 加载动画样式 */
+#loadingSpinner {
+    margin-bottom: 1.5rem;  /* 与其他消息保持一致的间距 */
+    max-width: 85%;  /* 与其他消息保持一致的宽度 */
+    align-self: flex-start;  /* 靠左对齐 */
+}
+
+/* 输入框样式优化 */
+.chat-input textarea {
+    min-height: 24px;
+    max-height: 150px;
+    height: 24px;  /* 设置初始高度 */
+    resize: none;
+    transition: height 0.15s ease;  /* 添加更快的高度过渡效果 */
+    overflow-y: hidden;  /* 默认隐藏滚动条 */
+    box-sizing: border-box;  /* 确保padding不影响高度计算 */
+    line-height: 1.5;  /* 设置行高 */
+    padding: 0.25rem 1rem;  /* 调整内边距 */
+}
+
+/* 当内容超过最大高度时显示滚动条 */
+.chat-input textarea.overflow {
+    overflow-y: auto;
+}
+
+/* 加载动画样式 */
+.typing-indicator {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: #f8f9fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 0 0.5rem 0.5rem 0.5rem;
+    min-height: 40px;
+}
+
+.typing-indicator span {
+    width: 6px;
+    height: 6px;
+    background-color: #6b7280;
+    border-radius: 50%;
+    margin: 0 2px;
+    animation: typing 1.4s infinite;
+    opacity: 0.4;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+    0%, 100% { opacity: 0.4; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(-4px); }
 }
   
