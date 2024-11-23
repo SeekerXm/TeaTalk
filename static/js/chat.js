@@ -486,6 +486,7 @@ function appendMessage(role, content) {
     
     // 如果是AI回复，使用打字效果并渲染markdown
     if (role === 'assistant') {
+        showPauseButton();  // 显示暂停按钮
         typeMessageWithMarkdown(content, contentDiv);
     } else {
         contentDiv.textContent = content;
@@ -509,7 +510,15 @@ function appendMessage(role, content) {
 
 // 添加打字效果函数
 function typeMessageWithMarkdown(text, element, index = 0) {
+    // 保存当前任务的引用
+    currentTypingTask = { text, element, index };
+    
     if (index < text.length) {
+        // 如果暂停了，就不继续输出
+        if (isPaused) {
+            return;
+        }
+
         const currentText = text.substring(0, index + 1);
         try {
             // 渲染 markdown
@@ -532,6 +541,9 @@ function typeMessageWithMarkdown(text, element, index = 0) {
                     block.textContent = code;
                     hljs.highlightElement(block);
                 });
+                
+                // 输出完成，隐藏暂停按钮
+                hidePauseButton();
             }
             
             // 滚动到底部
@@ -547,7 +559,11 @@ function typeMessageWithMarkdown(text, element, index = 0) {
         } catch (error) {
             console.error('Markdown rendering error:', error);
             element.textContent = text;
+            hidePauseButton();  // 确保在出错时也隐藏暂停按钮
         }
+    } else {
+        // 输出完成，隐藏暂停按钮
+        hidePauseButton();
     }
 }
 
@@ -626,6 +642,66 @@ function adjustTextareaHeight(textarea) {
         textarea.style.overflowY = 'auto';
     } else {
         textarea.style.overflowY = 'hidden';
+    }
+}
+
+// 添加暂停状态变量
+let isPaused = false;
+let currentTypingTask = null;
+
+// 添加暂停/继续功能
+function toggleTyping() {
+    isPaused = !isPaused;
+    updatePauseButton();
+    
+    if (!isPaused && currentTypingTask) {
+        // 继续输出
+        typeMessageWithMarkdown(
+            currentTypingTask.text,
+            currentTypingTask.element,
+            currentTypingTask.index
+        );
+    }
+}
+
+// 显示暂停按钮
+function showPauseButton() {
+    const chatInput = document.querySelector('.chat-input');
+    let pauseButton = document.querySelector('.pause-button');
+    
+    if (!pauseButton) {
+        pauseButton = document.createElement('button');
+        pauseButton.className = 'pause-button';
+        pauseButton.title = '暂停';
+        pauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+        pauseButton.onclick = toggleTyping;
+        chatInput.insertBefore(pauseButton, chatInput.firstChild);
+    }
+    
+    updatePauseButton();
+}
+
+// 隐藏暂停按钮
+function hidePauseButton() {
+    const pauseButton = document.querySelector('.pause-button');
+    if (pauseButton) {
+        pauseButton.remove();
+    }
+    isPaused = false;
+    currentTypingTask = null;
+}
+
+// 更新暂停按钮状态
+function updatePauseButton() {
+    const pauseButton = document.querySelector('.pause-button');
+    if (pauseButton) {
+        if (isPaused) {
+            pauseButton.innerHTML = '<i class="fas fa-play"></i>';
+            pauseButton.title = '继续';
+        } else {
+            pauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+            pauseButton.title = '暂停';
+        }
     }
 }
 
