@@ -154,6 +154,48 @@ document.addEventListener('DOMContentLoaded', function() {
             adjustTextareaHeight(this);
         });
     }
+
+    // 修改密码表单提交处理
+    const changePasswordForm = document.getElementById('changePasswordForm');
+    if (changePasswordForm) {
+        changePasswordForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // 检查用户状态
+            if (!checkUserStatus()) {
+                showAlertModal('您的账号已被封禁，无法修改密码', 'danger');
+                // 关闭修改密码模态框
+                const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
+                if (modal) {
+                    modal.hide();
+                }
+                return;
+            }
+            
+            // ... 其他表单提交代码 ...
+        });
+    }
+
+    // 监听设置模态框的显示事件
+    const settingsModal = document.getElementById('settingsModal');
+    if (settingsModal) {
+        settingsModal.addEventListener('show.bs.modal', function() {
+            // 每次打开设置面板时检查用户状态
+            checkUserStatus();
+        });
+    }
+
+    // 监听修改密码模态框的显示事件
+    const changePasswordModal = document.getElementById('changePasswordModal');
+    if (changePasswordModal) {
+        changePasswordModal.addEventListener('show.bs.modal', function(e) {
+            // 在模态框打开前检查用户状态
+            if (!checkUserStatus()) {
+                e.preventDefault();
+                showAlertModal('您的账号已被封禁，无法修改密码', 'danger');
+            }
+        });
+    }
 });
 
 // 添加邮箱验证函数
@@ -301,13 +343,24 @@ async function handleSendMessage() {
     }
 }
 
-// 添加用户状态检查函数
+// 修改用户状态检查函数
 function checkUserStatus() {
     const userInfo = document.querySelector('.user-info');
     if (userInfo) {
         const statusBadge = userInfo.querySelector('.badge.bg-danger');
         // 检查是否存在封禁状态的徽章
         if (statusBadge && statusBadge.textContent.includes('封禁')) {
+            // 找到修改密码按钮并禁用
+            const changePasswordBtn = document.querySelector('[data-bs-target="#changePasswordModal"]');
+            if (changePasswordBtn) {
+                changePasswordBtn.disabled = true;
+                changePasswordBtn.classList.add('disabled');
+                changePasswordBtn.style.opacity = '0.5';
+                changePasswordBtn.style.cursor = 'not-allowed';
+                // 移除模态框触发器
+                changePasswordBtn.removeAttribute('data-bs-target');
+                changePasswordBtn.removeAttribute('data-bs-toggle');
+            }
             return false;
         }
     }
@@ -532,7 +585,7 @@ function typeMessageWithMarkdown(text, element, index = 0) {
                 copyButton.innerHTML = '<i class="fas fa-copy"></i> 复制';
                 copyButton.onclick = () => copyMessageContent(element);
                 
-                // 添加复制按钮到消息内容
+                // ��加复制按钮到消息内容
                 element.appendChild(copyButton);
                 
                 // 应用代码高亮
