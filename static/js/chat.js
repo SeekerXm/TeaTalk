@@ -457,11 +457,15 @@ function getCookie(name) {
     return cookieValue;
 }
 
-// 添加显示提示模态框函数
+// 修改显示提示模态框函数
 function showAlertModal(message, type = 'danger') {
     // 移除可能存在的旧弹窗
     const existingModal = document.getElementById('alertModal');
     if (existingModal) {
+        const bsModal = bootstrap.Modal.getInstance(existingModal);
+        if (bsModal) {
+            bsModal.hide();
+        }
         existingModal.remove();
     }
 
@@ -501,11 +505,24 @@ function showAlertModal(message, type = 'danger') {
 
     // 3秒后自动关闭
     setTimeout(() => {
-        alertModal.hide();
-        // 弹窗关闭后移除DOM
-        setTimeout(() => {
-            document.getElementById('alertModal').remove();
-        }, 500);
+        const modalElement = document.getElementById('alertModal');
+        if (modalElement) {  // 添加检查
+            const bsModal = bootstrap.Modal.getInstance(modalElement);
+            if (bsModal) {
+                bsModal.hide();
+                // 监听隐藏完成事件
+                modalElement.addEventListener('hidden.bs.modal', function() {
+                    if (modalElement && modalElement.parentNode) {  // 再次检查
+                        modalElement.remove();
+                    }
+                });
+            } else {
+                // 如果没有 Modal 实例，直接移除元素
+                if (modalElement.parentNode) {
+                    modalElement.remove();
+                }
+            }
+        }
     }, 3000);
 }
 
@@ -585,7 +602,7 @@ function typeMessageWithMarkdown(text, element, index = 0) {
                 copyButton.innerHTML = '<i class="fas fa-copy"></i> 复制';
                 copyButton.onclick = () => copyMessageContent(element);
                 
-                // ��加复制按钮到消息内容
+                // 加复制按钮到消息内容
                 element.appendChild(copyButton);
                 
                 // 应用代码高亮
