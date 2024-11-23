@@ -711,7 +711,7 @@ body {
     font-weight: 500;
 }
 
-/* 表单容器样式 */
+/* ���单容器样式 */
 #authModal .modal-body {
     padding: 1.5rem;
     background: #ffffff;
@@ -1313,5 +1313,35 @@ body {
 @keyframes typing {
     0%, 100% { opacity: 0.4; transform: translateY(0); }
     50% { opacity: 1; transform: translateY(-4px); }
+}
+
+/* Toast 提示样式 */
+.toast-tip {
+    position: fixed;
+    left: 50%;
+    bottom: 10%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    z-index: 1100;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;  /* 防止遮挡点击 */
+}
+
+.toast-tip.show {
+    opacity: 1;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .toast-tip {
+        bottom: 15%;
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
 }
   

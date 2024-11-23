@@ -551,7 +551,32 @@ function typeMessageWithMarkdown(text, element, index = 0) {
     }
 }
 
-// 添加复制消息内容函数
+// 添加显示 Toast 提示函数
+function showToast(message) {
+    // 移除可能存在的旧提示
+    const existingToast = document.querySelector('.toast-tip');
+    if (existingToast) {
+        existingToast.remove();
+    }
+    
+    // 创建新提示
+    const toast = document.createElement('div');
+    toast.className = 'toast-tip';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    // 触发重绘以启动动画
+    toast.offsetHeight;
+    toast.classList.add('show');
+    
+    // 2秒后移除提示
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 2000);
+}
+
+// 修改复制消息内容函数
 function copyMessageContent(contentElement) {
     // 获取消息内容（不包括复制按钮的文本）
     let content = '';
@@ -565,9 +590,9 @@ function copyMessageContent(contentElement) {
     
     // 复制到剪贴板
     navigator.clipboard.writeText(content.trim()).then(() => {
-        showAlertModal('复制成功', 'success');
+        showToast('已复制');  // 使用新的 Toast 提示
     }).catch(() => {
-        showAlertModal('复制失败，请重试', 'danger');
+        showToast('复制失败');  // 使用新的 Toast 提示
     });
 }
 
