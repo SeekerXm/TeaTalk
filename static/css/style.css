@@ -103,9 +103,15 @@ body {
 
 /* 左侧菜单样式 */
 .settings-menu {
-    width: 200px;
-    border-right: 1px solid #eee;
-    background-color: #f8f9fa;
+    width: 180px;
+    min-width: 180px;
+    max-width: 180px;
+    flex: 0 0 180px;
+    border-right: 1px solid #e5e7eb;
+    background: #f8f9fa;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 .settings-menu .list-group-item {
@@ -138,6 +144,7 @@ body {
 .settings-panel {
     display: none;
     height: 100%;
+    width: 100%;
 }
 
 .settings-panel.active {
@@ -153,7 +160,11 @@ body {
 }
 
 .settings-panel-content {
-    padding: 20px;
+    padding: 0;
+    height: calc(100% - 3rem);
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 /* 户信息样式 */
@@ -180,10 +191,30 @@ body {
     color: #1a1a1a;
 }
 
-/* 公告列表样式 */
-.announcement-item {
-    border-bottom: 1px solid #f0f0f0;
-    transition: all 0.3s ease;
+/* 公告列表样式优化 - 使用更具体的选择器和更高的优先级 */
+@media (max-width: 768px) {
+    .settings-panel-content .announcement-list,
+    .settings-panel.active .announcement-list {
+        padding: 0.3rem !important;
+        margin-left: -12px !important;  /* 使用 !important 确保优先级 */
+    }
+    
+    .settings-panel-content {
+        padding: 0;
+    }
+    
+    .announcement-item {
+        margin: 0;
+        width: 100%;
+    }
+    
+    .announcement-header {
+        padding: 1rem;
+    }
+    
+    .announcement-content.show {
+        padding: 1rem;
+    }
 }
 
 .announcement-header {
@@ -663,7 +694,7 @@ body {
     margin-top: auto;
 }
 
-/* 登录模态框样式 */
+/* 登录模态框样 */
 #authModal .modal-content {
     border: none;
     border-radius: 1rem;
@@ -711,7 +742,7 @@ body {
     font-weight: 500;
 }
 
-/* ���单容器样式 */
+/* 单容器样式 */
 #authModal .modal-body {
     padding: 1.5rem;
     background: #ffffff;
@@ -913,7 +944,7 @@ body {
     }
 }
 
-/* 暂停按钮样式 - 使用更具体的选择器提高优先级 */
+/* 暂停按钮样式 - 使用更具���的选择器提高优先��� */
 .chat-input .pause-button,
 .chat-container .chat-input .pause-button {
     position: absolute !important;  /* 使用 !important 确保位置正确 */
@@ -1173,7 +1204,7 @@ body {
     z-index: 3;
 }
 
-/* 确保验证图标在密码切换按钮的左侧 */
+/* 确保验证图标在密码切换按钮的侧 */
 .input-group > .form-control.is-invalid,
 .input-group > .form-control.is-valid {
     padding-right: calc(2.5em + 0.75rem) !important;
@@ -1276,7 +1307,7 @@ body {
     padding: 0.25rem 1rem;  /* 调整内边距 */
 }
 
-/* 当内容超过最大高度时显示滚动条 */
+/* 当内容超最大高度时显示滚条 */
 .chat-input textarea.overflow {
     overflow-y: auto;
 }
@@ -1342,6 +1373,41 @@ body {
         bottom: 15%;
         font-size: 0.8rem;
         padding: 6px 12px;
+    }
+}
+
+/* 设置面板样式 */
+.settings-panel {
+    display: none;
+    height: 100%;
+    width: 100%;
+}
+
+/* PC端样式 */
+@media (min-width: 769px) {
+    .settings-panel {
+        padding: 1rem;  /* PC端使用1rem内边距 */
+    }
+}
+
+/* 移动端样式 - 使用更高的优先级 */
+@media (max-width: 768px) {
+    .settings-panel {
+        padding: 0.5rem !important;  /* 移动端使用0.5rem内边距，添加!important确保优先级 */
+    }
+    
+    .settings-panel-content {
+        padding: 0;  /* 移除内容区域的内边距 */
+    }
+    
+    .announcement-list {
+        padding: 0;  /* 移除列表的内边距 */
+        margin-left: -18px;  /* 保持左侧负外边距 */
+    }
+    
+    .announcement-item {
+        margin: 0;  /* 移除公告项的外边距 */
+        width: 100%;  /* 确保宽度占满 */
     }
 }
   
