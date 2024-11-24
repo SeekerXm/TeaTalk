@@ -88,7 +88,8 @@ def send_email_code(request):
     """发送邮箱验证码"""
     try:
         email = request.POST.get('email')
-        print(f"收到发送验证码请求 - Email: {email}")
+        action_type = request.POST.get('type')  # 获取操作类型：register 或 reset
+        print(f"收到发送验证码请求 - Email: {email}, Type: {action_type}")
         
         if not email:
             return JsonResponse({'success': False, 'message': '请输入邮箱地址'})
@@ -96,12 +97,35 @@ def send_email_code(request):
         if not validate_email_domain(email):
             return JsonResponse({'success': False, 'message': '不支持的邮箱域名'})
         
+        # 检查操作类型
+        if action_type == 'reset':
+            # 找回密码：检查邮箱是否已注册
+            if not User.objects.filter(email=email).exists():
+                return JsonResponse({'success': False, 'message': '该邮箱未注册'})
+        elif action_type == 'register':
+            # 注册：检查邮箱是否已被注册
+            if User.objects.filter(email=email, email_verified=True).exists():
+                return JsonResponse({'success': False, 'message': '该邮箱已被注册'})
+        
         code = generate_email_code()
         print(f"生成验证码: {code}")
         
         if send_verification_code(email, code):
-            user, created = User.objects.get_or_create(email=email)
-            user.set_email_verification_code(code)
+            if action_type == 'register':
+                # 只在注册时创建未验证的用户
+                user, created = User.objects.get_or_create(
+                    email=email,
+                    defaults={'email_verified': False}
+                )
+                user.set_email_verification_code(code)
+            else:
+                # 找回密码时只更新已存在用户的验证码
+                try:
+                    user = User.objects.get(email=email)
+                    user.set_email_verification_code(code)
+                except User.DoesNotExist:
+                    return JsonResponse({'success': False, 'message': '该邮箱未注册'})
+            
             print(f"验证码发送成功 - Email: {email}, Code: {code}")
             return JsonResponse({'success': True})
         else:
