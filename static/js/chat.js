@@ -775,4 +775,20 @@ function updatePauseButton() {
     }
 }
 
+// 添加新建对话函数
+function startNewChat() {
+    // 清空聊天记录
+    const chatMessages = document.getElementById('chatMessages');
+    if (chatMessages) {
+        chatMessages.innerHTML = '';
+    }
+    
+    // 清空输入框
+    const messageInput = document.getElementById('messageInput');
+    if (messageInput) {
+        messageInput.value = '';
+        messageInput.style.height = '24px';  // 重置输入框高度
+    }
+}
+
 // 其他现有代码保持不变... 

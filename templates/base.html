@@ -34,7 +34,35 @@
                     
                     <!-- 中间内容区域 -->
                     <div class="sidebar-content flex-grow-1">
-                        <!-- 里可以添加其他内容 -->
+                        <!-- 模型选择器 -->
+                        <div class="model-selector">
+                            <label class="model-label">选择模型</label>
+                            <div class="dropdown">
+                                <button class="model-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-robot me-2"></i>
+                                    <span class="model-text">GLM-4-Flash</span>
+                                </button>
+                                <ul class="dropdown-menu model-menu">
+                                    <li>
+                                        <a class="dropdown-item model-item active" href="#" data-model="glm-4-flash">
+                                            <i class="fas fa-robot me-2"></i>
+                                            GLM-4-Flash
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item model-item" href="#" data-model="spark-lite">
+                                            <i class="fas fa-microchip me-2"></i>
+                                            Spark Lite
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- 新建对话按钮 -->
+                            <button class="new-chat-btn" onclick="startNewChat()">
+                                <i class="fas fa-plus me-2"></i>
+                                新建对话
+                            </button>
+                        </div>
                     </div>
                     
                     <!-- 底部按钮 -->
@@ -280,7 +308,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">设置</h5>
+                    <h5 class="modal-title">���置</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-0">
@@ -1748,7 +1776,7 @@
         height: 32px;    /* 设置固定高度 */
         border-radius: 50%;  /* 圆形按钮 */
         background-color: #f3f4f6;  /* 淡灰色背景 */
-        opacity: 1;      /* 不透明度设为1 */
+        opacity: 1;      /* 不透明��设为1 */
         transition: all 0.2s ease;  /* 平滑过渡效果 */
         display: flex;
         align-items: center;
