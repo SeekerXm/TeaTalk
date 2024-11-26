@@ -65,4 +65,12 @@ class SiliconChatPlatform(SiliconBasePlatform):
         super().__init__(
             model_name="Qwen/Qwen2.5-7B-Instruct",
             system_message="你好，我是Qwen2.5-7B-Instruct模型AI小助手，请问有什么可以帮助您吗？"
+        )
+
+class SiliconGLMPlatform(SiliconBasePlatform):
+    """ChatGLM3-6B 模型"""
+    def __init__(self):
+        super().__init__(
+            model_name="THUDM/chatglm3-6b",
+            system_message="你好，我是ChatGLM3-6B模型AI小助手，请问有什么可以帮助您吗？"
         ) 
