@@ -39,11 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users.apps.UsersConfig',
-    'announcements.apps.AnnouncementsConfig',
-    'chat.apps.ChatConfig',
     'captcha',
     'mdeditor',
+    'users',
+    'chat',
+    'aimodels',
+    'announcements',
 ]
 
 MIDDLEWARE = [
@@ -160,7 +161,7 @@ AUTH_USER_MODEL = 'users.User'
 # Simple UI 配置
 SIMPLEUI_CONFIG = {
     'system_keep': False,
-    'menu_display': ['用户管理', '公告管理'],
+    'menu_display': ['用户管理', '公告管理', '模型管理'],
     'dynamic': False,
     'menus': [{
         'name': '用户管理',
@@ -181,6 +182,14 @@ SIMPLEUI_CONFIG = {
             'icon': 'fas fa-scroll',
             'url': '/admin/announcements/announcement/'
         }]
+    }, {
+        'name': '模型管理',
+        'icon': 'fas fa-robot',
+        'models': [{
+            'name': 'AI模型列表',
+            'icon': 'fas fa-microchip',
+            'url': '/admin/aimodels/aimodel/'
+        }]
     }]
 }
 
@@ -196,8 +205,10 @@ SIMPLEUI_STATIC_OFFLINE = True
 SIMPLEUI_ICON = {
     '用户管理': 'fas fa-users',
     '公告管理': 'fas fa-bullhorn',
+    '模型管理': 'fas fa-robot',
     '用户列表': 'fas fa-user',
-    '公告列表': 'fas fa-scroll'
+    '公告列表': 'fas fa-scroll',
+    'AI模型列表': 'fas fa-microchip'
 }
 
 # 添加浏览器图标配置
@@ -253,7 +264,7 @@ MDEDITOR_CONFIGS = {
         'emoji': True,  # 是否开启表情功能
         'tex': True,  # 是否开启 tex 图表功能
         'flow_chart': True,  # 是否开启流程图功能
-        'sequence': True,  # 是否开启序列��能
+        'sequence': True,  # 是否开启序列能
         'watch': True,  # 实时预览
         'lineWrapping': False,  # 自动换行
         'lineNumbers': True  # 显示行号

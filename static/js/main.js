@@ -562,7 +562,7 @@ document.addEventListener('DOMContentLoaded', function() {
         html: true,        // 启用 HTML 标签
         breaks: true,      // 转换换行符为 <br>
         linkify: true,     // 自动转换 URL 为链接
-        typographer: true, // 启用一些语言中立的替换和引号美化
+        typographer: true, // 启用一���语言中立的替换和引号美化
         highlight: function (str, lang) {
             if (lang && hljs.getLanguage(lang)) {
                 try {
@@ -1012,6 +1012,63 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    // 获取模型列表并更新选择器
+    function loadModels() {
+        fetch('/api/models/')
+            .then(response => response.json())
+            .then(data => {
+                const modelSelect = document.getElementById('modelSelect');
+                const modelDropdown = document.querySelector('.model-selector .dropdown-menu');
+                
+                // 清空现有选项
+                modelSelect.innerHTML = '';
+                modelDropdown.innerHTML = '';
+                
+                // 添加新的模型选项
+                data.models.forEach(model => {
+                    // 添加到隐藏的select
+                    const option = document.createElement('option');
+                    option.value = model.id;
+                    option.textContent = model.name;
+                    modelSelect.appendChild(option);
+                    
+                    // 添加到下拉菜单
+                    const item = document.createElement('a');
+                    item.href = '#';
+                    item.className = 'dropdown-item model-item';
+                    item.dataset.model = model.id;
+                    item.innerHTML = `
+                        <span class="model-name">${model.name}</span>
+                        <i class="fas fa-info-circle model-info"
+                           data-bs-toggle="tooltip"
+                           data-bs-html="true"
+                           data-bs-title="<div class='model-tooltip'>
+                                <p><strong>模型平台：</strong>${model.platform}</p>
+                                <p><strong>模型类型：</strong>${model.type}</p>
+                            </div>">
+                        </i>
+                    `;
+                    modelDropdown.appendChild(item);
+                });
+                
+                // 设置默认选中的模型（权重最小的）
+                if (data.models.length > 0) {
+                    const defaultModel = data.models[0];
+                    modelSelect.value = defaultModel.id;
+                    document.querySelector('.model-text').textContent = defaultModel.name;
+                }
+                
+                // 重新绑定模型选择事件
+                bindModelSelection();
+            })
+            .catch(error => {
+                console.error('加载模型列表失败:', error);
+            });
+    }
+    
+    // 页面加载时获取模型列表
+    loadModels();
 });
 
 function refreshCaptcha() {

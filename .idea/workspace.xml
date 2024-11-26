@@ -5,9 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="新增了 ChatGLM3-6B 模型选项及其对应的平台类，并更新了发送消息的视图以支持该模型。">
-      <change beforePath="$PROJECT_DIR$/ModelPlatform/silicon.py" beforeDir="false" afterPath="$PROJECT_DIR$/ModelPlatform/silicon.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/aimodels/migrations/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeaTalk/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/TeaTalk/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeaTalk/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/TeaTalk/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat/migrations/0002_alter_chatsession_options_remove_chatsession_model_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat/migrations/0003_delete_chatsession.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/chat/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/chat/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/main.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,25 +44,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Django 服务器.TeaTalk.executor": "Run",
-    "Notification.DisplayName-DoNotAsk-Database detector": "数据库检测器",
-    "Notification.DoNotAsk-Database detector": "true",
-    "Python.main.executor": "Run",
-    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.pycharm.django.structure.promotion.once.per.project": "true",
-    "django.template.preview.state": "SHOW_EDITOR",
-    "git-widget-placeholder": "master",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Django 服务器.TeaTalk.executor&quot;: &quot;Run&quot;,
+    &quot;Notification.DisplayName-DoNotAsk-Database detector&quot;: &quot;数据库检测器&quot;,
+    &quot;Notification.DoNotAsk-Database detector&quot;: &quot;true&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.pycharm.django.structure.promotion.once.per.project&quot;: &quot;true&quot;,
+    &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="TeaTalk" type="Python.DjangoServer" factoryName="Django server">
       <module name="TeaTalk" />
@@ -102,14 +108,6 @@
       <updated>1731891219373</updated>
       <workItem from="1731891221476" duration="23360000" />
       <workItem from="1732458870477" duration="12655000" />
-    </task>
-    <task id="LOCAL-00042" summary="1.未登录用户可以看到聊天界面和欢迎消息&#10;2.尝试发送消息时会弹出登录模态框&#10;3,只有登录后才能正常使用聊天功能">
-      <option name="closed" value="true" />
-      <created>1732042177275</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1732042177275</updated>
     </task>
     <task id="LOCAL-00043" summary="1.添加了markdown-t解析器的初始化&#10;2.修改了消息显示函数，支特markdown渲染&#10;3.为AI回复添加了打字效果的markdown渲染&#10;4.添加了代码高亮支持&#10;5.优化了markdown内容的样式&#10;6.添加了表格、列表等元素的样式">
       <option name="closed" value="true" />
@@ -495,7 +493,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732604129163</updated>
     </task>
-    <option name="localTasksCounter" value="91" />
+    <task id="LOCAL-00091" summary="修改加载动画函数，更新打字效果函数以禁用/启用发送按钮，添加函数以控制按钮的状态，修改暂停/继续功能以适应新逻辑。">
+      <option name="closed" value="true" />
+      <created>1732639960578</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1732639960578</updated>
+    </task>
+    <option name="localTasksCounter" value="92" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -513,7 +519,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="1.修复了highlight函数中未定义的decodedStr变量&#10;2.在代码高亮失败时添加了错误处理，返回原始字符串&#10;3.在typeMessageWithMarkdown函数中添加了错误处理，在渲染失&#10;败时显示原始文本&#10;4.优化了代码高亮的处理逻辑" />
     <MESSAGE value="1.添加了暂停/继续功能&#10;2.添加了暂停按钮的显示和隐藏&#10;3.添加了按钮状态的切换&#10;4.添加了相应的样式" />
     <MESSAGE value="1.在每个消息气泡下方添加了复制按钮&#10;2,按钮只在嬴标悬浮时显示&#10;3.点击按钮复制消息内容&#10;4.显示复制成功失败提示&#10;5.保特了现有的布局和功能&#10;6.适配了用户和A1消息的不同布局" />
     <MESSAGE value="1.将Al消息内容的display:feX改为display:block&#10;2.保特复制按钮的绝对定位&#10;3.确保消息内容有相对定位" />
@@ -538,7 +543,8 @@
     <MESSAGE value="增强了对Qwen2.5-Coder模型的支持，添加SiliconCloud平台的消息处理逻辑；更新了界面模板以包含新模型选项；修正了一些注释中的乱码问题；新增Silicon平台的实现文件。" />
     <MESSAGE value="更新了模型选择界面，新增了Qwen2.5-Chat选项。重构了SiliconPlatform类，拆分为SiliconBasePlatform、SiliconCoderPlatform和SiliconChatPlatform，以支持不同模型的初始化。调整了chat视图，使用新定义的平台类处理消息发送逻辑。" />
     <MESSAGE value="新增了 ChatGLM3-6B 模型选项及其对应的平台类，并更新了发送消息的视图以支持该模型。" />
-    <option name="LAST_COMMIT_MESSAGE" value="新增了 ChatGLM3-6B 模型选项及其对应的平台类，并更新了发送消息的视图以支持该模型。" />
+    <MESSAGE value="修改加载动画函数，更新打字效果函数以禁用/启用发送按钮，添加函数以控制按钮的状态，修改暂停/继续功能以适应新逻辑。" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改加载动画函数，更新打字效果函数以禁用/启用发送按钮，添加函数以控制按钮的状态，修改暂停/继续功能以适应新逻辑。" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/TeaTalk$main.coverage" NAME="main 覆盖结果" MODIFIED="1731993364645" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ModelPlatform" />
