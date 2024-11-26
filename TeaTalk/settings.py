@@ -253,7 +253,7 @@ MDEDITOR_CONFIGS = {
         'emoji': True,  # 是否开启表情功能
         'tex': True,  # 是否开启 tex 图表功能
         'flow_chart': True,  # 是否开启流程图功能
-        'sequence': True,  # 是否开启序列功能
+        'sequence': True,  # 是否开启序列��能
         'watch': True,  # 实时预览
         'lineWrapping': False,  # 自动换行
         'lineNumbers': True  # 显示行号
@@ -271,3 +271,6 @@ SPARK_API_SECRET = "YTYzZGE0ZmY2ZjFjOTIwNmZjNjdiZDAy"
 # 千帆AI配置
 QIANFAN_ACCESS_KEY = "ALTAKp6vpru3TSWZ0ZDRmhhOza"
 QIANFAN_SECRET_KEY = "2dac3d6e90ca44d7939932f26b68c2a2"
+
+# SiliconCloud配置
+SILICON_API_KEY = "sk-dbpqlfjeedqscsxcedtblzvtjtakcrmzhxpgihkmycdbyfkj"
