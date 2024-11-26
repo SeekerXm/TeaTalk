@@ -415,7 +415,7 @@ function showLoading() {
     }
 }
 
-// 修改隐藏加载动画函数
+// 修改隐藏加���动画函数
 function hideLoading() {
     const loadingSpinner = document.getElementById('loadingSpinner');
     if (loadingSpinner) {
@@ -578,10 +578,16 @@ function appendMessage(role, content) {
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
-// 添加打字效果函数
+// 修改 typeMessageWithMarkdown 函数
 function typeMessageWithMarkdown(text, element, index = 0) {
     // 保存当前任务的引用
     currentTypingTask = { text, element, index };
+    
+    // 在开始打字时禁用发送按钮
+    const sendButton = document.querySelector('.btn-send');
+    if (sendButton) {
+        disableSendButton(sendButton);
+    }
     
     if (index < text.length) {
         // 如果暂停了，就不继续输出
@@ -614,6 +620,11 @@ function typeMessageWithMarkdown(text, element, index = 0) {
                 
                 // 输出完成，隐藏暂停按钮
                 hidePauseButton();
+                
+                // 输出完成，启用发送按钮
+                if (sendButton) {
+                    enableSendButton(sendButton);
+                }
             }
             
             // 滚动到底部
@@ -629,12 +640,34 @@ function typeMessageWithMarkdown(text, element, index = 0) {
         } catch (error) {
             console.error('Markdown rendering error:', error);
             element.textContent = text;
-            hidePauseButton();  // 确保在出错时也隐藏暂停按钮
+            hidePauseButton();
+            // 确保在出错时也启用发送按钮
+            if (sendButton) {
+                enableSendButton(sendButton);
+            }
         }
     } else {
         // 输出完成，隐藏暂停按钮
         hidePauseButton();
+        // 确保在完成时启用发送按钮
+        if (sendButton) {
+            enableSendButton(sendButton);
+        }
     }
+}
+
+// 添加禁用发送按钮的函数
+function disableSendButton(button) {
+    button.disabled = true;
+    button.style.opacity = '0.5';
+    button.style.cursor = 'not-allowed';
+}
+
+// 添加启用发送按钮的函数
+function enableSendButton(button) {
+    button.disabled = false;
+    button.style.opacity = '1';
+    button.style.cursor = 'pointer';
 }
 
 // 添加显示 Toast 提示函数
@@ -719,18 +752,30 @@ function adjustTextareaHeight(textarea) {
 let isPaused = false;
 let currentTypingTask = null;
 
-// 添加暂停/继续功能
+// 修改 toggleTyping 函数
 function toggleTyping() {
     isPaused = !isPaused;
     updatePauseButton();
     
+    const sendButton = document.querySelector('.btn-send');
+    
     if (!isPaused && currentTypingTask) {
-        // 继续输出
+        // 继续输出时禁用发送按钮
+        if (sendButton) {
+            disableSendButton(sendButton);
+        }
+        
+        // 继续打字效果
         typeMessageWithMarkdown(
             currentTypingTask.text,
             currentTypingTask.element,
             currentTypingTask.index
         );
+    } else if (isPaused) {
+        // 暂停时启用发送按钮
+        if (sendButton) {
+            enableSendButton(sendButton);
+        }
     }
 }
 
