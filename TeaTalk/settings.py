@@ -253,7 +253,7 @@ MDEDITOR_CONFIGS = {
         'emoji': True,  # 是否开启表情功能
         'tex': True,  # 是否开启 tex 图表功能
         'flow_chart': True,  # 是否开启流程图功能
-        'sequence': True,  # 是否开启序列��功能
+        'sequence': True,  # 是否开启序列功能
         'watch': True,  # 实时预览
         'lineWrapping': False,  # 自动换行
         'lineNumbers': True  # 显示行号
@@ -267,3 +267,7 @@ ZHIPU_API_KEY = "8e1436a72f831bf54b6ae4ca43587788.sUsYvAEEXcNF84X0"  # 替换为
 SPARK_APPID = "27ca9f10"
 SPARK_API_KEY = "78de37f4f0cb76b95bb94de437d7fc5c"
 SPARK_API_SECRET = "YTYzZGE0ZmY2ZjFjOTIwNmZjNjdiZDAy"
+
+# 千帆AI配置
+QIANFAN_ACCESS_KEY = "ALTAKp6vpru3TSWZ0ZDRmhhOza"
+QIANFAN_SECRET_KEY = "2dac3d6e90ca44d7939932f26b68c2a2"

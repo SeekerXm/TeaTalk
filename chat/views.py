@@ -2,13 +2,15 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from ModelPlatform.zhipu import ZhipuPlatform
 from ModelPlatform.spark import SparkPlatform
+from ModelPlatform.qianfan import QianfanPlatform
 
 @login_required
 def send_message(request):
     """处理发送消息的请求"""
     try:
         message = request.POST.get('message')
-        model = request.POST.get('model', 'glm-4-flash')  # 默认使用智谱AI
+        model = request.POST.get('model', 'glm-4-flash')
+        messages = request.POST.get('messages')  # 获取消息历史
         
         if not message:
             return JsonResponse({
@@ -19,15 +21,18 @@ def send_message(request):
         # 根据选择的模型调用相应的AI平台
         if model == 'glm-4-flash':
             platform = ZhipuPlatform()
+            response = platform.chat(message)
         elif model == 'spark-lite':
             platform = SparkPlatform()
+            response = platform.chat(message)
+        elif model == 'yi-34b':
+            platform = QianfanPlatform()
+            response = platform.chat(message, messages)  # 传递消息历史
         else:
             return JsonResponse({
                 'success': False,
                 'message': '不支持的模型类型'
             })
-        
-        response = platform.chat(message)
         
         return JsonResponse({
             'success': True,

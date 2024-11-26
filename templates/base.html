@@ -41,6 +41,7 @@
                                 <select id="modelSelect" style="display: none;">
                                     <option value="glm-4-flash">GLM-4-Flash</option>
                                     <option value="spark-lite">Spark Lite</option>
+                                    <option value="yi-34b">Yi-34B</option>
                                 </select>
                                 <button class="model-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fas fa-robot me-2"></i>
@@ -57,6 +58,12 @@
                                         <a class="dropdown-item model-item" href="#" data-model="spark-lite">
                                             <i class="fas fa-microchip me-2"></i>
                                             Spark Lite
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item model-item" href="#" data-model="yi-34b">
+                                            <i class="fas fa-brain me-2"></i>
+                                            Yi-34B
                                         </a>
                                     </li>
                                 </ul>
@@ -550,7 +557,7 @@
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="checkbox" id="confirmDelete" required>
                             <label class="form-check-label" for="confirmDelete">
-                                我确认要注销我的账号，并了解这个操作不可撤销
+                                我确认要注销我的���号，并了解这个操作不可撤销
                             </label>
                         </div>
                         <button type="submit" class="btn btn-danger w-100">确认注销账号</button>
@@ -1293,7 +1300,7 @@
         margin-left: auto;  /* 将模型信息推到右侧 */
     }
 
-    /* 响应式布局断点 */
+    /* 响应式布���断点 */
     @media (max-width: 1024px) {
         /* iPad 和较小屏幕 */
         .sidebar {

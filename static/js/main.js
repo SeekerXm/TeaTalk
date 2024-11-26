@@ -894,7 +894,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const sendButton = document.getElementById('sendButton');
     
     if (messageInput && sendButton) {
-        // 发送消息处理
+        // 修改发送消息函数
         function sendMessage() {
             const message = messageInput.value.trim();
             if (!message) return;
@@ -911,6 +911,20 @@ document.addEventListener('DOMContentLoaded', function() {
             // 显示AI正在输入指示器
             showTypingIndicator();
             
+            // 获取历史消息
+            const chatMessages = document.getElementById('chatMessages');
+            const messages = [];
+            
+            // 遍历所有消息元素，构建消息历史
+            chatMessages.querySelectorAll('.message').forEach(msgElement => {
+                const role = msgElement.classList.contains('user') ? 'user' : 'assistant';
+                const content = msgElement.querySelector('.message-content').textContent.trim();
+                messages.push({
+                    role: role,
+                    content: content
+                });
+            });
+            
             // 发送请求
             fetch('/chat/send/', {
                 method: 'POST',
@@ -922,7 +936,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: new URLSearchParams({
                     message: message,
                     model: currentModel,
-                    session_id: sessionId
+                    session_id: sessionId,
+                    messages: JSON.stringify(messages)  // 传递完整的消息历史
                 })
             })
             .then(response => response.json())
