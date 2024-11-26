@@ -415,7 +415,7 @@ function showLoading() {
     }
 }
 
-// 修改隐藏加���动画函数
+// 修改隐藏加载动画函数
 function hideLoading() {
     const loadingSpinner = document.getElementById('loadingSpinner');
     if (loadingSpinner) {
@@ -583,9 +583,9 @@ function typeMessageWithMarkdown(text, element, index = 0) {
     // 保存当前任务的引用
     currentTypingTask = { text, element, index };
     
-    // 在开始打字时禁用发送按钮
+    // 在开始打字时禁用发送按钮(仅在非暂停状态下)
     const sendButton = document.querySelector('.btn-send');
-    if (sendButton) {
+    if (sendButton && !isPaused) {
         disableSendButton(sendButton);
     }
     
@@ -804,6 +804,12 @@ function hidePauseButton() {
     }
     isPaused = false;
     currentTypingTask = null;
+    
+    // 确保在隐藏暂停按钮时启用发送按钮
+    const sendButton = document.querySelector('.btn-send');
+    if (sendButton) {
+        enableSendButton(sendButton);
+    }
 }
 
 // 更新暂停按钮状态
