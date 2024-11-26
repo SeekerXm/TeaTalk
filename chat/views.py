@@ -3,7 +3,12 @@ from django.contrib.auth.decorators import login_required
 from ModelPlatform.zhipu import ZhipuPlatform
 from ModelPlatform.spark import SparkPlatform
 from ModelPlatform.qianfan import QianfanPlatform
-from ModelPlatform.silicon import SiliconCoderPlatform, SiliconChatPlatform, SiliconGLMPlatform
+from ModelPlatform.silicon import (
+    SiliconCoderPlatform, 
+    SiliconChatPlatform, 
+    SiliconGLMPlatform,
+    SiliconGemmaPlatform
+)
 
 @login_required
 def send_message(request):
@@ -37,6 +42,9 @@ def send_message(request):
             response = platform.chat(message)
         elif model == 'chatglm3':
             platform = SiliconGLMPlatform()
+            response = platform.chat(message)
+        elif model == 'gemma-it':
+            platform = SiliconGemmaPlatform()
             response = platform.chat(message)
         else:
             return JsonResponse({

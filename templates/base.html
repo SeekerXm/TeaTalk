@@ -45,6 +45,7 @@
                                     <option value="qwen-coder">Qwen2.5-Coder</option>
                                     <option value="qwen-chat">Qwen2.5-Chat</option>
                                     <option value="chatglm3">ChatGLM3-6B</option>
+                                    <option value="gemma-it">Gemma-2-9B</option>
                                 </select>
                                 <button class="model-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fas fa-robot me-2"></i>
@@ -85,6 +86,12 @@
                                         <a class="dropdown-item model-item" href="#" data-model="chatglm3">
                                             <i class="fas fa-robot me-2"></i>
                                             ChatGLM3-6B
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item model-item" href="#" data-model="gemma-it">
+                                            <i class="fas fa-brain me-2"></i>
+                                            Gemma-2-9B
                                         </a>
                                     </li>
                                 </ul>
@@ -1528,7 +1535,7 @@
 
     /* 设置面板内容样式优化 */
     .settings-panel-content {
-        height: calc(100% - 3rem);  /* 减去标题的高度 */
+        height: calc(100% - 3rem);  /* 减去标���的高度 */
         overflow-y: auto;
         scrollbar-width: none;
         -ms-overflow-style: none;
