@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from ModelPlatform.zhipu import ZhipuPlatform
 from ModelPlatform.spark import SparkPlatform
 from ModelPlatform.qianfan import QianfanPlatform
-from ModelPlatform.silicon import SiliconPlatform
+from ModelPlatform.silicon import SiliconCoderPlatform, SiliconChatPlatform
 
 @login_required
 def send_message(request):
@@ -30,7 +30,10 @@ def send_message(request):
             platform = QianfanPlatform()
             response = platform.chat(message, messages)  # 传递消息历史
         elif model == 'qwen-coder':
-            platform = SiliconPlatform()
+            platform = SiliconCoderPlatform()
+            response = platform.chat(message)
+        elif model == 'qwen-chat':
+            platform = SiliconChatPlatform()
             response = platform.chat(message)
         else:
             return JsonResponse({
