@@ -961,6 +961,42 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.height = (this.scrollHeight) + 'px';
         });
     }
+
+    // 模型切换功能
+    const modelItems = document.querySelectorAll('.model-item');
+    const modelSelect = document.getElementById('modelSelect');
+    
+    modelItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // 更新选中状态
+            modelItems.forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+            
+            // 获取选中的模型信息
+            const modelId = this.dataset.model;
+            const modelText = this.textContent.trim();
+            
+            // 更新显示
+            document.querySelector('.model-text').textContent = modelText;
+            document.querySelector('.model-name').textContent = modelText;
+            
+            // 更新隐藏的select值
+            if (modelSelect) {
+                modelSelect.value = modelId;
+            }
+            
+            // 关闭下拉菜单
+            const dropdown = this.closest('.dropdown');
+            if (dropdown) {
+                const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
+                if (dropdownToggle) {
+                    dropdownToggle.click();
+                }
+            }
+        });
+    });
 });
 
 function refreshCaptcha() {
