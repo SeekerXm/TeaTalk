@@ -130,18 +130,10 @@
                         <button id="sidebarToggle" class="btn btn-link sidebar-toggle">
                             <i class="fas fa-bars"></i>
                         </button>
+                        <!-- 导航栏中的模型显示部分 -->
                         <div class="nav-center">
-                            <div class="model-info">
-                                <span class="model-name">GLM-4-Flash</span>
-                                <i class="fas fa-question-circle model-info-icon" 
-                                   data-bs-toggle="tooltip" 
-                                   data-bs-html="true"
-                                   data-bs-title="<div class='model-tooltip'>
-                                            <p><strong>模型平台：</strong>智谱AI</p>
-                                            <p><strong>模型类型：</strong>文本生成</p>
-                                        </div>">
-                                </i>
-                            </div>
+                            <span class="model-name"></span>
+                            <i class="fas fa-question-circle model-info ms-2" data-bs-toggle="tooltip"></i>
                         </div>
                         <div class="nav-spacer"></div>
                     </div>
@@ -1222,7 +1214,7 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
 
-    /* 按钮内图标样式 */
+    /* ���钮内图标样��� */
     .sidebar-footer .btn i {
         margin-right: 0.5rem;
         font-size: 0.9rem;
@@ -2263,6 +2255,31 @@
 
     .announcement-header:hover .announcement-title {
         color: #2563eb;
+    }
+
+    /* 添加到现有的 style 标签中 */
+    .nav-center {
+        display: flex;
+        align-items: center;
+    }
+
+    .nav-center .model-name {
+        font-weight: 500;
+    }
+
+    .nav-center .model-info {
+        color: #6c757d;
+        cursor: help;
+    }
+
+    /* tooltip 样式 */
+    .model-tooltip p {
+        margin-bottom: 0.5rem;
+        white-space: nowrap;
+    }
+
+    .model-tooltip p:last-child {
+        margin-bottom: 0;
     }
     </style>
 

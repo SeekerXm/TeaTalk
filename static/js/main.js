@@ -539,7 +539,7 @@ document.addEventListener('DOMContentLoaded', function() {
         item.addEventListener('click', function(e) {
             e.preventDefault();
             
-            // 移除所有菜单项的激活状态
+            // 移除所有单项的激活状态
             menuItems.forEach(i => i.classList.remove('active'));
             // 激活当前菜单项
             this.classList.add('active');
@@ -562,7 +562,7 @@ document.addEventListener('DOMContentLoaded', function() {
         html: true,        // 启用 HTML 标签
         breaks: true,      // 转换换行符为 <br>
         linkify: true,     // 自动转换 URL 为链接
-        typographer: true, // 启用一���语言中立的替换和引号美化
+        typographer: true, // 启用一语言中立的替换和引号美化
         highlight: function (str, lang) {
             if (lang && hljs.getLanguage(lang)) {
                 try {
@@ -833,7 +833,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const deleteAccountModal = bootstrap.Modal.getInstance(document.getElementById('deleteAccountModal'));
                     deleteAccountModal.hide();
                     
-                    // 创建成功提示模态框
+                    // 创建成功提模态框
                     const successModal = document.createElement('div');
                     successModal.className = 'modal fade';
                     successModal.innerHTML = `
@@ -991,11 +991,41 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // 获取选中的模型信息
             const modelId = this.dataset.model;
-            const modelText = this.textContent.trim();
+            const modelText = this.querySelector('.model-name').textContent;
+            const modelPlatform = this.querySelector('.model-tooltip-data p:first-child').textContent.split('：')[1];
+            const modelType = this.querySelector('.model-tooltip-data p:last-child').textContent.split('：')[1];
             
-            // 更新显示
+            // 更新显示 - 同时更新下拉菜单和导航栏的模型名称
             document.querySelector('.model-text').textContent = modelText;
-            document.querySelector('.model-name').textContent = modelText;
+            
+            // 更新导航栏模型名称和提示信息
+            const navModelName = document.querySelector('.nav-center .model-name');
+            const navModelInfo = document.querySelector('.nav-center .model-info');
+            
+            if (navModelName) {
+                navModelName.textContent = modelText;
+            }
+            
+            if (navModelInfo) {
+                navModelInfo.setAttribute('data-bs-title', 
+                    `<div class='model-tooltip'>
+                        <p><strong>模型名称：</strong>${modelText}</p>
+                        <p><strong>模型类型：</strong>${modelType}</p>
+                        <p><strong>模型平台：</strong>${modelPlatform}</p>
+                    </div>`
+                );
+                
+                // 重新初始化 tooltip
+                const tooltip = bootstrap.Tooltip.getInstance(navModelInfo);
+                if (tooltip) {
+                    tooltip.dispose();
+                }
+                new bootstrap.Tooltip(navModelInfo, {
+                    html: true,
+                    container: 'body',
+                    trigger: 'hover'
+                });
+            }
             
             // 更新隐藏的select值
             if (modelSelect) {
@@ -1039,15 +1069,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     item.className = 'dropdown-item model-item';
                     item.dataset.model = model.id;
                     item.innerHTML = `
+                        <i class="fas fa-comment me-2"></i>
                         <span class="model-name">${model.name}</span>
-                        <i class="fas fa-info-circle model-info"
-                           data-bs-toggle="tooltip"
-                           data-bs-html="true"
-                           data-bs-title="<div class='model-tooltip'>
-                                <p><strong>模型平台：</strong>${model.platform}</p>
-                                <p><strong>模型类型：</strong>${model.type}</p>
-                            </div>">
-                        </i>
+                        <div class="model-tooltip-data" style="display: none;">
+                            <p><strong>模型名称：</strong>${model.name}</p>
+                            <p><strong>模型类型：</strong>${model.type}</p>
+                            <p><strong>模型平台：</strong>${model.platform}</p>
+                        </div>
                     `;
                     modelDropdown.appendChild(item);
                 });
@@ -1056,11 +1084,41 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.models.length > 0) {
                     const defaultModel = data.models[0];
                     modelSelect.value = defaultModel.id;
-                    document.querySelector('.model-text').textContent = defaultModel.name;
+                    
+                    // 更新导航栏 - 只更新模型名称文本和问号图标的 tooltip
+                    document.querySelector('.nav-center .model-name').textContent = defaultModel.name;
+                    
+                    const navModelInfo = document.querySelector('.nav-center .model-info');
+                    if (navModelInfo) {
+                        navModelInfo.setAttribute('data-bs-title', 
+                            `<div class='model-tooltip'>
+                                <p><strong>模型名称：</strong>${defaultModel.name}</p>
+                                <p><strong>模型类型：</strong>${defaultModel.type}</p>
+                                <p><strong>模型平台：</strong>${defaultModel.platform}</p>
+                            </div>`
+                        );
+                        
+                        // 初始化问号图标的 tooltip
+                        new bootstrap.Tooltip(navModelInfo, {
+                            html: true,
+                            container: 'body',
+                            trigger: 'hover'
+                        });
+                    }
                 }
                 
                 // 重新绑定模型选择事件
                 bindModelSelection();
+
+                // 初始化工具提示
+                const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+                    new bootstrap.Tooltip(tooltipTriggerEl, {
+                        html: true,
+                        container: 'body',
+                        trigger: 'hover'
+                    });
+                });
             })
             .catch(error => {
                 console.error('加载模型列表失败:', error);
@@ -1069,6 +1127,70 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 页面加载时获取模型列表
     loadModels();
+
+    // 添加模型选择事件绑定函数
+    function bindModelSelection() {
+        const modelItems = document.querySelectorAll('.model-item');
+        const modelSelect = document.getElementById('modelSelect');
+        
+        modelItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // 更新选中状态
+                modelItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+                
+                // 获取选中的模型信息
+                const modelId = this.dataset.model;
+                const tooltipData = this.querySelector('.model-tooltip-data');
+                const modelName = tooltipData.querySelector('p:nth-child(1)').textContent.split('：')[1];
+                const modelType = tooltipData.querySelector('p:nth-child(2)').textContent.split('：')[1];
+                const modelPlatform = tooltipData.querySelector('p:nth-child(3)').textContent.split('：')[1];
+                
+                // 更新显示
+                document.querySelector('.model-text').textContent = modelName;
+                document.querySelector('.nav-center .model-name').textContent = modelName;
+                
+                // 更新问号图标的 tooltip 内容
+                const navModelInfo = document.querySelector('.nav-center .model-info');
+                if (navModelInfo) {
+                    navModelInfo.setAttribute('data-bs-title', 
+                        `<div class='model-tooltip'>
+                            <p><strong>模型名称：</strong>${modelName}</p>
+                            <p><strong>模型类型：</strong>${modelType}</p>
+                            <p><strong>模型平台：</strong>${modelPlatform}</p>
+                        </div>`
+                    );
+                    
+                    // 重新初始化 tooltip
+                    const tooltip = bootstrap.Tooltip.getInstance(navModelInfo);
+                    if (tooltip) {
+                        tooltip.dispose();
+                    }
+                    new bootstrap.Tooltip(navModelInfo, {
+                        html: true,
+                        container: 'body',
+                        trigger: 'hover'
+                    });
+                }
+                
+                // 更新隐藏的select值
+                if (modelSelect) {
+                    modelSelect.value = modelId;
+                }
+                
+                // 关闭下拉菜单
+                const dropdown = this.closest('.dropdown');
+                if (dropdown) {
+                    const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
+                    if (dropdownToggle) {
+                        dropdownToggle.click();
+                    }
+                }
+            });
+        });
+    }
 });
 
 function refreshCaptcha() {
