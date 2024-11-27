@@ -2,34 +2,52 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.db.models import F
 from .models import AIModel
+from django.conf import settings
 
 @admin.register(AIModel)
 class AIModelAdmin(admin.ModelAdmin):
-    list_display = ('get_index', 'get_model_id', 'model_name', 'model_type', 'platform', 'is_active', 'weight_control')
+    list_display = ('get_index', 'get_model_name_link', 'get_model_id', 'model_type', 'platform', 'is_active', 'weight_control')
     list_filter = ('model_type', 'platform', 'is_active')
     search_fields = ('model_name',)
     ordering = ('weight',)
-    readonly_fields = ('weight',)
+    readonly_fields = ('weight', 'original_model_name', 'model_type', 'platform')
     
     # 只允许修改状态
     list_editable = ('is_active',)
     
     def get_model_id(self, obj):
         """自定义ID列的显示名称"""
-        return obj.id
+        return format_html(
+            '<span style="color: #666;">{}</span>',
+            obj.id
+        )
     get_model_id.short_description = '模型ID'
     get_model_id.admin_order_field = 'id'
+    
+    def get_model_name_link(self, obj):
+        """自定义模型名称列，使其可点击并链接到编辑页面"""
+        return format_html(
+            '<a href="{}/change/">{}</a>',
+            obj.id,
+            obj.model_name
+        )
+    get_model_name_link.short_description = '模型名称'
+    get_model_name_link.admin_order_field = 'model_name'
     
     def get_index(self, obj):
         """获取连续序号（基于当前页面的排序）"""
         request = getattr(self, 'request', None)
         if request:
             queryset = self.get_queryset(request)
-            index = list(queryset).index(obj) + 1
-            return index
-        return 0
+            # 使用format_html返回纯文本
+            return format_html(
+                '<span style="color: #666;">{}</span>',
+                list(queryset).index(obj) + 1
+            )
+        return format_html('<span>0</span>')
     get_index.short_description = '序号'
-    get_index.admin_order_field = 'weight'
+    # 移除admin_order_field以禁用排序
+    get_index.admin_order_field = None
 
     def changelist_view(self, request, extra_context=None):
         # 保存request对象以供get_index使用
@@ -155,8 +173,8 @@ class AIModelAdmin(admin.ModelAdmin):
     # 自定义表单布局
     fieldsets = (
         ('基本信息', {
-            'fields': ('model_type', 'model_name', 'platform', 'is_active', 'weight'),
-            'description': '模型基本信息配置，类型和平台不可修改'
+            'fields': ('model_type', 'model_name', 'platform', 'is_active', 'weight', 'original_model_name'),
+            'description': '模型基本信息配置，类型、平台和原始模型名称不可修改'
         }),
         ('配置信息', {
             'fields': ('config',),
@@ -173,18 +191,18 @@ class AIModelAdmin(admin.ModelAdmin):
         # 根据平台类型设置配置模板
         if not obj.config:
             if obj.platform == 'bigmodel':
-                obj.config = {'ZHIPU_API_KEY': ''}
+                obj.config = {'ZHIPU_API_KEY': settings.ZHIPU_API_KEY}
             elif obj.platform == 'qianfan':
                 obj.config = {
-                    'QIANFAN_ACCESS_KEY': '',
-                    'QIANFAN_SECRET_KEY': ''
+                    'QIANFAN_ACCESS_KEY': settings.QIANFAN_ACCESS_KEY,
+                    'QIANFAN_SECRET_KEY': settings.QIANFAN_SECRET_KEY
                 }
             elif obj.platform == 'spark':
                 obj.config = {
-                    'SPARK_APPID': '',
-                    'SPARK_API_KEY': '',
-                    'SPARK_API_SECRET': ''
+                    'SPARK_APPID': settings.SPARK_APPID,
+                    'SPARK_API_KEY': settings.SPARK_API_KEY,
+                    'SPARK_API_SECRET': settings.SPARK_API_SECRET
                 }
             elif obj.platform == 'silicon':
-                obj.config = {'SILICON_API_KEY': ''}
+                obj.config = {'SILICON_API_KEY': settings.SILICON_API_KEY}
         super().save_model(request, obj, form, change)

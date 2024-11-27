@@ -1,31 +1,199 @@
-{% extends "admin/change_list.html" %}
+{% extends "admin/base_site.html" %}
 {% load static %}
 
-{% block extrahead %}
-{{ block.super }}
+{% block extrastyle %}
+<link href="{% static 'bootstrap-5.3.0/css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'fontawesome-free-6.6.0-web/css/all.min.css' %}" rel="stylesheet">
 <style>
-/* 序号列样式 */
-.column-get_index {
-    width: 50px;
-    text-align: center;
+.model-table {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
-/* 模型ID列样式 */
-.column-id {
-    width: 80px;
+
+.model-table thead {
+    background: #f8f9fa;
 }
-/* 权重控制列样式 */
-.column-weight_control {
-    width: 100px;
+
+.model-table th {
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
+    padding: 1rem !important;
+}
+
+.model-table td {
+    padding: 1rem !important;
+    vertical-align: middle;
+}
+
+.model-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.model-name {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.model-name:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+.status-badge {
+    padding: 0.35rem 0.75rem;
+    border-radius: 50rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.status-active {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.status-inactive {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.weight-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.weight-number {
+    min-width: 2rem;
     text-align: center;
+    font-weight: 500;
+    color: #6b7280;
+}
+
+.weight-btn {
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    background: #fff;
+    color: #6b7280;
+    transition: all 0.2s;
+}
+
+.weight-btn:hover {
+    background: #f3f4f6;
+    color: #374151;
+    border-color: #d1d5db;
+}
+
+.weight-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.table-header {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px 8px 0 0;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table-footer {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0 0 8px 8px;
+    border-top: 1px solid #dee2e6;
+}
+
+.model-id {
+    color: #6b7280;
+    font-family: monospace;
+}
+
+.model-type, .model-platform {
+    font-weight: 500;
 }
 </style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="card model-table">
+        <div class="table-header">
+            <h5 class="mb-0">AI模型列表</h5>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th class="text-center">序号</th>
+                        <th class="text-center">模型名称</th>
+                        <th class="text-center">模型ID</th>
+                        <th class="text-center">模型类型</th>
+                        <th class="text-center">模型平台</th>
+                        <th class="text-center">状态</th>
+                        <th class="text-center">权重</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for model in cl.result_list %}
+                    <tr>
+                        <td class="text-center">{{ forloop.counter }}</td>
+                        <td class="text-center">
+                            <a href="{% url 'admin:aimodels_aimodel_change' model.id %}" 
+                               class="model-name">{{ model.model_name }}</a>
+                        </td>
+                        <td class="text-center">
+                            <span class="model-id">#{{ model.id }}</span>
+                        </td>
+                        <td class="text-center">
+                            <span class="model-type">{{ model.get_model_type_display }}</span>
+                        </td>
+                        <td class="text-center">
+                            <span class="model-platform">{{ model.get_platform_display }}</span>
+                        </td>
+                        <td class="text-center">
+                            <span class="status-badge {% if model.is_active %}status-active{% else %}status-inactive{% endif %}">
+                                {{ model.get_is_active_display }}
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <div class="weight-control">
+                                <button class="weight-btn" 
+                                        onclick="handleWeightChange({{ model.id }}, 'up')"
+                                        {% if model.weight == 1 %}disabled{% endif %}>
+                                    <i class="fas fa-arrow-up"></i>
+                                </button>
+                                <span class="weight-number">{{ model.weight }}</span>
+                                <button class="weight-btn" 
+                                        onclick="handleWeightChange({{ model.id }}, 'down')"
+                                        {% if forloop.last %}disabled{% endif %}>
+                                    <i class="fas fa-arrow-down"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="table-footer">
+            <small class="text-muted">共 {{ cl.result_count }} 个模型</small>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'bootstrap-5.3.0/js/bootstrap.bundle.min.js' %}"></script>
 <script>
 function handleWeightChange(modelId, direction) {
     fetch(`/admin/aimodels/aimodel/change-weight/${modelId}/${direction}/`)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // 刷新页面以显示新的排序
                 window.location.reload();
             } else {
                 alert('更新权重失败：' + data.error);
@@ -35,7 +203,7 @@ function handleWeightChange(modelId, direction) {
             console.error('Error:', error);
             alert('操作失败，请重试');
         });
-    return false;  // 阻止默认链接行为
+    return false;
 }
 </script>
 {% endblock %} 
