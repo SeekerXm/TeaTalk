@@ -365,7 +365,7 @@ body {
     }
 }
 
-/* 警��样式 */
+/* 警样式 */
 .warning-icon {
     margin-left: 5px;
     font-size: 0.9rem;
@@ -1693,6 +1693,59 @@ body {
         padding: 0.5rem 0.875rem;
         font-size: 0.85rem;
         margin-top: 0.625rem;
+    }
+}
+
+/* 模型选择器样式 - 添加更具体的选择器以提高优先级 */
+.model-selector .model-btn .model-text,
+.model-selector .model-text {
+    font-size: 0.85rem;  /* 从原来的 0.9rem 减小到 0.85rem */
+    margin-right: auto;
+    color: #1f2937;
+}
+
+.model-selector .model-item,
+.model-menu .model-item {
+    font-size: 0.82rem;  /* 从原来的 0.9rem 减小到 0.82rem */
+    padding: 0.625rem 0.875rem;
+    color: #1f2937;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+/* 移动端适配 - 保持原有的响应式逻辑 */
+@media (max-width: 768px) {
+    .model-selector .model-btn .model-text,
+    .model-selector .model-text {
+        font-size: 0.8rem;  /* 移动端更小一点 */
+    }
+    
+    .model-selector .model-item,
+    .model-menu .model-item {
+        font-size: 0.78rem;  /* 移动端更小一点 */
+        padding: 0.5rem 0.75rem;
+    }
+}
+
+/* 模型下拉菜单样式 */
+.model-menu .dropdown-item {
+    font-size: 0.82rem;  /* 从默认的大小减小到 0.82rem */
+    padding: 0.5rem 1rem;
+    color: #1f2937;
+}
+
+/* 模型下拉菜单中的模型名称 */
+.model-menu .model-name {
+    font-size: 0.82rem;  /* 保持一致的字体大小 */
+    color: #1f2937;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .model-menu .dropdown-item,
+    .model-menu .model-name {
+        font-size: 0.78rem;  /* 移动端更小一点 */
+        padding: 0.4rem 0.875rem;
     }
 }
   
