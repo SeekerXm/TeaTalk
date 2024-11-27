@@ -7,9 +7,9 @@ class AIModel(models.Model):
     ]
     
     PLATFORMS = [
+        ('spark', '讯飞星火'),
         ('bigmodel', 'BigModel'),
         ('qianfan', '百度千帆'),
-        ('spark', '讯飞星火'),
         ('silicon', 'SiliconCloud'),
     ]
     
@@ -26,7 +26,7 @@ class AIModel(models.Model):
     config = models.JSONField('模型配置', default=dict)
     created_at = models.DateTimeField('创建时间', auto_now_add=True)
     updated_at = models.DateTimeField('更新时间', auto_now=True)
-    original_model_name = models.CharField('原始模型名称', max_length=100, blank=True)
+    original_model_name = models.CharField('原始模型名称', max_length=100, blank=True, null=True)
 
     class Meta:
         verbose_name = '模型管理'

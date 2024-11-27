@@ -7,9 +7,22 @@ def create_initial_models(apps, schema_editor):
     models_data = [
         {
             'model_type': 'chat',
+            'model_name': 'Spark Lite',
+            'platform': 'spark',
+            'weight': 1,
+            'is_active': True,
+            'original_model_name': 'lite',
+            'config': {
+                'SPARK_APPID': settings.SPARK_APPID,
+                'SPARK_API_KEY': settings.SPARK_API_KEY,
+                'SPARK_API_SECRET': settings.SPARK_API_SECRET
+            }
+        },
+        {
+            'model_type': 'chat',
             'model_name': 'GLM-4-Flash',
             'platform': 'bigmodel',
-            'weight': 1,
+            'weight': 2,
             'is_active': True,
             'original_model_name': 'glm-4-flash',
             'config': {'ZHIPU_API_KEY': settings.ZHIPU_API_KEY}
@@ -18,25 +31,12 @@ def create_initial_models(apps, schema_editor):
             'model_type': 'chat',
             'model_name': 'Yi-34B',
             'platform': 'qianfan',
-            'weight': 2,
+            'weight': 3,
             'is_active': True,
             'original_model_name': 'Yi-34B-Chat',
             'config': {
                 'QIANFAN_ACCESS_KEY': settings.QIANFAN_ACCESS_KEY,
                 'QIANFAN_SECRET_KEY': settings.QIANFAN_SECRET_KEY
-            }
-        },
-        {
-            'model_type': 'chat',
-            'model_name': 'Spark Lite',
-            'platform': 'spark',
-            'weight': 3,
-            'is_active': True,
-            'original_model_name': 'lite',
-            'config': {
-                'SPARK_APPID': settings.SPARK_APPID,
-                'SPARK_API_KEY': settings.SPARK_API_KEY,
-                'SPARK_API_SECRET': settings.SPARK_API_SECRET
             }
         },
         {
