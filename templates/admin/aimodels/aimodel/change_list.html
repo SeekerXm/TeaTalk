@@ -1,0 +1,25 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+
+{% block extrahead %}
+{{ block.super }}
+<script>
+function handleWeightChange(modelId, direction) {
+    fetch(`/admin/aimodels/aimodel/change-weight/${modelId}/${direction}/`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // 刷新页面以显示新的排序
+                window.location.reload();
+            } else {
+                alert('更新权重失败：' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('操作失败，请重试');
+        });
+    return false;  // 阻止默认链接行为
+}
+</script>
+{% endblock %} 

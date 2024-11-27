@@ -32,15 +32,5 @@ class AIModel(models.Model):
         verbose_name_plural = verbose_name
         ordering = ['weight']
 
-    def save(self, *args, **kwargs):
-        if self.pk:
-            old_instance = AIModel.objects.get(pk=self.pk)
-            if old_instance.weight != self.weight:
-                conflict_model = AIModel.objects.filter(weight=self.weight).first()
-                if conflict_model:
-                    conflict_model.weight = old_instance.weight
-                    conflict_model.save()
-        super().save(*args, **kwargs)
-
     def __str__(self):
         return f"{self.get_platform_display()} - {self.model_name}" 

@@ -4,25 +4,113 @@ from .models import AIModel
 
 @admin.register(AIModel)
 class AIModelAdmin(admin.ModelAdmin):
-    list_display = ('display_id', 'get_model_name_link', 'model_type', 'platform', 'is_active', 'weight')
+    list_display = ('id', 'model_name', 'model_type', 'platform', 'is_active', 'weight_control')
     list_filter = ('model_type', 'platform', 'is_active')
     search_fields = ('model_name',)
     ordering = ('weight',)
+    readonly_fields = ('weight',)
     
-    @admin.display(description='ID', ordering='id')
-    def display_id(self, obj):
-        """将ID显示为纯文本，禁用链接"""
-        return obj.id
+    # 只允许修改状态
+    list_editable = ('is_active',)  # 移除 weight
     
-    def get_model_name_link(self, obj):
-        """自定义模型名称列，使其可点击并链接到编辑页面"""
+    def weight_control(self, obj):
+        """自定义权重控制列"""
         return format_html(
-            '<a href="{}/change/">{}</a>',
-            obj.id,
-            obj.model_name
+            '<div style="white-space:nowrap">'
+            '<span style="margin-right:10px">{}</span>'
+            '<a href="#" onclick="return handleWeightChange({}, \'up\')" style="margin-right:5px">'
+            '<i class="fas fa-arrow-up"></i></a>'
+            '<a href="#" onclick="return handleWeightChange({}, \'down\')">'
+            '<i class="fas fa-arrow-down"></i></a>'
+            '</div>',
+            obj.weight, obj.id, obj.id
         )
-    get_model_name_link.short_description = '模型名称'
-    get_model_name_link.admin_order_field = 'model_name'
+    weight_control.short_description = '模型权重'
+    weight_control.allow_tags = True
+
+    class Media:
+        css = {
+            'all': ('admin/css/forms.css',)
+        }
+        js = (
+            'admin/js/vendor/jquery/jquery.min.js',
+            'admin/js/jquery.init.js',
+            'admin/js/core.js',
+        )
+
+    def get_urls(self):
+        from django.urls import path
+        urls = super().get_urls()
+        custom_urls = [
+            path('change-weight/<int:model_id>/<str:direction>/',
+                 self.admin_site.admin_view(self.change_weight),
+                 name='aimodel-change-weight'),
+        ]
+        return custom_urls + urls
+
+    def change_weight(self, request, model_id, direction):
+        """处理权重变更的视图"""
+        from django.http import JsonResponse
+        from django.db import transaction
+        
+        try:
+            with transaction.atomic():  # 使用事务确保数据一致性
+                model = AIModel.objects.select_for_update().get(id=model_id)
+                current_weight = model.weight
+                
+                if direction == 'up' and current_weight > 1:
+                    # 获取权重比当前小1的模型
+                    swap_model = AIModel.objects.select_for_update().filter(
+                        weight=current_weight - 1
+                    ).first()
+                    
+                    if swap_model:
+                        # 使用临时权重值来避免唯一键冲突
+                        temp_weight = -1  # 使用一个不可能存在的临时权重值
+                        
+                        # 先将当前模型设置为临时权重
+                        AIModel.objects.filter(id=model.id).update(
+                            weight=temp_weight
+                        )
+                        
+                        # 更新另一个模型的权重
+                        AIModel.objects.filter(id=swap_model.id).update(
+                            weight=current_weight
+                        )
+                        
+                        # 最后设置当前模型的目标权重
+                        AIModel.objects.filter(id=model.id).update(
+                            weight=current_weight - 1
+                        )
+                
+                elif direction == 'down':
+                    # 获取权重比当前大1的模型
+                    swap_model = AIModel.objects.select_for_update().filter(
+                        weight=current_weight + 1
+                    ).first()
+                    
+                    if swap_model:
+                        # 使用临时权重值来避免唯一键冲突
+                        temp_weight = -1  # 使用一个不可能存在的临时权重值
+                        
+                        # 先将当前模型设置为临时权重
+                        AIModel.objects.filter(id=model.id).update(
+                            weight=temp_weight
+                        )
+                        
+                        # 更新另一个模型的权重
+                        AIModel.objects.filter(id=swap_model.id).update(
+                            weight=current_weight
+                        )
+                        
+                        # 最后设置当前模型的目标权重
+                        AIModel.objects.filter(id=model.id).update(
+                            weight=current_weight + 1
+                        )
+            
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
     
     # 禁用添加和删除按钮
     def has_add_permission(self, request):
@@ -40,9 +128,6 @@ class AIModelAdmin(admin.ModelAdmin):
         if obj:  # 编辑时
             return ('id', 'model_type', 'platform')  # 这些字段不可修改
         return []
-    
-    # 在列表页面可直接编辑的字段
-    list_editable = ('is_active', 'weight')
     
     # 自定义表单布局
     fieldsets = (
@@ -80,9 +165,3 @@ class AIModelAdmin(admin.ModelAdmin):
             elif obj.platform == 'silicon':
                 obj.config = {'SILICON_API_KEY': ''}
         super().save_model(request, obj, form, change)
-    
-    class Media:
-        css = {
-            'all': ('admin/css/forms.css',)
-        }
-        js = ('admin/js/core.js',)
