@@ -3,6 +3,22 @@
 
 {% block extrahead %}
 {{ block.super }}
+<style>
+/* 序号列样式 */
+.column-get_index {
+    width: 50px;
+    text-align: center;
+}
+/* 模型ID列样式 */
+.column-id {
+    width: 80px;
+}
+/* 权重控制列样式 */
+.column-weight_control {
+    width: 100px;
+    text-align: center;
+}
+</style>
 <script>
 function handleWeightChange(modelId, direction) {
     fetch(`/admin/aimodels/aimodel/change-weight/${modelId}/${direction}/`)

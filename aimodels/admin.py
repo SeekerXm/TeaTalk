@@ -1,18 +1,41 @@
 from django.contrib import admin
 from django.utils.html import format_html
+from django.db.models import F
 from .models import AIModel
 
 @admin.register(AIModel)
 class AIModelAdmin(admin.ModelAdmin):
-    list_display = ('id', 'model_name', 'model_type', 'platform', 'is_active', 'weight_control')
+    list_display = ('get_index', 'get_model_id', 'model_name', 'model_type', 'platform', 'is_active', 'weight_control')
     list_filter = ('model_type', 'platform', 'is_active')
     search_fields = ('model_name',)
     ordering = ('weight',)
     readonly_fields = ('weight',)
     
     # 只允许修改状态
-    list_editable = ('is_active',)  # 移除 weight
+    list_editable = ('is_active',)
     
+    def get_model_id(self, obj):
+        """自定义ID列的显示名称"""
+        return obj.id
+    get_model_id.short_description = '模型ID'
+    get_model_id.admin_order_field = 'id'
+    
+    def get_index(self, obj):
+        """获取连续序号（基于当前页面的排序）"""
+        request = getattr(self, 'request', None)
+        if request:
+            queryset = self.get_queryset(request)
+            index = list(queryset).index(obj) + 1
+            return index
+        return 0
+    get_index.short_description = '序号'
+    get_index.admin_order_field = 'weight'
+
+    def changelist_view(self, request, extra_context=None):
+        # 保存request对象以供get_index使用
+        self.request = request
+        return super().changelist_view(request, extra_context)
+
     def weight_control(self, obj):
         """自定义权重控制列"""
         return format_html(
