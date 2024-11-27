@@ -170,22 +170,60 @@ class AIModelAdmin(admin.ModelAdmin):
             return ('id', 'model_type', 'platform')  # 这些字段不可修改
         return []
     
-    # 自定义表单布局
-    fieldsets = (
-        ('基本信息', {
-            'fields': ('model_type', 'model_name', 'platform', 'is_active', 'weight', 'original_model_name'),
-            'description': '模型基本信息配置，类型、平台和原始模型名称不可修改'
-        }),
-        ('配置信息', {
-            'fields': ('config',),
-            'classes': ('wide',),
-            'description': '请按照模型平台要求填写配置信息：<br>'
-                         'BigModel: ZHIPU_API_KEY = ""<br>'
-                         '百度千帆: QIANFAN_ACCESS_KEY = "", QIANFAN_SECRET_KEY = ""<br>'
-                         '讯飞星火: SPARK_APPID = "", SPARK_API_KEY = "", SPARK_API_SECRET = ""<br>'
-                         'SiliconCloud: SILICON_API_KEY = ""'
-        }),
-    )
+    def get_fieldsets(self, request, obj=None):
+        """动态生成 fieldsets"""
+        return (
+            ('基本信息', {
+                'fields': ('model_type', 'model_name', 'platform', 'is_active', 'weight', 'original_model_name'),
+                'description': '模型基本信息配置，类型、平台和原始模型名称不可修改'
+            }),
+            ('配置信息', {
+                'fields': ('config',),
+                'classes': ('wide',),
+                'description': self.get_config_description(obj) if obj else '请根据不同平台要求填写对应的配置信息'
+            }),
+        )
+
+    def get_config_description(self, obj):
+        """根据平台返回对应的配置说明"""
+        if not obj:
+            return ''
+            
+        if obj.platform == 'bigmodel':
+            return ('智谱AI平台配置说明：<br>'
+                   '- ZHIPU_API_KEY：智谱AI平台的API密钥<br><br>'
+                   '配置示例：<br>'
+                   '<pre>{\n'
+                   '    "ZHIPU_API_KEY": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.xxxxxxxxxxxxxxxx"\n'
+                   '}</pre>')
+        elif obj.platform == 'qianfan':
+            return ('百度千帆平台配置说明：<br>'
+                   '- QIANFAN_ACCESS_KEY：访问密钥<br>'
+                   '- QIANFAN_SECRET_KEY：安全密钥<br><br>'
+                   '配置示例：<br>'
+                   '<pre>{\n'
+                   '    "QIANFAN_ACCESS_KEY": "xxxxxxxxxxxxxxxxxxxxxxxx",\n'
+                   '    "QIANFAN_SECRET_KEY": "xxxxxxxxxxxxxxxxxxxxxxxx"\n'
+                   '}</pre>')
+        elif obj.platform == 'spark':
+            return ('讯飞星火平台配置说明：<br>'
+                   '- SPARK_APPID：应用ID<br>'
+                   '- SPARK_API_KEY：API密钥<br>'
+                   '- SPARK_API_SECRET：安全密钥<br><br>'
+                   '配置示例：<br>'
+                   '<pre>{\n'
+                   '    "SPARK_APPID": "xxxxxxxx",\n'
+                   '    "SPARK_API_KEY": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",\n'
+                   '    "SPARK_API_SECRET": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"\n'
+                   '}</pre>')
+        elif obj.platform == 'silicon':
+            return ('SiliconCloud平台配置说明：<br>'
+                   '- SILICON_API_KEY：API密钥<br><br>'
+                   '配置示例：<br>'
+                   '<pre>{\n'
+                   '    "SILICON_API_KEY": "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"\n'
+                   '}</pre>')
+        return ''
 
     def save_model(self, request, obj, form, change):
         # 根据平台类型设置配置模板

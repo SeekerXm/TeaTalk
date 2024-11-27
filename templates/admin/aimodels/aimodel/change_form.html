@@ -202,6 +202,16 @@
 .text-transform-none {
     text-transform: none !important;
 }
+
+.fieldset-description {
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+    color: #495057;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
 </style>
 {% endblock %}
 
@@ -231,49 +241,62 @@
                     </div>
                 {% endif %}
 
-                <!-- 基本信息部分 -->
-                <div class="form-section">
-                    <h6 class="section-title">基本信息</h6>
-                    
-                    {% for field in adminform.form %}
-                        <div class="form-group{% if field.errors %} has-error{% endif %}">
-                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-                            
-                            {% if field.name == 'model_name' %}
-                                {{ field }}
-                                {% if original.original_model_name %}
-                                    <div class="mt-2">
-                                        <small class="text-muted">原始模型名称：{{ original.original_model_name }}</small>
+                {% for fieldset in adminform %}
+                    <div class="form-section">
+                        <h6 class="section-title">{{ fieldset.name }}</h6>
+                        
+                        {% if fieldset.description and fieldset.name == '配置信息' %}
+                            <div class="fieldset-description mb-4">
+                                {{ fieldset.description|safe }}
+                            </div>
+                        {% endif %}
+                        
+                        {% for line in fieldset %}
+                            {% for field in line %}
+                                {% if not field.field.is_hidden and field.field.name != 'model_type' and field.field.name != 'platform' %}
+                                    <div class="form-group{% if field.field.errors %} has-error{% endif %}">
+                                        <label class="form-label" for="{{ field.field.id_for_label }}">{{ field.field.label }}</label>
+                                        
+                                        {% if field.field.name == 'model_name' %}
+                                            {{ field.field }}
+                                            {% if original.original_model_name %}
+                                                <div class="mt-2">
+                                                    <small class="text-muted">原始模型名称：{{ original.original_model_name }}</small>
+                                                </div>
+                                            {% endif %}
+                                        {% elif field.field.name == 'is_active' %}
+                                            <div class="form-check">
+                                                {{ field.field }}
+                                            </div>
+                                        {% elif field.field.name == 'weight' %}
+                                            <div class="form-control readonly-field">
+                                                {{ field.field.value|default_if_none:"" }}
+                                                {{ field.field.as_hidden }}
+                                            </div>
+                                            <div class="help-text">模型权重越小，前端模型列表中模型的位置越靠前，权重值为"1"的模型，为默认模型。</div>
+                                        {% elif field.field.name == 'original_model_name' %}
+                                            {{ field.field.as_hidden }}
+                                        {% else %}
+                                            {{ field.field }}
+                                        {% endif %}
+                                        
+                                        {% if field.field.errors %}
+                                            {% for error in field.field.errors %}
+                                                <div class="error-message">{{ error }}</div>
+                                            {% endfor %}
+                                        {% endif %}
+                                        
+                                        {% if field.field.help_text %}
+                                            <div class="help-text">{{ field.field.help_text }}</div>
+                                        {% endif %}
                                     </div>
+                                {% else %}
+                                    {{ field.field.as_hidden }}
                                 {% endif %}
-                            {% elif field.name == 'is_active' %}
-                                <div class="form-check">
-                                    {{ field }}
-                                </div>
-                            {% elif field.name == 'weight' %}
-                                <div class="form-control readonly-field">
-                                    {{ field.value|default_if_none:"" }}
-                                    {{ field.as_hidden }}
-                                </div>
-                                <div class="help-text">模型权重越小，前端模型列表中模型的位置越靠前，权重值为"1"的模型，为默认模型。</div>
-                            {% elif field.name == 'original_model_name' %}
-                                {{ field.as_hidden }}
-                            {% else %}
-                                {{ field }}
-                            {% endif %}
-                            
-                            {% if field.errors %}
-                                {% for error in field.errors %}
-                                    <div class="error-message">{{ error }}</div>
-                                {% endfor %}
-                            {% endif %}
-                            
-                            {% if field.help_text and field.name != 'model_type' and field.name != 'platform' %}
-                                <div class="help-text">{{ field.help_text }}</div>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                </div>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
             </div>
             
             <div class="submit-row">
