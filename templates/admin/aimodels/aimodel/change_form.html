@@ -198,6 +198,10 @@
         margin-bottom: 0.5rem;
     }
 }
+
+.text-transform-none {
+    text-transform: none !important;
+}
 </style>
 {% endblock %}
 
@@ -205,11 +209,11 @@
 <div class="model-edit">
     <div class="edit-card">
         <div class="card-header">
-            <h5>
+            <h5 class="text-transform-none">
                 {% if add %}
                     {% blocktranslate with name=opts.verbose_name %}添加 {{ name }}{% endblocktranslate %}
                 {% else %}
-                    {{ original|truncatewords:"18" }}
+                    {{ original.get_platform_display }} - {{ original.model_name }}
                 {% endif %}
             </h5>
         </div>
