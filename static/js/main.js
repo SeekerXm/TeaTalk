@@ -1050,6 +1050,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 const modelSelect = document.getElementById('modelSelect');
                 const modelDropdown = document.querySelector('.model-selector .dropdown-menu');
+                const modelText = document.querySelector('.model-text');  // 获取模型名称显示元素
                 
                 // 清空现有选项
                 modelSelect.innerHTML = '';
@@ -1082,12 +1083,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // 设置默认选中的模型（权重最小的）
                 if (data.models.length > 0) {
-                    const defaultModel = data.models[0];
+                    const defaultModel = data.models[0];  // 由于已经按 weight 排序，第一个就是权重最小的
+                    
+                    // 更新隐藏的 select 值
                     modelSelect.value = defaultModel.id;
                     
-                    // 更新导航栏 - 只更新模型名称文本和问号图标的 tooltip
+                    // 更新下拉按钮上显示的模型名称
+                    if (modelText) {
+                        modelText.textContent = defaultModel.name;
+                    }
+                    
+                    // 更新导航栏显示
                     document.querySelector('.nav-center .model-name').textContent = defaultModel.name;
                     
+                    // 设置下拉菜单中对应选项的激活状态
+                    const defaultModelItem = modelDropdown.querySelector(`[data-model="${defaultModel.id}"]`);
+                    if (defaultModelItem) {
+                        defaultModelItem.classList.add('active');
+                    }
+                    
+                    // 更新导航栏的 tooltip
                     const navModelInfo = document.querySelector('.nav-center .model-info');
                     if (navModelInfo) {
                         navModelInfo.setAttribute('data-bs-title', 
@@ -1098,7 +1113,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>`
                         );
                         
-                        // 初始化问号图标的 tooltip
+                        // 初始化 tooltip
                         new bootstrap.Tooltip(navModelInfo, {
                             html: true,
                             container: 'body',
