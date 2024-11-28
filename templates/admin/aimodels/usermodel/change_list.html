@@ -1,0 +1,136 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% load i18n admin_urls admin_list %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link href="{% static 'bootstrap-5.3.0/css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'fontawesome-free-6.6.0-web/css/all.min.css' %}" rel="stylesheet">
+<style>
+/* 列表容器样式 */
+.user-model-list {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* 卡片样式 */
+.list-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+/* 表格样式 */
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    background: #f8f9fa;
+    font-weight: 500;
+    color: #374151;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.table td {
+    vertical-align: middle;
+    color: #1f2937;
+}
+
+/* 序号列样式 */
+.index-col {
+    color: #6b7280;
+    font-size: 0.9rem;
+    width: 80px;
+}
+
+/* 邮箱链接样式 */
+.email-link {
+    color: #2563eb;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.email-link:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+/* 模型ID列样式 */
+.model-id {
+    color: #374151;
+    font-family: monospace;
+}
+
+/* 编辑时间列样式 */
+.edit-time {
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+/* 搜索框样式 */
+.search-box {
+    max-width: 300px;
+    margin: 1rem;
+}
+
+.search-box .form-control {
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    padding: 0.5rem 1rem;
+}
+
+.search-box .form-control:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="user-model-list">
+    <div class="list-card">
+        <!-- 搜索框 -->
+        <div class="search-box">
+            <form method="get">
+                <input type="text" name="q" class="form-control" 
+                       placeholder="搜索用户邮箱..." 
+                       value="{{ request.GET.q|default:'' }}">
+            </form>
+        </div>
+
+        <!-- 数据表格 -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="index-col">序号</th>
+                    <th>用户邮箱</th>
+                    <th>模型ID</th>
+                    <th>编辑时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for obj in cl.result_list %}
+                <tr>
+                    <td class="index-col">{{ forloop.counter }}</td>
+                    <td>
+                        <a href="{% url 'admin:aimodels_usermodel_change' obj.pk %}" 
+                           class="email-link">{{ obj.user.email }}</a>
+                    </td>
+                    <td class="model-id">{{ obj.get_models_display }}</td>
+                    <td class="edit-time">
+                        {% if obj.updated_at %}
+                            {{ obj.updated_at|date:"Y-m-d H:i" }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %} 

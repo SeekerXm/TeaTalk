@@ -1,0 +1,187 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% load i18n admin_urls %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link href="{% static 'bootstrap-5.3.0/css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'fontawesome-free-6.6.0-web/css/all.min.css' %}" rel="stylesheet">
+<style>
+/* 编辑表单容器 */
+.edit-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* 卡片样式 */
+.edit-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+/* 卡片头部 */
+.card-header {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    padding: 1.5rem;
+}
+
+.card-header h5 {
+    margin: 0;
+    color: #1a1a1a;
+    font-weight: 500;
+}
+
+/* 表单容器 */
+.form-container {
+    padding: 1.5rem;
+}
+
+/* 表单分组 */
+.form-section {
+    background: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* 只读字段样式 */
+.readonly-field {
+    background-color: #f8f9fa;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    color: #374151;
+}
+
+/* 复选框组样式 */
+.checkbox-group {
+    margin-top: 1rem;
+}
+
+.form-check {
+    margin-bottom: 0.5rem;
+}
+
+.form-check-input {
+    margin-right: 0.5rem;
+}
+
+/* 提交按钮区域 */
+.submit-row {
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.btn-primary {
+    background: linear-gradient(145deg, #3b82f6, #2563eb);
+    border: none;
+}
+
+.btn-secondary {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="edit-container">
+    <div class="edit-card">
+        <div class="card-header">
+            <h5>{{ original.user.email }} 的模型配置</h5>
+        </div>
+
+        <form method="post" id="{{ opts.model_name }}_form">
+            {% csrf_token %}
+            
+            <div class="form-container">
+                <!-- 基本信息 -->
+                <div class="form-section">
+                    <h6 class="mb-3">基本信息</h6>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">用户邮箱</label>
+                        <div class="readonly-field">{{ original.user.email }}</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">编辑时间</label>
+                        <div class="readonly-field">
+                            {% if original.updated_at %}
+                                {{ original.updated_at|date:"Y-m-d H:i" }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 模型配置 -->
+                <div class="form-section">
+                    <h6 class="mb-3">模型配置</h6>
+                    
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" 
+                               id="id_use_all_models" name="use_all_models"
+                               {% if original.use_all_models %}checked{% endif %}>
+                        <label class="form-check-label" for="id_use_all_models">
+                            使用所有模型
+                        </label>
+                    </div>
+
+                    <div class="checkbox-group" id="models_group">
+                        {% for model in adminform.form.fields.models.queryset %}
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" 
+                                   name="models" value="{{ model.id }}"
+                                   {% if model in original.models.all %}checked{% endif %}
+                                   id="id_models_{{ model.id }}">
+                            <label class="form-check-label" for="id_models_{{ model.id }}">
+                                #{{ model.id }}-{{ model.model_name }}
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="submit-row">
+                <button type="submit" class="btn btn-primary">保存</button>
+                <a href="{% url opts|admin_urlname:'changelist' %}" class="btn btn-secondary">
+                    返回
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% block admin_change_form_document_ready %}
+<script>
+(function($) {
+    var $useAllModels = $('#id_use_all_models');
+    var $modelsGroup = $('#models_group');
+    
+    function toggleModelsGroup() {
+        if ($useAllModels.is(':checked')) {
+            $modelsGroup.hide();
+        } else {
+            $modelsGroup.show();
+        }
+    }
+    
+    $useAllModels.on('change', toggleModelsGroup);
+    toggleModelsGroup();
+})(django.jQuery);
+</script>
+{% endblock %}
+{% endblock %} 

@@ -1,9 +1,12 @@
 from django.db import migrations
 from django.conf import settings
 
-def create_initial_models(apps, schema_editor):
+def create_initial_data(apps, schema_editor):
     AIModel = apps.get_model('aimodels', 'AIModel')
+    User = apps.get_model('users', 'User')
+    UserModel = apps.get_model('aimodels', 'UserModel')
     
+    # 创建AI模型
     models_data = [
         {
             'model_type': 'chat',
@@ -79,16 +82,29 @@ def create_initial_models(apps, schema_editor):
     
     for data in models_data:
         AIModel.objects.create(**data)
+    
+    # 为现有用户创建用户模型记录
+    for user in User.objects.all():
+        UserModel.objects.get_or_create(
+            user=user,
+            defaults={
+                'use_all_models': True,
+                'updated_at': None
+            }
+        )
 
-def delete_models(apps, schema_editor):
+def delete_data(apps, schema_editor):
     AIModel = apps.get_model('aimodels', 'AIModel')
+    UserModel = apps.get_model('aimodels', 'UserModel')
     AIModel.objects.all().delete()
+    UserModel.objects.all().delete()
 
 class Migration(migrations.Migration):
     dependencies = [
         ('aimodels', '0001_initial'),
+        ('users', '0001_initial'),
     ]
 
     operations = [
-        migrations.RunPython(create_initial_models, delete_models),
+        migrations.RunPython(create_initial_data, delete_data),
     ] 

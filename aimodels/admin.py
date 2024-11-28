@@ -1,8 +1,18 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from django.db.models import F
-from .models import AIModel
+from .models import AIModel, UserModel
 from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from users.models import User
+from django.utils import timezone
+
+@receiver(post_save, sender=User)
+def create_user_model(sender, instance, created, **kwargs):
+    """当新用户创建时，自动创建对应的用户模型配置"""
+    if created:
+        UserModel.objects.create(user=instance)
 
 @admin.register(AIModel)
 class AIModelAdmin(admin.ModelAdmin):
@@ -243,4 +253,58 @@ class AIModelAdmin(admin.ModelAdmin):
                 }
             elif obj.platform == 'silicon':
                 obj.config = {'SILICON_API_KEY': settings.SILICON_API_KEY}
+        super().save_model(request, obj, form, change)
+
+@admin.register(UserModel)
+class UserModelAdmin(admin.ModelAdmin):
+    list_display = ('get_index', 'get_user_email', 'get_models_display', 'updated_at')
+    readonly_fields = ('user', 'updated_at')
+    search_fields = ('user__email',)
+    ordering = ('-updated_at',)
+
+    def get_index(self, obj):
+        """获取序号"""
+        request = getattr(self, 'request', None)
+        if request:
+            queryset = self.get_queryset(request)
+            return list(queryset).index(obj) + 1
+        return 0
+    get_index.short_description = '序号'
+
+    def get_user_email(self, obj):
+        """获取用户邮箱"""
+        return obj.user.email
+    get_user_email.short_description = '用户邮箱'
+    get_user_email.admin_order_field = 'user__email'
+
+    def get_models_display(self, obj):
+        """获取模型显示"""
+        return obj.get_models_display()
+    get_models_display.short_description = '模型ID'
+
+    def get_fieldsets(self, request, obj=None):
+        """自定义字段集"""
+        return (
+            ('基本信息', {
+                'fields': ('user', 'updated_at'),
+                'description': '用户基本信息（只读）'
+            }),
+            ('模型配置', {
+                'fields': ('use_all_models', 'models'),
+                'description': '选择用户可用的模型'
+            }),
+        )
+
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        """自定义多对多字段的表单字段"""
+        if db_field.name == "models":
+            kwargs["widget"] = admin.widgets.FilteredSelectMultiple(
+                "模型", False, attrs={'style': 'width: 100%;'}
+            )
+        return super().formfield_for_manytomany(db_field, request, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        """保存时更新编辑时间"""
+        if change:  # 只在编辑时更新时间
+            obj.updated_at = timezone.now()
         super().save_model(request, obj, form, change)

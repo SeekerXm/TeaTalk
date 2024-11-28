@@ -1,4 +1,7 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from users.models import User
 
 class AIModel(models.Model):
     MODEL_TYPES = [
@@ -35,3 +38,39 @@ class AIModel(models.Model):
 
     def __str__(self):
         return f"{self.get_platform_display()} - {self.model_name}" 
+
+class UserModel(models.Model):
+    user = models.OneToOneField('users.User', on_delete=models.CASCADE, verbose_name='用户')
+    use_all_models = models.BooleanField('使用所有模型', default=True)
+    updated_at = models.DateTimeField('编辑时间', null=True, blank=True)
+    models = models.ManyToManyField('AIModel', blank=True, verbose_name='可用模型')
+
+    class Meta:
+        verbose_name = '用户模型'
+        verbose_name_plural = verbose_name
+        ordering = ['-updated_at']
+
+    def __str__(self):
+        return f"{self.user.email} 的模型配置"
+
+    def get_models_display(self):
+        if self.use_all_models:
+            return "所有"
+        return ", ".join([f"#{m.id}" for m in self.models.all()])
+
+    def get_models_detail_display(self):
+        if self.use_all_models:
+            return "所有"
+        return ", ".join([f"#{m.id}-{m.model_name}" for m in self.models.all()]) 
+
+@receiver(post_save, sender=User)
+def create_user_model(sender, instance, created, **kwargs):
+    """当新用户创建时，自动创建对应的用户模型配置"""
+    if created:  # 只在新用户创建时执行
+        UserModel.objects.get_or_create(
+            user=instance,
+            defaults={
+                'use_all_models': True,
+                'updated_at': None
+            }
+        ) 

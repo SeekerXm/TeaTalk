@@ -189,6 +189,10 @@ SIMPLEUI_CONFIG = {
             'name': 'AI模型列表',
             'icon': 'fas fa-microchip',
             'url': '/admin/aimodels/aimodel/'
+        }, {
+            'name': '用户模型',
+            'icon': 'fas fa-users-cog',
+            'url': '/admin/aimodels/usermodel/'
         }]
     }]
 }
