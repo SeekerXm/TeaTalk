@@ -17,79 +17,157 @@
 /* 卡片样式 */
 .edit-card {
     background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     overflow: hidden;
 }
 
 /* 卡片头部 */
 .card-header {
     background: #f8f9fa;
-    border-bottom: 1px solid #e9ecef;
-    padding: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 1.25rem;
 }
 
 .card-header h5 {
     margin: 0;
     color: #1a1a1a;
     font-weight: 500;
+    font-size: 1rem;
+    text-transform: none !important;
 }
 
 /* 表单容器 */
 .form-container {
-    padding: 1.5rem;
+    padding: 1.25rem;
 }
 
 /* 表单分组 */
 .form-section {
     background: #fff;
-    border: 1px solid #e9ecef;
-    border-radius: 8px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
+    border: 1px solid #f0f0f0;
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.form-section:last-child {
+    margin-bottom: 0;
+}
+
+.form-section h6 {
+    color: #4b5563;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
 }
 
 /* 只读字段样式 */
 .readonly-field {
     background-color: #f8f9fa;
-    padding: 0.625rem 0.875rem;
+    padding: 0.75rem 1rem;
     border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    color: #374151;
+    border-radius: 0.5rem;
+    color: #4b5563;
+    font-size: 0.875rem;
+}
+
+/* 表单标签 */
+.form-label {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
 }
 
 /* 复选框组样式 */
 .checkbox-group {
     margin-top: 1rem;
+    padding: 0.5rem 0;
 }
 
 .form-check {
     margin-bottom: 0.5rem;
+    padding-left: 1.75rem;
+}
+
+.form-check:last-child {
+    margin-bottom: 0;
 }
 
 .form-check-input {
-    margin-right: 0.5rem;
+    margin-left: -1.75rem;
+    width: 1rem;
+    height: 1rem;
+    border-color: #d1d5db;
+    transition: all 0.2s ease;
+}
+
+.form-check-input:checked {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+}
+
+.form-check-label {
+    color: #4b5563;
+    font-size: 0.875rem;
+    padding-top: 0.125rem;
 }
 
 /* 提交按钮区域 */
 .submit-row {
     background: #f8f9fa;
-    border-top: 1px solid #e9ecef;
-    padding: 1.5rem;
+    border-top: 1px solid #f0f0f0;
+    padding: 1.25rem;
     display: flex;
     justify-content: flex-end;
-    gap: 1rem;
+    gap: 0.75rem;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
 }
 
 .btn-primary {
-    background: linear-gradient(145deg, #3b82f6, #2563eb);
+    background: #3b82f6;
     border: none;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
 }
 
 .btn-secondary {
     background: #fff;
     border: 1px solid #e5e7eb;
-    color: #374151;
+    color: #4b5563;
+}
+
+.btn-secondary:hover {
+    background: #f9fafb;
+    transform: translateY(-1px);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .edit-container {
+        margin: 1rem auto;
+    }
+    
+    .card-header,
+    .form-container,
+    .submit-row {
+        padding: 1rem;
+    }
+    
+    .form-section {
+        padding: 1rem;
+    }
 }
 </style>
 {% endblock %}
@@ -107,14 +185,14 @@
             <div class="form-container">
                 <!-- 基本信息 -->
                 <div class="form-section">
-                    <h6 class="mb-3">基本信息</h6>
+                    <h6>基本信息</h6>
                     
                     <div class="mb-3">
                         <label class="form-label">用户邮箱</label>
                         <div class="readonly-field">{{ original.user.email }}</div>
                     </div>
                     
-                    <div class="mb-3">
+                    <div class="mb-0">
                         <label class="form-label">编辑时间</label>
                         <div class="readonly-field">
                             {% if original.updated_at %}
@@ -128,7 +206,7 @@
 
                 <!-- 模型配置 -->
                 <div class="form-section">
-                    <h6 class="mb-3">模型配置</h6>
+                    <h6>模型配置</h6>
                     
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" 
@@ -156,10 +234,12 @@
             </div>
             
             <div class="submit-row">
-                <button type="submit" class="btn btn-primary">保存</button>
                 <a href="{% url opts|admin_urlname:'changelist' %}" class="btn btn-secondary">
-                    返回
+                    <i class="fas fa-arrow-left me-1"></i>返回
                 </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-1"></i>保存
+                </button>
             </div>
         </form>
     </div>
