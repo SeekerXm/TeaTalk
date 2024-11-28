@@ -220,7 +220,7 @@
                     <div class="checkbox-group" id="models_group">
                         {% for model in adminform.form.fields.models.queryset %}
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" 
+                            <input type="checkbox" class="form-check-input model-checkbox" 
                                    name="models" value="{{ model.id }}"
                                    {% if model in original.models.all %}checked{% endif %}
                                    id="id_models_{{ model.id }}">
@@ -247,21 +247,51 @@
 
 {% block admin_change_form_document_ready %}
 <script>
-(function($) {
-    var $useAllModels = $('#id_use_all_models');
-    var $modelsGroup = $('#models_group');
-    
-    function toggleModelsGroup() {
-        if ($useAllModels.is(':checked')) {
-            $modelsGroup.hide();
-        } else {
-            $modelsGroup.show();
-        }
+document.addEventListener('DOMContentLoaded', function() {
+    // 使用原生 JavaScript 而不是 jQuery，避免可能的冲突
+    const useAllModels = document.getElementById('id_use_all_models');
+    const modelCheckboxes = document.querySelectorAll('.model-checkbox');
+
+    // 切换所有模型复选框状态
+    function toggleModelCheckboxes() {
+        const isChecked = useAllModels.checked;
+        modelCheckboxes.forEach(function(checkbox) {
+            checkbox.checked = isChecked;
+        });
     }
-    
-    $useAllModels.on('change', toggleModelsGroup);
-    toggleModelsGroup();
-})(django.jQuery);
+
+    // 检查是否所有模型都被选中
+    function checkAllModels() {
+        const allChecked = Array.from(modelCheckboxes).every(checkbox => checkbox.checked);
+        useAllModels.checked = allChecked;
+    }
+
+    // 监听"使用所有模型"复选框变化
+    useAllModels.addEventListener('change', function() {
+        console.log('useAllModels changed:', this.checked); // 调试日志
+        toggleModelCheckboxes();
+    });
+
+    // 监听所有单个模型复选框变化
+    modelCheckboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            console.log('model checkbox changed:', this.checked); // 调试日志
+            checkAllModels();
+        });
+    });
+
+    // 表单提交验证
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const hasChecked = Array.from(modelCheckboxes).some(checkbox => checkbox.checked);
+        if (!hasChecked && !useAllModels.checked) {
+            e.preventDefault();
+            alert('请至少选择一个模型');
+        }
+    });
+
+    // 初始化状态
+    checkAllModels();
+});
 </script>
 {% endblock %}
 {% endblock %} 
