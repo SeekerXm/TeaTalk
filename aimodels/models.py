@@ -40,7 +40,12 @@ class AIModel(models.Model):
         return f"{self.get_platform_display()} - {self.model_name}" 
 
 class UserModel(models.Model):
-    user = models.OneToOneField('users.User', on_delete=models.CASCADE, verbose_name='用户')
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='user_models',
+        unique=True
+    )
     use_all_models = models.BooleanField('使用所有模型', default=True)
     updated_at = models.DateTimeField('编辑时间', null=True, blank=True)
     models = models.ManyToManyField('AIModel', blank=True, verbose_name='可用模型')
@@ -66,7 +71,7 @@ class UserModel(models.Model):
 @receiver(post_save, sender=User)
 def create_user_model(sender, instance, created, **kwargs):
     """当新用户创建时，自动创建对应的用户模型配置"""
-    if created:  # 只在新用户创建时执行
+    if created and instance.email_verified:  # 只在新用户创建且邮箱已验证时执行
         UserModel.objects.get_or_create(
             user=instance,
             defaults={

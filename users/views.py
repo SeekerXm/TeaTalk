@@ -11,6 +11,7 @@ from .utils import generate_email_code, send_verification_code, validate_email_d
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from announcements.models import Announcement, UserAnnouncementRead
+from django.db import transaction
 
 def index(request):
     """首页视图"""
@@ -88,7 +89,7 @@ def send_email_code(request):
     """发送邮箱验证码"""
     try:
         email = request.POST.get('email')
-        action_type = request.POST.get('type')  # 获取操作类型：register 或 reset
+        action_type = request.POST.get('type')
         print(f"收到发送验证码请求 - Email: {email}, Type: {action_type}")
         
         if not email:
@@ -107,30 +108,45 @@ def send_email_code(request):
             if User.objects.filter(email=email, email_verified=True).exists():
                 return JsonResponse({'success': False, 'message': '该邮箱已被注册'})
         
-        code = generate_email_code()
-        print(f"生成验证码: {code}")
-        
-        if send_verification_code(email, code):
-            if action_type == 'register':
-                # 只在注册时创建未验证的用户
-                user, created = User.objects.get_or_create(
-                    email=email,
-                    defaults={'email_verified': False}
-                )
-                user.set_email_verification_code(code)
-            else:
-                # 找回密码时只更新已存在用户的验证码
-                try:
-                    user = User.objects.get(email=email)
-                    user.set_email_verification_code(code)
-                except User.DoesNotExist:
-                    return JsonResponse({'success': False, 'message': '该邮箱未注册'})
+        try:
+            # 生成并发送验证码
+            code = generate_email_code()
+            print(f"生成验证码: {code}")
             
-            print(f"验证码发送成功 - Email: {email}, Code: {code}")
-            return JsonResponse({'success': True})
-        else:
-            print(f"验证码发送失败")
-            return JsonResponse({'success': False, 'message': '邮件发送失败，请稍后重试'})
+            if send_verification_code(email, code):
+                # 使用 get_or_create 时添加事务处理
+                from django.db import transaction
+                with transaction.atomic():
+                    if action_type == 'register':
+                        # 只在注册时创建或更新未验证的用户
+                        user, _ = User.objects.get_or_create(
+                            email=email,
+                            defaults={
+                                'email_verified': False,
+                                'is_active': False  # 设置为未激活状态
+                            }
+                        )
+                        # 删除可能存在的旧的 UserModel
+                        from aimodels.models import UserModel
+                        UserModel.objects.filter(user=user).delete()
+                        
+                        user.set_email_verification_code(code)
+                    else:
+                        # 找回密码时只更新已存在用户的验证码
+                        user = User.objects.get(email=email)
+                        user.set_email_verification_code(code)
+                
+                print(f"验证码发送成功 - Email: {email}, Code: {code}")
+                return JsonResponse({'success': True})
+            else:
+                print(f"验证码发送失败")
+                return JsonResponse({'success': False, 'message': '邮件发送失败，请稍后重试'})
+                
+        except User.DoesNotExist:
+            return JsonResponse({'success': False, 'message': '该邮箱未注册'})
+        except Exception as e:
+            print(f"处理用户时出错: {str(e)}")
+            return JsonResponse({'success': False, 'message': '验证码发送失败，请重试'})
             
     except Exception as e:
         print(f"发送验证码时出错: {str(e)}")
@@ -140,80 +156,58 @@ def send_email_code(request):
 def register(request):
     """注册处理"""
     try:
-        print("开始处理注册请求")
-        print(f"POST数据: {request.POST}")
-        
         form = RegisterForm(request.POST)
         if form.is_valid():
-            print("表单验证通过")
             email = form.cleaned_data['email']
-            try:
-                user = User.objects.get(email=email)
-                print(f"找到已存在用户: {email}")
-                # 如果用户存在但未验证邮箱
-                if not user.email_verified:
-                    if user.check_email_verification_code(form.cleaned_data['email_code']):
-                        user.set_password(form.cleaned_data['password1'])
-                        user.email_verified = True
-                        user.save()
-                        print("未验证用户注册成功")
-                        return JsonResponse({
-                            'success': True,
-                            'message': '注册成功！请使用您的邮箱和密码登录。',
-                            'email': email
-                        })
-                    print("邮箱验证码无效")
-                    return JsonResponse({
-                        'success': False,
-                        'message': '邮箱验证码无效'
-                    })
-                # 如果户已存在且已验证
-                print("邮箱已被注册")
+            
+            # 检查邮箱是否已被验证注册
+            if User.objects.filter(email=email, email_verified=True).exists():
                 return JsonResponse({
                     'success': False,
-                    'message': '该邮箱已被注册'
+                    'message': '该邮箱已注册，请直接登录'
                 })
-            except User.DoesNotExist:
-                print(f"创建新用户: {email}")
-                # 创建新用户
-                try:
-                    user = User.objects.create_user(
-                        email=email,
-                        password=form.cleaned_data['password1']
-                    )
-                    if user.check_email_verification_code(form.cleaned_data['email_code']):
-                        user.email_verified = True
-                        user.save()
-                        print("新用户注册成功")
+            
+            try:
+                with transaction.atomic():
+                    # 获取或创建未验证的用户
+                    user = User.objects.get(email=email)
+                    
+                    # 验证邮箱验证码
+                    if not user.check_email_verification_code(form.cleaned_data['email_code']):
                         return JsonResponse({
-                            'success': True,
-                            'message': '注册成功！请使用您的邮箱和密码登录。',
-                            'email': email
+                            'success': False,
+                            'message': '邮箱验证码无效或已过期'
                         })
-                    print("邮箱验证码无效")
+                    
+                    # 设置密码并完成注册
+                    user.set_password(form.cleaned_data['password1'])
+                    user.email_verified = True
+                    user.is_active = True
+                    user.save()
+                    
+                    # 创建用户模型配置
+                    from aimodels.models import UserModel
+                    UserModel.objects.get_or_create(
+                        user=user,
+                        defaults={
+                            'use_all_models': True,
+                            'updated_at': None
+                        }
+                    )
+                    
                     return JsonResponse({
-                        'success': False,
-                        'message': '邮箱验证码无效'
+                        'success': True,
+                        'message': '注册成功！请使用您的邮箱和密码登录。',
+                        'email': email
                     })
-                except Exception as e:
-                    print(f"创建用户时出错: {str(e)}")
-                    return JsonResponse({
-                        'success': False,
-                        'message': '创建用户失败，请稍后重试'
-                    })
-        else:
-            print(f"表单验证失败: {form.errors}")
-            # 获取第一个错误信息
-            first_error = next(iter(form.errors.values()))[0]
-            return JsonResponse({
-                'success': False,
-                'message': str(first_error)
-            })
+            except User.DoesNotExist:
+                return JsonResponse({
+                    'success': False,
+                    'message': '注册失败，请重新获取验证码'
+                })
             
     except Exception as e:
         print(f"注册处理时出错: {str(e)}")
-        print(f"错误类型: {type(e).__name__}")
-        print(f"错误详情: {e.args}")
         return JsonResponse({
             'success': False,
             'message': '服务器错误，请稍后重试'
@@ -422,7 +416,7 @@ def mark_announcement_read(request, announcement_id):
             )
             print(f"已登录用户 {request.user.email} 标记公告 {announcement_id} 为已读")
         else:
-            # 未登录用户：在session记录已读状态
+            # 未登录用户：在session记录已读状
             read_announcements = request.session.get('read_announcements', [])
             if announcement_id not in read_announcements:
                 read_announcements.append(announcement_id)
