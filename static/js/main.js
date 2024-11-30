@@ -166,8 +166,88 @@ const formHandlers = {
     'resetForm': {
         url: '/reset-password/',
         validate: function(form) {
-            // ... 重置密码的验证代码 ...
+            const email = form.querySelector('[name="email"]').value;
+            const emailCode = form.querySelector('[name="email_code"]').value;
+            const password1 = form.querySelector('[name="password1"]').value;
+            const password2 = form.querySelector('[name="password2"]').value;
+            const captcha = form.querySelector('[name="captcha_value"]').value;
+
+            // 邮箱验证
+            if (!email) {
+                showError('请输入邮箱地址');
+                return false;
+            }
+            const emailRegex = /^[^\s@]+@(qq\.com|163\.com|sina\.com|126\.com)$/i;
+            if (!emailRegex.test(email)) {
+                showError('仅支持QQ邮箱、网易邮箱、新浪邮箱和126邮箱');
+                return false;
+            }
+
+            // 验证码验证
+            if (!captcha) {
+                showError('请输入图形验证码');
+                return false;
+            }
+
+            // 邮箱验证码验证
+            if (!emailCode) {
+                showError('请输入邮箱验证码');
+                return false;
+            }
+
+            // 密码验证
+            if (!password1) {
+                showError('请输入新密码');
+                return false;
+            }
+            if (password1.length < 8) {
+                showError('新密码长度至少为8个字符');
+                return false;
+            }
+            let categories = 0;
+            if (/[a-z]/.test(password1)) categories++;
+            if (/[A-Z]/.test(password1)) categories++;
+            if (/[0-9]/.test(password1)) categories++;
+            if (/[!@#$%^&*()_+\-=\[\]{};:,.<>?]/.test(password1)) categories++;
+            if (categories < 3) {
+                showError('新密码需要包含小写字母、大写字母、数字、特殊字符中的至少三类');
+                return false;
+            }
+
+            // 确认密码验证
+            if (password1 !== password2) {
+                showError('两次输入的新密码不一致');
+                return false;
+            }
+
             return true;
+        },
+        onSuccess: function(data, form) {
+            showMessage(data.message || '密码重置成功！', 'success');
+            
+            // 延迟1.5秒后切换到登录表单
+            setTimeout(() => {
+                // 切换到登录标签页
+                const loginTab = document.querySelector('[data-bs-target="#loginTab"]');
+                const tabInstance = new bootstrap.Tab(loginTab);
+                tabInstance.show();
+                
+                // 自动填充邮箱
+                const loginEmail = document.querySelector('#loginEmail');
+                if (loginEmail && data.email) {
+                    loginEmail.value = data.email;
+                }
+                
+                // 聚焦到密码输入框
+                const loginPassword = document.querySelector('#loginPassword');
+                if (loginPassword) {
+                    loginPassword.focus();
+                }
+                
+                // 清空重置密码表单
+                form.reset();
+                form.classList.remove('was-validated');
+            }, 1500);
         }
     }
 };
