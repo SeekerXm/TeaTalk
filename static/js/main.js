@@ -593,6 +593,12 @@ async function markAnnouncementAsRead(announcementId) {
         if (!response.ok) {
             throw new Error('标记公告已读失败');
         }
+        
+        const data = await response.json();
+        if (data.success) {
+            // 在本地存储中标记为已读
+            localStorage.setItem(`announcement_${announcementId}_read`, 'true');
+        }
     } catch (error) {
         console.error('标记公告已读出错:', error);
     }

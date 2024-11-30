@@ -2438,5 +2438,55 @@
         opacity: 0.75;
     }
     </style>
+
+    <!-- 在 body 末尾添加公告弹窗初始化脚本 -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 获取公告弹窗元素
+        const announcementModal = document.getElementById('announcementPopupModal');
+        if (announcementModal) {
+            const announcementId = announcementModal.dataset.announcementId;
+            const isAuthenticated = document.body.classList.contains('user-authenticated');
+            
+            // 获取已读状态
+            const hasRead = localStorage.getItem(`announcement_${announcementId}_read`);
+            
+            // 未登录用户总是显示，已登录用户只在未读时显示
+            if (!isAuthenticated || (isAuthenticated && !hasRead)) {
+                const modal = new bootstrap.Modal(announcementModal);
+                modal.show();
+                
+                // 监听模态框关闭事件
+                announcementModal.addEventListener('hidden.bs.modal', function() {
+                    if (isAuthenticated) {
+                        // 已登录用户：标记为已读并记录到后端
+                        localStorage.setItem(`announcement_${announcementId}_read`, 'true');
+                        markAnnouncementAsRead(announcementId);
+                    }
+                });
+                
+                // 渲染公告内容
+                const contentTextarea = announcementModal.querySelector(`textarea[id^="announcement-content-"]`);
+                const renderedContent = announcementModal.querySelector(`div[id^="rendered-content-"]`);
+                
+                if (contentTextarea && renderedContent) {
+                    const md = window.markdownit({
+                        html: true,
+                        breaks: true,
+                        linkify: true
+                    });
+                    
+                    // 渲染 Markdown 内容
+                    renderedContent.innerHTML = md.render(contentTextarea.value);
+                    
+                    // 应用代码高亮
+                    renderedContent.querySelectorAll('pre code').forEach(block => {
+                        hljs.highlightElement(block);
+                    });
+                }
+            }
+        }
+    });
+    </script>
 </body>
 </html> 
