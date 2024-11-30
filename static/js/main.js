@@ -456,3 +456,144 @@ document.querySelectorAll('.toggle-password').forEach(button => {
         }
     });
 });
+
+// 在文档加载完成后执行
+document.addEventListener('DOMContentLoaded', function() {
+    // 初始化公告列表功能
+    initAnnouncementList();
+    
+    // 监听设置模态框显示事件
+    const settingsModal = document.getElementById('settingsModal');
+    if (settingsModal) {
+        settingsModal.addEventListener('show.bs.modal', function() {
+            // 确保在模态框显示时重新初始化公告列表
+            setTimeout(initAnnouncementList, 0);
+        });
+    }
+    
+    // 监听设置面板切换事件
+    document.querySelectorAll('.settings-menu .list-group-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // 移除所有菜单项的激活状态
+            document.querySelectorAll('.settings-menu .list-group-item').forEach(i => {
+                i.classList.remove('active');
+            });
+            
+            // 添加当前菜单项的激活状态
+            this.classList.add('active');
+            
+            // 获取目标面板
+            const target = this.getAttribute('data-settings-target');
+            
+            // 隐藏所有面板
+            document.querySelectorAll('.settings-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            // 显示目标面板
+            const targetPanel = document.getElementById(target + 'Panel');
+            if (targetPanel) {
+                targetPanel.classList.add('active');
+                // 如果是公告面板，重新初始化公告列表
+                if (target === 'announcements') {
+                    initAnnouncementList();
+                }
+            }
+        });
+    });
+});
+
+// 初始化公告列表功能
+function initAnnouncementList() {
+    // 初始化 markdown-it
+    const md = window.markdownit({
+        html: true,
+        breaks: true,
+        linkify: true
+    });
+    
+    // 渲染所有公告内容
+    document.querySelectorAll('.announcement-item').forEach(item => {
+        const contentTextarea = item.querySelector('textarea[id^="announcement-content-list-"]');
+        const renderedContent = item.querySelector('div[id^="rendered-content-list-"]');
+        const toggle = item.querySelector('.announcement-toggle');
+        const content = item.querySelector('.announcement-content');
+        
+        // 确保初始状态
+        if (item.classList.contains('expanded')) {
+            toggle.style.transform = 'rotate(90deg)';
+            content.classList.add('show');
+        } else {
+            toggle.style.transform = '';
+            content.classList.remove('show');
+        }
+        
+        if (contentTextarea && renderedContent) {
+            // 渲染 Markdown 内容
+            renderedContent.innerHTML = md.render(contentTextarea.value);
+            
+            // 应用代码高亮
+            renderedContent.querySelectorAll('pre code').forEach(block => {
+                hljs.highlightElement(block);
+            });
+        }
+    });
+    
+    // 移除现有的事件监听器（防止重复绑定）
+    document.querySelectorAll('.announcement-header').forEach(header => {
+        const newHeader = header.cloneNode(true);
+        header.parentNode.replaceChild(newHeader, header);
+    });
+    
+    // 重新添加点击事件处理
+    document.querySelectorAll('.announcement-header').forEach(header => {
+        header.addEventListener('click', function(e) {
+            e.preventDefault();
+            const item = this.closest('.announcement-item');
+            const content = item.querySelector('.announcement-content');
+            const toggle = item.querySelector('.announcement-toggle');
+            const isExpanded = item.classList.contains('expanded');
+            
+            // 关闭所有其他展开的公告
+            document.querySelectorAll('.announcement-item').forEach(otherItem => {
+                if (otherItem !== item && otherItem.classList.contains('expanded')) {
+                    otherItem.classList.remove('expanded');
+                    otherItem.querySelector('.announcement-content').classList.remove('show');
+                    otherItem.querySelector('.announcement-toggle').style.transform = '';
+                }
+            });
+            
+            // 切换当前公告的展开状态
+            item.classList.toggle('expanded');
+            content.classList.toggle('show');
+            toggle.style.transform = isExpanded ? '' : 'rotate(90deg)';
+            
+            // 如果是展开状态，标记公告为已读
+            if (!isExpanded) {
+                const announcementId = item.dataset.announcementId;
+                markAnnouncementAsRead(announcementId);
+            }
+        });
+    });
+}
+
+// 标记公告为已读
+async function markAnnouncementAsRead(announcementId) {
+    try {
+        const response = await fetch(`/mark-announcement-read/${announcementId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCsrfToken(),
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error('标记公告已读失败');
+        }
+    } catch (error) {
+        console.error('标记公告已读出错:', error);
+    }
+}

@@ -559,7 +559,7 @@
                         <p>注销账号将会：</p>
                         <ul>
                             <li>永久删除您的账号信息</li>
-                            <li>删除所有聊天记录和相关数���</li>
+                            <li>删除所有聊天记录和相关数据</li>
                             <li>此操作不可撤销</li>
                         </ul>
                     </div>
@@ -2195,16 +2195,16 @@
     }
 
     .announcement-content {
-        padding: 0 1rem;
         max-height: 0;
         overflow: hidden;
-        transition: all 0.3s ease;
+        transition: max-height 0.3s ease-out, padding 0.3s ease;
         background-color: #f8f9fa;
+        padding: 0 1rem;
     }
 
     .announcement-content.show {
+        max-height: 1000px; /* 设置一个足够大的值 */
         padding: 1rem;
-        max-height: 500px;
         border-top: 1px solid #e5e7eb;
     }
 
