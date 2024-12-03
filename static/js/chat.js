@@ -89,27 +89,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 修改密码表单验证
-    const newPassword = document.getElementById('newPassword');
-    const confirmNewPassword = document.getElementById('confirmNewPassword');
+    const newPasswordInput = document.getElementById('new_password');
+    const confirmPasswordInput = document.getElementById('confirm_password');
     
-    if (newPassword) {
-        newPassword.addEventListener('input', function() {
-            const isValid = validatePassword(this.value);
-            setInputValidation(this, isValid, '', false);  // 不显示消息，只显示红色边框
-            
-            // 同时验证确认密码
-            if (confirmNewPassword.value) {
-                const confirmIsValid = this.value === confirmNewPassword.value && isValid;
-                setInputValidation(confirmNewPassword, confirmIsValid, '', false);
-            }
+    if (newPasswordInput && confirmPasswordInput) {
+        // 监听新密码输入
+        newPasswordInput.addEventListener('input', function() {
+            validatePasswords();
         });
-    }
-    
-    if (confirmNewPassword) {
-        confirmNewPassword.addEventListener('input', function() {
-            const isValid = this.value === newPassword.value && 
-                          validatePassword(newPassword.value);
-            setInputValidation(this, isValid, '', false);  // 不显示消息，只显示红色边框
+        
+        // 监听确认密码输入
+        confirmPasswordInput.addEventListener('input', function() {
+            validatePasswords();
         });
     }
 
@@ -161,18 +152,66 @@ document.addEventListener('DOMContentLoaded', function() {
         changePasswordForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // 检查用户状态
-            if (!checkUserStatus()) {
-                showAlertModal('您的账号已被封禁，无法修改密码', 'danger');
-                // 关闭修改密码模态框
-                const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
-                if (modal) {
-                    modal.hide();
+            try {
+                // 获取表单数据
+                const formData = new FormData(this);
+                const oldPassword = formData.get('old_password');
+                const newPassword = formData.get('new_password');
+                const confirmPassword = formData.get('confirm_password');
+                
+                // 验证新密码
+                if (!validatePassword(newPassword)) {
+                    showAlertModal('新密码必须包含大小写字母、数字和特殊字符中的至少三种', 'warning');
+                    return;
                 }
-                return;
+                
+                // 验证确认密码
+                if (newPassword !== confirmPassword) {
+                    showAlertModal('两次输入的密码不一致', 'warning');
+                    return;
+                }
+                
+                const response = await fetch('/users/change_password/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': document.querySelector('[name="csrfmiddlewaretoken"]').value,
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: new URLSearchParams({
+                        'old_password': oldPassword,
+                        'new_password': newPassword,
+                        'confirm_password': confirmPassword
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showAlertModal('密码修改成功', 'success');
+                    // 关闭修改密码模态框
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
+                    if (modal) {
+                        modal.hide();
+                    }
+                    // 清空表单
+                    this.reset();
+                    
+                    // 密码修改成功后延迟2秒跳转到登录页
+                    setTimeout(() => {
+                        window.location.href = '/logout/';
+                    }, 2000);
+                } else {
+                    showAlertModal(data.message || '密码修改失败', 'danger');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlertModal('服务器错误，请稍后重试', 'danger');
             }
-            
-            // ... 其他表单提交代码 ...
         });
     }
 
@@ -188,12 +227,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // 监听修改密码模态框的显示事件
     const changePasswordModal = document.getElementById('changePasswordModal');
     if (changePasswordModal) {
-        changePasswordModal.addEventListener('show.bs.modal', function(e) {
-            // 在模态框打开前检查用户状态
-            if (!checkUserStatus()) {
-                e.preventDefault();
-                showAlertModal('您的账号已被封禁，无法修改密码', 'danger');
-            }
+        // 监听模态框显示事件，每次显示时重新初始化功能
+        changePasswordModal.addEventListener('show.bs.modal', function() {
+            // 初始化密码显示/隐藏功能
+            initPasswordToggle();
+            // 初始化密码验证
+            initPasswordValidation();
         });
     }
 });
@@ -500,7 +539,7 @@ function showAlertModal(message, type = 'danger') {
         keyboard: false
     });
 
-    // 显示弹窗
+    // 显弹窗
     alertModal.show();
 
     // 3秒后自动关闭
@@ -517,7 +556,7 @@ function showAlertModal(message, type = 'danger') {
                     }
                 });
             } else {
-                // 如果没有 Modal 实例，直接移除元素
+                // 如果没有 Modal 实例，直接移除元
                 if (modalElement.parentNode) {
                     modalElement.remove();
                 }
@@ -760,7 +799,7 @@ function toggleTyping() {
     const sendButton = document.querySelector('.btn-send');
     
     if (!isPaused && currentTypingTask) {
-        // 继续输出时禁用发送按钮
+        // 继续输出时禁用发送���钮
         if (sendButton) {
             disableSendButton(sendButton);
         }
@@ -839,6 +878,90 @@ function startNewChat() {
     if (messageInput) {
         messageInput.value = '';
         messageInput.style.height = '24px';  // 重置输入框高度
+    }
+}
+
+// 密码验证函数
+function validatePasswords() {
+    const newPassword = document.getElementById('new_password');
+    const confirmPassword = document.getElementById('confirm_password');
+    
+    if (!newPassword || !confirmPassword) return;
+    
+    const newPasswordValue = newPassword.value;
+    const confirmPasswordValue = confirmPassword.value;
+    
+    if (confirmPasswordValue) {
+        if (newPasswordValue === confirmPasswordValue && validatePassword(newPasswordValue)) {
+            confirmPassword.classList.remove('is-invalid');
+            confirmPassword.classList.add('is-valid');
+            newPassword.classList.remove('is-invalid');
+            newPassword.classList.add('is-valid');
+        } else {
+            confirmPassword.classList.remove('is-valid');
+            confirmPassword.classList.add('is-invalid');
+            if (!validatePassword(newPasswordValue)) {
+                newPassword.classList.remove('is-valid');
+                newPassword.classList.add('is-invalid');
+            }
+        }
+    } else {
+        confirmPassword.classList.remove('is-invalid', 'is-valid');
+        if (validatePassword(newPasswordValue)) {
+            newPassword.classList.remove('is-invalid');
+            newPassword.classList.add('is-valid');
+        } else {
+            newPassword.classList.remove('is-valid');
+            newPassword.classList.add('is-invalid');
+        }
+    }
+}
+
+// 初始化密码显示/隐藏功能
+function initPasswordToggle() {
+    document.querySelectorAll('#changePasswordModal .toggle-password').forEach(button => {
+        // 移除现有的事件监听器
+        button.replaceWith(button.cloneNode(true));
+        
+        // 重新获取按钮（因为上面的操作创建了新的元素）
+        const newButton = document.querySelector(`#${button.id}`);
+        if (newButton) {
+            newButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                const input = this.closest('.input-group').querySelector('input[type="password"], input[type="text"]');
+                const icon = this.querySelector('i');
+                
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        }
+    });
+}
+
+// 初始化密码验证
+function initPasswordValidation() {
+    const newPassword = document.getElementById('new_password');
+    const confirmPassword = document.getElementById('confirm_password');
+    
+    if (newPassword && confirmPassword) {
+        // 移除现有的事件监听器
+        newPassword.replaceWith(newPassword.cloneNode(true));
+        confirmPassword.replaceWith(confirmPassword.cloneNode(true));
+        
+        // 重新获取输入框
+        const newPasswordInput = document.getElementById('new_password');
+        const confirmPasswordInput = document.getElementById('confirm_password');
+        
+        // 添加新的事件监听器
+        newPasswordInput.addEventListener('input', validatePasswords);
+        confirmPasswordInput.addEventListener('input', validatePasswords);
     }
 }
 

@@ -498,45 +498,47 @@
     {% endif %}
 
     <!-- 修改密码模态框 -->
-    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">修改密码</h5>
+                    <h5 class="modal-title" id="changePasswordModalLabel">修改密码</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="changePasswordForm" class="needs-validation" novalidate onsubmit="return false">
+                    <form id="changePasswordForm">
                         {% csrf_token %}
                         <div class="mb-3">
-                            <label for="oldPassword" class="form-label">当前密码</label>
+                            <label for="old_password" class="form-label">当前密码</label>
                             <div class="input-group">
-                                <input type="password" class="form-control" id="oldPassword" name="old_password" required>
-                                <button class="btn btn-outline-secondary toggle-password" type="button">
+                                <input type="password" class="form-control" id="old_password" name="old_password" required>
+                                <button type="button" class="btn btn-outline-secondary toggle-password" id="toggleOldPassword">
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="newPassword" class="form-label">新密码</label>
+                            <label for="new_password" class="form-label">新密码</label>
                             <div class="input-group">
-                                <input type="password" class="form-control" id="newPassword" name="new_password1" required>
-                                <button class="btn btn-outline-secondary toggle-password" type="button">
+                                <input type="password" class="form-control" id="new_password" name="new_password" required>
+                                <button type="button" class="btn btn-outline-secondary toggle-password" id="toggleNewPassword">
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
-                            <div class="form-text">密码需包含大小写字母、数字、特殊字符中的至少三类</div>
+                            <div class="form-text">密码必须包含大小写字母、数字和特殊字符中的至少三种</div>
                         </div>
                         <div class="mb-3">
-                            <label for="confirmNewPassword" class="form-label">确认新密码</label>
+                            <label for="confirm_password" class="form-label">确认新密码</label>
                             <div class="input-group">
-                                <input type="password" class="form-control" id="confirmNewPassword" name="new_password2" required>
-                                <button class="btn btn-outline-secondary toggle-password" type="button">
+                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                                <button type="button" class="btn btn-outline-secondary toggle-password" id="toggleConfirmPassword">
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">修改密码</button>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary px-4 submit-btn">确认修改</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -1156,7 +1158,7 @@
     /* Firefox 滚动条样式 */
     .chat-messages {
         scrollbar-width: thin;  /* 'thin' 或 'none' */
-        scrollbar-color: rgba(0, 0, 0, 0.2) transparent;  /* 滚动条颜色 轨道色 */
+        scrollbar-color: rgba(0, 0, 0, 0.2) transparent;  /* 滚动条颜色 ���道色 */
     }
 
     /* 侧边栏底部按钮样式优化 */
@@ -1360,7 +1362,7 @@
 
     /* 修改 body 样式 */
     body {
-        overflow-x: hidden;  /* 添加这行，确保整个页面不会出现水平滚动 */
+        overflow-x: hidden;  /* 添加这行，确保整个页面不会出现水��滚动 */
     }
 
     /* 设置模态框左侧菜单样式 */
@@ -2391,7 +2393,7 @@
             }
         }
 
-        // 监听模态框显示事件
+        // ��听模态框显示事件
         authModal.addEventListener('shown.bs.modal', function() {
             updateCloseButtonPosition();
         });

@@ -365,7 +365,7 @@ body {
     }
 }
 
-/* 警样式 */
+/* 警式 */
 .warning-icon {
     margin-left: 5px;
     font-size: 0.9rem;
@@ -1699,7 +1699,7 @@ body {
 /* 模型选择器样式 - 添加更具体的选择器以提高优先级 */
 .model-selector .model-btn .model-text,
 .model-selector .model-text {
-    font-size: 0.85rem;  /* 从原来的 0.9rem 减小到 0.85rem */
+    font-size: 0.85rem;  /* 从原来 0.9rem 减小到 0.85rem */
     margin-right: auto;
     color: #1f2937;
 }
@@ -1747,5 +1747,151 @@ body {
         font-size: 0.78rem;  /* 移动端更小一点 */
         padding: 0.4rem 0.875rem;
     }
+}
+
+/* 修改密码模态框样式 */
+#changePasswordModal .modal-content {
+    border-radius: 1rem;
+    border: none;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+#changePasswordModal .modal-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+}
+
+#changePasswordModal .modal-body {
+    padding: 1.5rem;
+}
+
+#changePasswordModal .form-control {
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e5e7eb;
+    transition: all 0.2s ease;
+}
+
+#changePasswordModal .form-control:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+#changePasswordModal .input-group .form-control {
+    border-right: none;
+}
+
+#changePasswordModal .input-group .toggle-password {
+    border-radius: 0 0.5rem 0.5rem 0;
+    border: 1px solid #e5e7eb;
+    border-left: none;
+    background: #fff;
+}
+
+#changePasswordModal .input-group .toggle-password:hover {
+    background: #f9fafb;
+}
+
+/* 提交按钮样式 */
+#changePasswordModal .submit-btn {
+    background: #3b82f6;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+#changePasswordModal .submit-btn:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+}
+
+#changePasswordModal .submit-btn:active {
+    transform: translateY(0);
+}
+
+/* 输入验证样式 */
+#changePasswordModal .is-invalid {
+    border-color: #dc3545;
+}
+
+#changePasswordModal .is-valid {
+    border-color: #198754;
+}
+
+/* 修改密码模态框输入组样式 */
+#changePasswordModal .input-group {
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    width: 100%;
+}
+
+#changePasswordModal .input-group .form-control {
+    position: relative;
+    flex: 1 1 auto;
+    width: 1%;
+    min-width: 0;
+    border-right: none;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+#changePasswordModal .input-group .toggle-password {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #6c757d;
+    text-align: center;
+    background-color: #fff;
+    border: 1px solid #e5e7eb;
+    border-left: none;
+    border-radius: 0 0.5rem 0.5rem 0;
+    transition: all 0.2s ease;
+}
+
+#changePasswordModal .input-group .toggle-password:hover {
+    background-color: #f8f9fa;
+    color: #2563eb;
+}
+
+/* 验证状态样式 */
+#changePasswordModal .form-control.is-invalid {
+    border-color: #dc3545;
+    padding-right: calc(1.5em + 0.75rem);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+#changePasswordModal .form-control.is-valid {
+    border-color: #198754;
+    padding-right: calc(1.5em + 0.75rem);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+/* 输入组验证状态样式 */
+#changePasswordModal .input-group .form-control.is-invalid {
+    z-index: 3;
+}
+
+#changePasswordModal .input-group .form-control.is-invalid ~ .toggle-password {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+#changePasswordModal .input-group .form-control.is-valid ~ .toggle-password {
+    border-color: #198754;
+    color: #198754;
 }
   

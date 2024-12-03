@@ -7,11 +7,12 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.utils import timezone
 from .forms import RegisterForm, LoginForm, ResetPasswordForm
 from .models import User
-from .utils import generate_email_code, send_verification_code, validate_email_domain
+from .utils import generate_email_code, send_verification_code, validate_email_domain, validate_password_strength
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from announcements.models import Announcement, UserAnnouncementRead
 from django.db import transaction
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     """首页视图"""
@@ -86,7 +87,7 @@ def verify_captcha(request):
 
 @require_POST
 def send_email_code(request):
-    """发送邮箱验证码"""
+    """发送邮箱验证"""
     try:
         email = request.POST.get('email')
         action_type = request.POST.get('type')
@@ -409,7 +410,7 @@ def mark_announcement_read(request, announcement_id):
         announcement = Announcement.objects.get(id=announcement_id, is_active=True)
         
         if request.user.is_authenticated:
-            # 已登录用户：创建阅读记录
+            # 已登录用户：建阅读记录
             UserAnnouncementRead.objects.get_or_create(
                 user=request.user,
                 announcement=announcement
@@ -431,78 +432,78 @@ def mark_announcement_read(request, announcement_id):
             'message': '公告不存在'
         })
 
-@require_POST
+@login_required
 def change_password(request):
-    """修改密码"""
-    print("收到修改密码请求")  # 调试日志
-    print(f"请求方法: {request.method}")  # 调试日志
-    print(f"POST数据: {request.POST}")  # 调试日志
-    
-    if not request.user.is_authenticated:
-        return JsonResponse({
-            'success': False,
-            'message': '请先登录'
-        })
-    
-    old_password = request.POST.get('old_password')
-    new_password1 = request.POST.get('new_password1')
-    new_password2 = request.POST.get('new_password2')
-    
-    print(f"当前用户: {request.user.email}")  # 调试日志
-    print(f"旧密码验证结果: {request.user.check_password(old_password)}")  # 调试日志
-    
-    # 验证当前密码
-    if not request.user.check_password(old_password):
-        return JsonResponse({
-            'success': False,
-            'message': '当前密码错误'
-        })
-    
-    # 验证新密码
-    if new_password1 != new_password2:
-        return JsonResponse({
-            'success': False,
-            'message': '两次输入的新密码不一致'
-        })
-    
-    if len(new_password1) < 8:
-        return JsonResponse({
-            'success': False,
-            'message': '新密码长度至少为8个字符'
-        })
-    
-    # 验证密码强度
-    categories = 0
-    if any(c.islower() for c in new_password1): categories += 1
-    if any(c.isupper() for c in new_password1): categories += 1
-    if any(c.isdigit() for c in new_password1): categories += 1
-    if any(c in '!@#$%^&*()_+-=[]{}|;:,.<>?' for c in new_password1): categories += 1
-    
-    if categories < 3:
-        return JsonResponse({
-            'success': False,
-            'message': '新密码需要包含小写字母、大写字母、数字、特殊字符中的至少三类'
-        })
-    
+    """处理修改密码请求"""
     try:
-        # 修改密码
-        request.user.set_password(new_password1)
-        request.user.save()
-        print("密码修改成功")  # 调试日志
+        if request.method != 'POST':
+            return JsonResponse({
+                'success': False,
+                'message': '无效的请求方法'
+            })
         
-        # 更新会话，避免用户被登出
-        update_session_auth_hash(request, request.user)
+        # 添加调试日志
+        print("收到修改密码请求")
+        print(f"POST数据: {request.POST}")
         
-        return JsonResponse({
-            'success': True,
-            'message': '密码修改成功'
-        })
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+        
+        # 验证所有字段都已填写
+        if not all([old_password, new_password, confirm_password]):
+            return JsonResponse({
+                'success': False,
+                'message': '请填写所有必填字段'
+            })
+        
+        # 验证新密码的一致性
+        if new_password != confirm_password:
+            return JsonResponse({
+                'success': False,
+                'message': '两次输入的密码不一致'
+            })
+        
+        # 验证当前密码是否正确
+        user = request.user
+        if not user.check_password(old_password):
+            return JsonResponse({
+                'success': False,
+                'message': '当前密码错误'
+            })
+        
+        # 验证新密码强度
+        if not validate_password_strength(new_password):
+            return JsonResponse({
+                'success': False,
+                'message': '新密码必须包含大小写字母、数字和特殊字符中的至少三种'
+            })
+        
+        try:
+            # 设置新密码
+            user.set_password(new_password)
+            user.save()
+            
+            # 更新会话，避免用户被登出
+            update_session_auth_hash(request, user)
+            
+            return JsonResponse({
+                'success': True,
+                'message': '密码修改成功'
+            })
+        except Exception as e:
+            print(f"修改密码时出错: {str(e)}")
+            return JsonResponse({
+                'success': False,
+                'message': '服务器错误，请稍后重试'
+            })
+            
     except Exception as e:
-        print(f"修改密码时出错: {str(e)}")  # 调试日志
+        print(f"处理修改密码请求时出错: {str(e)}")
         return JsonResponse({
             'success': False,
-            'message': '修改密码失败，请稍后重试'
-        })
+            'message': '服务器错误，请稍后重试'
+        }, status=500)
 
 @require_POST
 def delete_account(request):

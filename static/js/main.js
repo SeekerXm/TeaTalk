@@ -603,3 +603,55 @@ async function markAnnouncementAsRead(announcementId) {
         console.error('标记公告已读出错:', error);
     }
 }
+
+// 修改公告相关的处理代码
+function handleAnnouncementSuccess(response) {
+    if (response.success) {
+        // 获取表单元素
+        const form = document.querySelector('#announcementForm');
+        
+        // 只有在表单存在的情况下才调用 reset
+        if (form) {
+            form.reset();
+        }
+        
+        // 关闭模态框
+        const modal = bootstrap.Modal.getInstance(document.getElementById('announcementModal'));
+        if (modal) {
+            modal.hide();
+        }
+        
+        // 显示成功消息
+        showMessage('操作成功');
+        
+        // 延迟刷新页面
+        setTimeout(() => {
+            window.location.reload();
+        }, 1500);
+    } else {
+        showError(response.message || '操作失败');
+    }
+}
+
+// 修改错误处理函数
+function handleAnnouncementError(error) {
+    console.error('Error:', error);
+    showError('操作失败，请重试');
+}
+
+// 添加公告相关的事件监听
+document.addEventListener('DOMContentLoaded', function() {
+    // 处理公告表单提交
+    const announcementForm = document.querySelector('#announcementForm');
+    if (announcementForm) {
+        announcementForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            try {
+                const response = await submitAnnouncement(this);
+                handleAnnouncementSuccess(response);
+            } catch (error) {
+                handleAnnouncementError(error);
+            }
+        });
+    }
+});

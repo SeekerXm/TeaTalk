@@ -45,6 +45,8 @@ urlpatterns = [
     path('delete-account/', user_views.delete_account, name='delete-account'),
     path('chat/send/', chat_views.send_message, name='send_message'),
     path('api/', include('aimodels.urls')),
+    path('', include('users.urls')),
+    path('users/', include('users.urls')),
 ]
 
 if settings.DEBUG:
