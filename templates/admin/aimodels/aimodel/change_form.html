@@ -212,6 +212,204 @@
     font-size: 0.9rem;
     line-height: 1.6;
 }
+
+/* 表单控件样式 */
+.form-select {
+    border-color: #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.875rem;
+    color: #374151;
+}
+
+.form-select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-switch {
+    padding-left: 2.5rem;
+}
+
+.form-switch .form-check-input {
+    width: 2rem;
+    height: 1rem;
+    margin-left: -2.5rem;
+}
+
+.form-switch .form-check-input:checked {
+    background-color: #2563eb;
+    border-color: #2563eb;
+}
+
+.json-editor {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    min-height: 200px;
+    tab-size: 4;
+}
+
+.readonly-field {
+    background-color: #f8f9fa;
+    color: #6b7280;
+    cursor: not-allowed;
+}
+
+/* 表单控件基础样式 */
+.form-control, .form-select {
+    border: 1.5px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    color: #374151;
+    background-color: #fff;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    outline: none;
+}
+
+/* 下拉菜单特定样式 */
+.form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%236B7280'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
+    background-position: right 1rem center;
+    background-repeat: no-repeat;
+    background-size: 1.25rem;
+    padding-right: 2.5rem;
+}
+
+.form-select:hover {
+    border-color: #d1d5db;
+    cursor: pointer;
+}
+
+/* 表单组样式优化 */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+.form-label {
+    display: block;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* 开关按钮样式优化 */
+.form-switch {
+    display: flex;
+    align-items: center;
+    padding-left: 3rem;
+    margin-bottom: 0;
+}
+
+.form-switch .form-check-input {
+    width: 2.5rem;
+    height: 1.25rem;
+    margin-left: -3rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='%23fff'/%3E%3C/svg%3E");
+    border-radius: 2rem;
+    transition: background-position .15s ease-in-out;
+}
+
+.form-switch .form-check-input:checked {
+    background-color: #2563eb;
+    border-color: #2563eb;
+    background-position: right center;
+}
+
+.form-switch .form-check-label {
+    font-size: 0.875rem;
+    color: #374151;
+    font-weight: 500;
+    margin-left: 0.5rem;
+}
+
+/* 只读字段样式优化 */
+.readonly-field {
+    background-color: #f9fafb;
+    color: #6b7280;
+    cursor: not-allowed;
+    border: 1.5px solid #e5e7eb;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    border-radius: 0.5rem;
+}
+
+/* 帮助文本样式优化 */
+.help-text {
+    font-size: 0.8125rem;
+    color: #6b7280;
+    margin-top: 0.5rem;
+    line-height: 1.4;
+}
+
+/* JSON编辑器样式优化 */
+.json-editor {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    min-height: 200px;
+    tab-size: 2;
+    padding: 1rem;
+    background-color: #f9fafb;
+}
+
+/* 表单分组标题样式优化 */
+.section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* 配置说明容器样式 */
+.config-help {
+    background-color: #f8fafc;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    color: #374151;
+}
+
+.config-help strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #111827;
+    font-size: 0.875rem;
+}
+
+.config-help pre {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    padding: 1rem;
+    margin-top: 0.75rem;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: #4b5563;
+    overflow-x: auto;
+}
+
+.config-help br {
+    content: '';
+    display: block;
+    margin: 0.5rem 0;
+}
 </style>
 {% endblock %}
 
@@ -245,54 +443,67 @@
                     <div class="form-section">
                         <h6 class="section-title">{{ fieldset.name }}</h6>
                         
-                        {% if fieldset.description and fieldset.name == '配置信息' %}
-                            <div class="fieldset-description mb-4">
-                                {{ fieldset.description|safe }}
-                            </div>
+                        {% if fieldset.name == '配置信息' %}
+                            <div id="config_help" class="config-help mb-4"></div>
+                            
+                            {% if fieldset.description %}
+                                <div class="help-text mb-3">{{ fieldset.description }}</div>
+                            {% endif %}
                         {% endif %}
                         
                         {% for line in fieldset %}
                             {% for field in line %}
-                                {% if not field.field.is_hidden and field.field.name != 'model_type' and field.field.name != 'platform' %}
-                                    <div class="form-group{% if field.field.errors %} has-error{% endif %}">
-                                        <label class="form-label" for="{{ field.field.id_for_label }}">{{ field.field.label }}</label>
-                                        
-                                        {% if field.field.name == 'model_name' %}
+                                <div class="form-group{% if field.errors %} has-error{% endif %}">
+                                    <label class="form-label" for="{{ field.field.id_for_label }}">
+                                        {{ field.field.label }}
+                                    </label>
+                                    
+                                    {% if field.field.name == 'is_active' %}
+                                        <div class="form-check form-switch">
                                             {{ field.field }}
-                                            {% if original.original_model_name %}
-                                                <div class="mt-2">
-                                                    <small class="text-muted">原始模型名称：{{ original.original_model_name }}</small>
-                                                </div>
-                                            {% endif %}
-                                        {% elif field.field.name == 'is_active' %}
-                                            <div class="form-check">
-                                                {{ field.field }}
-                                            </div>
-                                        {% elif field.field.name == 'weight' %}
+                                        </div>
+                                    {% elif field.field.name == 'weight' %}
+                                        {% if not original %}
                                             <div class="form-control readonly-field">
-                                                {{ field.field.value|default_if_none:"" }}
-                                                {{ field.field.as_hidden }}
+                                                自动分配
                                             </div>
-                                            <div class="help-text">模型权重越小，前端模型列表中模型的位置越靠前，权重值为"1"的模型，为默认模型。</div>
-                                        {% elif field.field.name == 'original_model_name' %}
-                                            {{ field.field.as_hidden }}
+                                            <input type="hidden" name="weight" value="0">
                                         {% else %}
-                                            {{ field.field }}
+                                            <div class="form-control readonly-field">
+                                                {{ field.field.value|default:original.weight }}
+                                            </div>
+                                            <input type="hidden" name="weight" value="{{ original.weight }}">
+                                            <div class="help-text">模型权重越小，前端模型列表中模型的位置越靠前，权重值为"1"的模型，为默认模型。</div>
                                         {% endif %}
-                                        
-                                        {% if field.field.errors %}
-                                            {% for error in field.field.errors %}
-                                                <div class="error-message">{{ error }}</div>
-                                            {% endfor %}
-                                        {% endif %}
-                                        
-                                        {% if field.field.help_text %}
-                                            <div class="help-text">{{ field.field.help_text }}</div>
-                                        {% endif %}
-                                    </div>
-                                {% else %}
-                                    {{ field.field.as_hidden }}
-                                {% endif %}
+                                    {% elif field.field.name == 'created_at' or field.field.name == 'updated_at' %}
+                                        <div class="form-control readonly-field">
+                                            {% if field.field.name == 'created_at' %}
+                                                {{ original.created_at|date:"Y-m-d H:i:s" }}
+                                            {% else %}
+                                                {{ original.updated_at|date:"Y-m-d H:i:s" }}
+                                            {% endif %}
+                                        </div>
+                                        <div class="help-text">
+                                            {% if field.field.name == 'created_at' %}
+                                                模型的创建时间
+                                            {% else %}
+                                                模型的最后修改时间
+                                            {% endif %}
+                                        </div>
+                                    {% else %}
+                                        {{ field.field }}
+                                    {% endif %}
+                                    
+                                    {% if field.field.help_text %}
+                                        <div class="help-text">{{ field.field.help_text }}</div>
+                                    {% endif %}
+                                    
+                                    {% if field.errors %}
+                                        {% for error in field.errors %}
+                                            <div class="error-message">{{ error }}</div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
                             {% endfor %}
                         {% endfor %}
                     </div>
@@ -316,25 +527,110 @@
     
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // 表单验证
-        const form = document.getElementById('{{ opts.model_name }}_form');
-        form.addEventListener('submit', function(event) {
-            if (!form.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
+        const platformSelect = document.getElementById('id_platform');
+        const configField = document.getElementById('id_config');
+        const configHelp = document.getElementById('config_help');
+
+        if (!platformSelect || !configField || !configHelp) {
+            console.warn('Some required elements are missing');
+            return;
+        }
+
+        // 平台配置说明
+        const configDescriptions = {
+            'bigmodel': `
+                <div class="mb-3">
+                    <strong>智谱AI平台配置说明：</strong><br>
+                    - ZHIPU_API_KEY：智谱AI平台的API密钥<br><br>
+                    <strong>配置示例：</strong><br>
+                    <pre>{
+    "ZHIPU_API_KEY": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+}</pre>
+                </div>
+            `,
+            'qianfan': `
+                <div class="mb-3">
+                    <strong>百度千帆平台配置说明：</strong><br>
+                    - QIANFAN_ACCESS_KEY：访问密钥<br>
+                    - QIANFAN_SECRET_KEY：安全密钥<br><br>
+                    <strong>配置示例：</strong><br>
+                    <pre>{
+    "QIANFAN_ACCESS_KEY": "xxxxxxxxxxxxxxxxxxxxxxxx",
+    "QIANFAN_SECRET_KEY": "xxxxxxxxxxxxxxxxxxxxxxxx"
+}</pre>
+                </div>
+            `,
+            'spark': `
+                <div class="mb-3">
+                    <strong>讯飞星火平台配置说明：</strong><br>
+                    - SPARK_APPID：应用ID<br>
+                    - SPARK_API_KEY：API密钥<br>
+                    - SPARK_API_SECRET：安全密钥<br><br>
+                    <strong>配置示例：</strong><br>
+                    <pre>{
+    "SPARK_APPID": "xxxxxxxx",
+    "SPARK_API_KEY": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "SPARK_API_SECRET": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+}</pre>
+                </div>
+            `,
+            'silicon': `
+                <div class="mb-3">
+                    <strong>SiliconCloud平台配置说明：</strong><br>
+                    - SILICON_API_KEY：API密钥<br><br>
+                    <strong>配置示例：</strong><br>
+                    <pre>{
+    "SILICON_API_KEY": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+}</pre>
+                </div>
+            `
+        };
+
+        // 平台配置模板
+        const configTemplates = {
+            'bigmodel': {
+                'ZHIPU_API_KEY': ''
+            },
+            'qianfan': {
+                'QIANFAN_ACCESS_KEY': '',
+                'QIANFAN_SECRET_KEY': ''
+            },
+            'spark': {
+                'SPARK_APPID': '',
+                'SPARK_API_KEY': '',
+                'SPARK_API_SECRET': ''
+            },
+            'silicon': {
+                'SILICON_API_KEY': ''
             }
-            form.classList.add('was-validated');
+        };
+
+        // 更新配置说明和模板
+        function updateConfigHelp(platform) {
+            console.log('Updating config help for platform:', platform);
+            if (platform in configDescriptions) {
+                configHelp.innerHTML = configDescriptions[platform];
+                configHelp.style.display = 'block';
+            } else {
+                configHelp.innerHTML = '';
+                configHelp.style.display = 'none';
+            }
+
+            if (platform in configTemplates && (!configField.value || configField.value === '{}')) {
+                configField.value = JSON.stringify(configTemplates[platform], null, 2);
+            }
+        }
+
+        // 监听平台选择变化
+        platformSelect.addEventListener('change', function() {
+            console.log('Platform changed to:', this.value);
+            updateConfigHelp(this.value);
         });
 
-        // JSON 格式化
-        const configField = document.querySelector('textarea[name="config"]');
-        if (configField) {
-            try {
-                const jsonValue = JSON.parse(configField.value);
-                configField.value = JSON.stringify(jsonValue, null, 2);
-            } catch (e) {
-                console.warn('Invalid JSON in config field');
-            }
+        // 初始化配置说明和模板
+        if (platformSelect.value) {
+            console.log('Initial platform value:', platformSelect.value);
+            updateConfigHelp(platformSelect.value);
         }
     });
     </script>

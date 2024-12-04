@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="优化消息发送功能及用户状态验证，更新表单重置逻辑，添加用户模型配置处理和相应的调试日志。">
+    <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="为Silicon平台添加模型名称属性，并实现根据模型名称获取对应模型标识符的功能。同时在调用聊天方法时，更新了模型名称的设置。">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ModelPlatform/silicon.py" beforeDir="false" afterPath="$PROJECT_DIR$/ModelPlatform/silicon.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/chat/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aimodels/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/aimodels/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aimodels/migrations/0002_initial_data.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/aimodels/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/aimodels/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,14 +104,6 @@
       <workItem from="1731891221476" duration="23360000" />
       <workItem from="1732458870477" duration="12655000" />
       <workItem from="1733246447134" duration="4434000" />
-    </task>
-    <task id="LOCAL-00049" summary="1.添加了nav-center容器用于居中定位&#10;2.使用绝对定位实现水平居中&#10;3.添加了nav-spacer保持布局平衡&#10;4.优化了响应式样式&#10;5.确保文字不会换行&#10;6.调整了各元素的层级">
-      <option name="closed" value="true" />
-      <created>1732071032891</created>
-      <option name="number" value="00049" />
-      <option name="presentableId" value="LOCAL-00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1732071032891</updated>
     </task>
     <task id="LOCAL-00050" summary="1.确保使用的是正确的三横线图标&#10;2.在移动端时隐藏设置菜单的文字，只显示图标&#10;3.优化了菜单项的样式和交互效果&#10;4.调整了图标大小和间距&#10;5.改进了响应式布局">
       <option name="closed" value="true" />
@@ -496,7 +489,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733282625652</updated>
     </task>
-    <option name="localTasksCounter" value="98" />
+    <task id="LOCAL-00098" summary="为Silicon平台添加模型名称属性，并实现根据模型名称获取对应模型标识符的功能。同时在调用聊天方法时，更新了模型名称的设置。">
+      <option name="closed" value="true" />
+      <created>1733302616364</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1733302616364</updated>
+    </task>
+    <option name="localTasksCounter" value="99" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -514,7 +515,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="1.在页面加载时立即检查用户状态并禁用修改密码按钮&#10;2.在打开设置面板时重新检查用户状态&#10;3.在尝试打开修改密码模态框时检查用户状态&#10;4.在提交修改密码表单时再次欠检查用户状态&#10;5.使用多重防护确保封禁用户无法修改密码" />
     <MESSAGE value="在输入消息的文本框中添加了 `spellcheck=&quot;false&quot;` 属性，以禁用拼写检查功能。" />
     <MESSAGE value="简化和优化了聊天相关的 JavaScript 代码，移除了无用的注释，修改了输入框的验证逻辑，添加了邮箱和密码的验证函数，实现了更合理的状态检查和错误提示机制。修正了用户状态检查及密码修改按钮的事件处理逻辑。" />
     <MESSAGE value="移除在 body 末尾添加 chat.js 的代码。" />
@@ -539,7 +539,8 @@
     <MESSAGE value="优化修改密码功能，添加强度验证和前端交互修改，更新样式及用户提示；新增公告处理功能，包括表单提交和错误处理逻辑。" />
     <MESSAGE value="优化注销账号流程，增加密码验证和确认提示，修复表单提交逻辑。" />
     <MESSAGE value="优化消息发送功能及用户状态验证，更新表单重置逻辑，添加用户模型配置处理和相应的调试日志。" />
-    <option name="LAST_COMMIT_MESSAGE" value="优化消息发送功能及用户状态验证，更新表单重置逻辑，添加用户模型配置处理和相应的调试日志。" />
+    <MESSAGE value="为Silicon平台添加模型名称属性，并实现根据模型名称获取对应模型标识符的功能。同时在调用聊天方法时，更新了模型名称的设置。" />
+    <option name="LAST_COMMIT_MESSAGE" value="为Silicon平台添加模型名称属性，并实现根据模型名称获取对应模型标识符的功能。同时在调用聊天方法时，更新了模型名称的设置。" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/TeaTalk$main.coverage" NAME="main 覆盖结果" MODIFIED="1731993364645" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ModelPlatform" />
