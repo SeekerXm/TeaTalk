@@ -55,9 +55,10 @@ def send_message(request):
             os.environ["QIANFAN_SECRET_KEY"] = model.config.get('QIANFAN_SECRET_KEY')
             response = platform.chat(message, messages)  # 千帆AI需要message和messages参数
         elif model.platform == 'silicon':
-            platform = SiliconPlatform()  # 使用基础平台类
+            platform = SiliconPlatform()
             platform.api_key = model.config.get('SILICON_API_KEY')
-            response = platform.chat(message)  # SiliconCloud只需要message参数
+            platform.model_name = model.model_name  # 设置模型名称
+            response = platform.chat(message)
         else:
             return JsonResponse({
                 'success': False,

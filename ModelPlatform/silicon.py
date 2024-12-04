@@ -6,6 +6,7 @@ class SiliconPlatform:
         self.api_key = None
         self.base_url = "https://api.siliconflow.cn/v1"
         self.headers = None
+        self.model_name = None
 
     def _update_headers(self):
         """更新请求头"""
@@ -13,6 +14,18 @@ class SiliconPlatform:
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json"
         }
+
+    def _get_model_identifier(self):
+        """根据模型名称获取对应的模型标识符"""
+        model_mapping = {
+            'Qwen2.5-Coder-7B': 'Qwen/Qwen2.5-Coder-7B-Instruct',
+            'ChatGLM3-6B': 'THUDM/chatglm3-6b',
+            'Gemma-2-9B': 'google/gemma-2-9b-it',
+            'Qwen2.5-7B': 'Qwen/Qwen2.5-7B-Instruct'
+        }
+        if self.model_name not in model_mapping:
+            raise Exception(f"不支持的模型: {self.model_name}")
+        return model_mapping[self.model_name]
 
     def chat(self, message):
         """
@@ -28,7 +41,7 @@ class SiliconPlatform:
             
             # 构建请求数据
             data = {
-                "model": "Qwen/Qwen2.5-Coder-32B-Instruct",
+                "model": self._get_model_identifier(),
                 "messages": [
                     {"role": "system", "content": "你是 SiliconCloud AI 助手，你的任务是详细回答用户的问题。"},
                     {"role": "user", "content": message}
