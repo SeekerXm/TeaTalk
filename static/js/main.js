@@ -610,15 +610,15 @@ function handleAnnouncementSuccess(response) {
         // 获取表单元素
         const form = document.querySelector('#announcementForm');
         
-        // 只有在表单存在的情况下才调用 reset
-        if (form) {
-            form.reset();
-        }
-        
         // 关闭模态框
         const modal = bootstrap.Modal.getInstance(document.getElementById('announcementModal'));
         if (modal) {
             modal.hide();
+        }
+        
+        // 只有在表单存在时才重置
+        if (form) {
+            form.reset();
         }
         
         // 显示成功消息

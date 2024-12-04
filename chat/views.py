@@ -11,6 +11,12 @@ import os
 @login_required
 def send_message(request):
     """处理发送消息的请求"""
+    if not request.user.is_authenticated:
+        return JsonResponse({
+            'success': False,
+            'message': '请先登录'
+        }, status=403)
+    
     try:
         message = request.POST.get('message')
         model_id = request.POST.get('model')  # 获取模型ID

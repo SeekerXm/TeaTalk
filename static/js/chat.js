@@ -414,12 +414,6 @@ async function handleSendMessage() {
         return;
     }
     
-    // 检查用户状态
-    if (!checkUserStatus()) {
-        showAlertModal('您的账号已被封禁，无法发送消息', 'danger');
-        return;
-    }
-    
     // 获取消息输入框和消息内容
     const messageInput = document.getElementById('messageInput');
     const message = messageInput.value.trim();
@@ -438,7 +432,7 @@ async function handleSendMessage() {
         messageInput.value = '';
         messageInput.style.height = '24px';
         
-        // 显示加载动画（确保在用户消息之后）
+        // 显示加载动画
         showLoading();
         
         // 获取必要的数据
@@ -446,21 +440,30 @@ async function handleSendMessage() {
         const sessionId = messageInput.dataset.sessionId || '';
         const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
         
-        // 构建 FormData
-        const formData = new FormData();
-        formData.append('message', message);
-        formData.append('model', currentModel);
-        formData.append('session_id', sessionId);
-        
         // 发送消息到服务器
         const response = await fetch('/chat/send/', {
             method: 'POST',
             headers: {
                 'X-CSRFToken': csrfToken,
+                'Content-Type': 'application/x-www-form-urlencoded',
                 'X-Requested-With': 'XMLHttpRequest'
             },
-            body: formData
+            body: new URLSearchParams({
+                'message': message,
+                'model': currentModel,
+                'session_id': sessionId
+            })
         });
+        
+        if (!response.ok) {
+            if (response.status === 403) {
+                // 如果是未授权错误，显示登录模态框
+                const authModal = new bootstrap.Modal(document.getElementById('authModal'));
+                authModal.show();
+                return;
+            }
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         
         const data = await response.json();
         hideLoading();
