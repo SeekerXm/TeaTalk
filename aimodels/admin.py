@@ -212,6 +212,13 @@ class UserModelAdmin(admin.ModelAdmin):
     search_fields = ['user__email']
     filter_horizontal = ['models']
     
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        """自定义多对多字段的表单字段"""
+        if db_field.name == "models":
+            # 只显示已启用的模型
+            kwargs["queryset"] = AIModel.objects.filter(is_active=True)
+        return super().formfield_for_manytomany(db_field, request, **kwargs)
+    
     def get_readonly_fields(self, request, obj=None):
         if obj:  # 编辑时
             return ['user']
