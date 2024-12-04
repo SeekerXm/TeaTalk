@@ -278,14 +278,30 @@ MDEDITOR_CONFIGS = {
 # 智谱AI配置
 ZHIPU_API_KEY = "8e1436a72f831bf54b6ae4ca43587788.sUsYvAEEXcNF84X0"
 
-# 星火AI配置
-SPARK_APPID = "27ca9f10"
-SPARK_API_KEY = "78de37f4f0cb76b95bb94de437d7fc5c"
-SPARK_API_SECRET = "YTYzZGE0ZmY2ZjFjOTIwNmZjNjdiZDAy"
-
 # 千帆AI配置
 QIANFAN_ACCESS_KEY = "ALTAKp6vpru3TSWZ0ZDRmhhOza"
 QIANFAN_SECRET_KEY = "2dac3d6e90ca44d7939932f26b68c2a2"
 
 # SiliconCloud配置
 SILICON_API_KEY = "sk-dbpqlfjeedqscsxcedtblzvtjtakcrmzhxpgihkmycdbyfkj"
+
+# 添加日志配置
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': 'spark_api.log',
+        },
+    },
+    'loggers': {
+        'ModelPlatform.spark': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+        },
+    },
+}

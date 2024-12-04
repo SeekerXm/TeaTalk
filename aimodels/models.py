@@ -22,16 +22,74 @@ class AIModel(models.Model):
         (False, '停用'),
     ]
     
+    # 各平台的版本选项
+    PLATFORM_VERSIONS = {
+        'spark': [
+            ('lite', 'Spark Lite (基础版)'),
+            ('pro', 'Spark Pro (专业版)'),
+            ('pro-128k', 'Spark Pro-128K (长文本版)'),
+            ('max', 'Spark Max (高级版)'),
+            ('max-32k', 'Spark Max-32K (长文本高级版)'),
+            ('ultra', 'Spark 4.0 Ultra (旗舰版)')
+        ],
+        'bigmodel': [
+            ('glm-4', 'GLM-4'),
+            ('glm-4-vision', 'GLM-4-Vision'),
+            ('glm-3-turbo', 'GLM-3-Turbo'),
+        ],
+        'qianfan': [
+            ('yi-34b-chat', 'Yi-34B-Chat'),
+            ('llama2-70b-chat', 'Llama2-70B-Chat'),
+            ('llama2-13b-chat', 'Llama2-13B-Chat'),
+        ],
+        'silicon': [
+            ('qwen-turbo', 'Qwen-Turbo'),
+            ('qwen-plus', 'Qwen-Plus'),
+            ('qwen-max', 'Qwen-Max'),
+        ]
+    }
+    
+    # 各平台的配置说明
+    PLATFORM_CONFIG_HELP = {
+        'spark': """
+        星火平台配置示例：
+        {
+            "SPARK_APPID": "xxxxxxxx",
+            "SPARK_API_KEY": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "SPARK_API_SECRET": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        }
+        """,
+        'bigmodel': """
+        智谱平台配置示例：
+        {
+            "ZHIPU_API_KEY": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        }
+        """,
+        'qianfan': """
+        千帆平台配置示例：
+        {
+            "QIANFAN_ACCESS_KEY": "xxxxxxxxxxxxxxxxxxxxxxxx",
+            "QIANFAN_SECRET_KEY": "xxxxxxxxxxxxxxxxxxxxxxxx"
+        }
+        """,
+        'silicon': """
+        SiliconCloud平台配置示例：
+        {
+            "SILICON_API_KEY": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        }
+        """
+    }
+    
     # 基本信息
     model_type = models.CharField('模型类型', max_length=10, choices=MODEL_TYPES)
     model_name = models.CharField('模型名称', max_length=50)
     platform = models.CharField('模型平台', max_length=20, choices=PLATFORMS)
     is_active = models.BooleanField('模型状态', default=True, choices=STATUS_CHOICES)
     weight = models.IntegerField('模型权重', unique=True, null=True, blank=True)
+    version = models.CharField('模型版本', max_length=20)
     config = models.JSONField('模型配置', default=dict)
-    original_model_name = models.CharField('原始模型名称', max_length=100, blank=True, null=True)
-    created_at = models.DateTimeField('创建时间', auto_now_add=True, editable=False)
-    updated_at = models.DateTimeField('更新时间', auto_now=True, editable=False)
+    created_at = models.DateTimeField('创建时间', auto_now_add=True)
+    updated_at = models.DateTimeField('更新时间', auto_now=True)
 
     class Meta:
         verbose_name = '模型管理'

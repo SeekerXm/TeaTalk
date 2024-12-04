@@ -655,3 +655,28 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// 加载可用的模型列表
+async function loadAvailableModels() {
+    try {
+        const response = await fetch('/api/models/available/');
+        const data = await response.json();
+        
+        if (data.success) {
+            const modelSelect = document.getElementById('modelSelect');
+            modelSelect.innerHTML = ''; // 清空现有选项
+            
+            data.models.forEach(model => {
+                const option = document.createElement('option');
+                option.value = model.id;
+                option.textContent = model.name;
+                modelSelect.appendChild(option);
+            });
+        }
+    } catch (error) {
+        console.error('加载模型列表失败:', error);
+    }
+}
+
+// 在页面加载时调用
+document.addEventListener('DOMContentLoaded', loadAvailableModels);
