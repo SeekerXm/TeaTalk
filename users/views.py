@@ -505,35 +505,46 @@ def change_password(request):
             'message': '服务器错误，请稍后重试'
         }, status=500)
 
+@login_required
 @require_POST
 def delete_account(request):
     """注销账号"""
-    if not request.user.is_authenticated:
-        return JsonResponse({
-            'success': False,
-            'message': '请先登录'
-        })
-    
-    password = request.POST.get('password')
-    
-    # 验证密码
-    if not request.user.check_password(password):
-        return JsonResponse({
-            'success': False,
-            'message': '密码错误'
-        })
-    
     try:
-        # 删除用户及相关数据
-        request.user.delete()
-        logout(request)
-        return JsonResponse({
-            'success': True,
-            'message': '账号已注销'
-        })
+        password = request.POST.get('password')
+        
+        if not password:
+            return JsonResponse({
+                'success': False,
+                'message': '请输入密码'
+            })
+        
+        # 验证密码
+        if not request.user.check_password(password):
+            return JsonResponse({
+                'success': False,
+                'message': '密码错误'
+            })
+        
+        try:
+            # 删除用户及相关数据
+            user = request.user
+            logout(request)  # 先退出登录
+            user.delete()  # 然后删除用户
+            
+            return JsonResponse({
+                'success': True,
+                'message': '账号已注销'
+            })
+        except Exception as e:
+            print(f"注销账号时出错: {str(e)}")
+            return JsonResponse({
+                'success': False,
+                'message': '注销账号失败，请稍后重试'
+            })
+            
     except Exception as e:
-        print(f"销账号时出错: {str(e)}")
+        print(f"处理注销账号请求时出错: {str(e)}")
         return JsonResponse({
             'success': False,
-            'message': '注销账号失败，请稍后重试'
-        }) 
+            'message': '服务器错误，请稍后重试'
+        }, status=500) 

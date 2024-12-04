@@ -235,7 +235,99 @@ document.addEventListener('DOMContentLoaded', function() {
             initPasswordValidation();
         });
     }
+
+    // 注销账号模态框相关功能初始化
+    const deleteAccountModal = document.getElementById('deleteAccountModal');
+    if (deleteAccountModal) {
+        // 监听模态框显示事件，每次显示时重新初始化功能
+        deleteAccountModal.addEventListener('show.bs.modal', function() {
+            initDeleteAccountForm();
+        });
+    }
 });
+
+// 初始化注销账号表单功能
+function initDeleteAccountForm() {
+    const deleteAccountForm = document.getElementById('deleteAccountForm');
+    if (deleteAccountForm) {
+        // 移除现有的事件监听器
+        const oldForm = deleteAccountForm.cloneNode(true);
+        deleteAccountForm.parentNode.replaceChild(oldForm, deleteAccountForm);
+        
+        // 重新添加表单提交事件监听
+        oldForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // 检查确认框是否勾选
+            const confirmCheckbox = document.getElementById('confirmDelete');
+            if (!confirmCheckbox.checked) {
+                showAlertModal('请确认您已了解注销账号的影响', 'warning');
+                return;
+            }
+            
+            try {
+                const formData = new FormData(this);
+                const password = formData.get('password');
+                
+                if (!password) {
+                    showAlertModal('请输入密码确认', 'warning');
+                    return;
+                }
+                
+                const response = await fetch('/users/delete-account/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': document.querySelector('[name="csrfmiddlewaretoken"]').value,
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: new URLSearchParams({
+                        'password': password
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showAlertModal('账号已成功注销', 'success');
+                    // 延迟2秒后跳转到首页
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 2000);
+                } else {
+                    showAlertModal(data.message || '注销账号失败', 'danger');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlertModal('服务器错误，请稍后重试', 'danger');
+            }
+        });
+        
+        // 初始化密码显示/隐藏功能
+        const togglePasswordBtn = oldForm.querySelector('.toggle-password');
+        if (togglePasswordBtn) {
+            togglePasswordBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const input = this.closest('.input-group').querySelector('input');
+                const icon = this.querySelector('i');
+                
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        }
+    }
+}
 
 // 添加邮箱验证函数
 function validateEmail(email) {
@@ -763,7 +855,7 @@ function adjustTextareaHeight(textarea) {
     const lines = textarea.value.split('\n');
     const lineCount = lines.length;
     
-    // 如果内容为空，直接设置为初始高度
+    // 如果内容为空，直接设���为初始高度
     if (!textarea.value.trim()) {
         textarea.style.height = '24px';
         return;
@@ -799,7 +891,7 @@ function toggleTyping() {
     const sendButton = document.querySelector('.btn-send');
     
     if (!isPaused && currentTypingTask) {
-        // 继续输出时禁用发送���钮
+        // 继续输出时禁用发送钮
         if (sendButton) {
             disableSendButton(sendButton);
         }

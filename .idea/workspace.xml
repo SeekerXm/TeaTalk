@@ -6,10 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="优化修改密码功能，添加强度验证和前端交互修改，更新样式及用户提示；新增公告处理功能，包括表单提交和错误处理逻辑。">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeaTalk/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/TeaTalk/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/js/chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/chat.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/main.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/users/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/views.py" afterDir="false" />
@@ -107,15 +104,7 @@
       <updated>1731891219373</updated>
       <workItem from="1731891221476" duration="23360000" />
       <workItem from="1732458870477" duration="12655000" />
-      <workItem from="1733246447134" duration="1858000" />
-    </task>
-    <task id="LOCAL-00046" summary="1.移除了汉堡菜单按钮的display:none&#10;2.优化了按钮的样式和交互效果&#10;3.修改了响应式布局的逻辑&#10;4.改进了侧边栏的状态管理&#10;5.保持了其他功能不变">
-      <option name="closed" value="true" />
-      <created>1732064086073</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1732064086073</updated>
+      <workItem from="1733246447134" duration="3383000" />
     </task>
     <task id="LOCAL-00047" summary="1.添加了对sidebar和mainContent元素的直接操作&#10;2.分离了移动端和PC端的侧边栏切换逻辑&#10;3.使用transform和margin来控制侧边栏的显示/隐藏&#10;4.优化了窗口大小变化时的响应逻辑">
       <option name="closed" value="true" />
@@ -501,7 +490,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733246721306</updated>
     </task>
-    <option name="localTasksCounter" value="95" />
+    <task id="LOCAL-00095" summary="优化修改密码功能，添加强度验证和前端交互修改，更新样式及用户提示；新增公告处理功能，包括表单提交和错误处理逻辑。">
+      <option name="closed" value="true" />
+      <created>1733248862067</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1733248862067</updated>
+    </task>
+    <option name="localTasksCounter" value="96" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
