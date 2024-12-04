@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="优化修改密码功能，添加强度验证和前端交互修改，更新样式及用户提示；新增公告处理功能，包括表单提交和错误处理逻辑。">
+    <list default="true" id="4c053353-7697-4e56-af54-422972701b46" name="更改" comment="优化注销账号流程，增加密码验证和确认提示，修复表单提交逻辑。">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aimodels/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/aimodels/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aimodels/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/aimodels/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/js/chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/chat.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,15 +104,7 @@
       <updated>1731891219373</updated>
       <workItem from="1731891221476" duration="23360000" />
       <workItem from="1732458870477" duration="12655000" />
-      <workItem from="1733246447134" duration="3383000" />
-    </task>
-    <task id="LOCAL-00047" summary="1.添加了对sidebar和mainContent元素的直接操作&#10;2.分离了移动端和PC端的侧边栏切换逻辑&#10;3.使用transform和margin来控制侧边栏的显示/隐藏&#10;4.优化了窗口大小变化时的响应逻辑">
-      <option name="closed" value="true" />
-      <created>1732070276626</created>
-      <option name="number" value="00047" />
-      <option name="presentableId" value="LOCAL-00047" />
-      <option name="project" value="LOCAL" />
-      <updated>1732070276626</updated>
+      <workItem from="1733246447134" duration="4434000" />
     </task>
     <task id="LOCAL-00048" summary="1.添加了overflow-x:hidden到容器和body&#10;2.添加了min-width:0到住内容区域&#10;3.优化了过渡动画&#10;4.添加了wiLL-change属性优化性能&#10;5.修改了f1lex布局的换行行为">
       <option name="closed" value="true" />
@@ -498,7 +490,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733248862067</updated>
     </task>
-    <option name="localTasksCounter" value="96" />
+    <task id="LOCAL-00096" summary="优化注销账号流程，增加密码验证和确认提示，修复表单提交逻辑。">
+      <option name="closed" value="true" />
+      <created>1733279192375</created>
+      <option name="number" value="00096" />
+      <option name="presentableId" value="LOCAL-00096" />
+      <option name="project" value="LOCAL" />
+      <updated>1733279192375</updated>
+    </task>
+    <option name="localTasksCounter" value="97" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -516,7 +516,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="1.添加了邮箱格式验证&#10;2.添加了密码强度验证&#10;3.实现了即时验证反馈&#10;4.添加了验证状态的视觉反馈&#10;5.优化了输入组的险证样式" />
     <MESSAGE value="更新表单提示信息，优化输入框验证逻辑，添加密码强度验证，修改验证反馈显示方式，增强用户体验。" />
     <MESSAGE value="1.在页面加载时立即检查用户状态并禁用修改密码按钮&#10;2.在打开设置面板时重新检查用户状态&#10;3.在尝试打开修改密码模态框时检查用户状态&#10;4.在提交修改密码表单时再次欠检查用户状态&#10;5.使用多重防护确保封禁用户无法修改密码" />
     <MESSAGE value="在输入消息的文本框中添加了 `spellcheck=&quot;false&quot;` 属性，以禁用拼写检查功能。" />
@@ -541,7 +540,8 @@
     <MESSAGE value="删除无用文件" />
     <MESSAGE value="修改忽略文件" />
     <MESSAGE value="优化修改密码功能，添加强度验证和前端交互修改，更新样式及用户提示；新增公告处理功能，包括表单提交和错误处理逻辑。" />
-    <option name="LAST_COMMIT_MESSAGE" value="优化修改密码功能，添加强度验证和前端交互修改，更新样式及用户提示；新增公告处理功能，包括表单提交和错误处理逻辑。" />
+    <MESSAGE value="优化注销账号流程，增加密码验证和确认提示，修复表单提交逻辑。" />
+    <option name="LAST_COMMIT_MESSAGE" value="优化注销账号流程，增加密码验证和确认提示，修复表单提交逻辑。" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/TeaTalk$main.coverage" NAME="main 覆盖结果" MODIFIED="1731993364645" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ModelPlatform" />

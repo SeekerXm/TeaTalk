@@ -38,62 +38,13 @@
                         <div class="model-selector">
                             <label class="model-label">选择模型</label>
                             <div class="dropdown">
-                                <select id="modelSelect" style="display: none;">
-                                    <option value="glm-4-flash">GLM-4-Flash</option>
-                                    <option value="spark-lite">Spark Lite</option>
-                                    <option value="yi-34b">Yi-34B</option>
-                                    <option value="qwen-coder">Qwen2.5-Coder</option>
-                                    <option value="qwen-chat">Qwen2.5-Chat</option>
-                                    <option value="chatglm3">ChatGLM3-6B</option>
-                                    <option value="gemma-it">Gemma-2-9B</option>
-                                </select>
+                                <select id="modelSelect" style="display: none;"></select>
                                 <button class="model-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fas fa-robot me-2"></i>
-                                    <span class="model-text">GLM-4-Flash</span>
+                                    <span class="model-text">加载中...</span>
                                 </button>
                                 <ul class="dropdown-menu model-menu">
-                                    <li>
-                                        <a class="dropdown-item model-item active" href="#" data-model="glm-4-flash">
-                                            <i class="fas fa-comment me-2"></i>
-                                            GLM-4-Flash
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item model-item" href="#" data-model="spark-lite">
-                                            <i class="fas fa-comment me-2"></i>
-                                            Spark Lite
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item model-item" href="#" data-model="yi-34b">
-                                            <i class="fas fa-comment me-2"></i>
-                                            Yi-34B
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item model-item" href="#" data-model="qwen-coder">
-                                            <i class="fas fa-code me-2"></i>
-                                            Qwen2.5-Coder
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item model-item" href="#" data-model="qwen-chat">
-                                            <i class="fas fa-comment me-2"></i>
-                                            Qwen2.5-Chat
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item model-item" href="#" data-model="chatglm3">
-                                            <i class="fas fa-comment me-2"></i>
-                                            ChatGLM3-6B
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item model-item" href="#" data-model="gemma-it">
-                                            <i class="fas fa-comment me-2"></i>
-                                            Gemma-2-9B
-                                        </a>
-                                    </li>
+                                    <!-- 模型列表将通过 JavaScript 动态加载 -->
                                 </ul>
                             </div>
                             <!-- 新建对话按钮 -->
@@ -132,8 +83,8 @@
                         </button>
                         <!-- 导航栏中的模型显示部分 -->
                         <div class="nav-center">
-                            <span class="model-name"></span>
-                            <i class="fas fa-question-circle model-info ms-2" data-bs-toggle="tooltip"></i>
+                            <span class="model-name">加载中...</span>
+                            <i class="fas fa-question-circle model-info ms-2" data-bs-toggle="tooltip" data-bs-title="加载中..."></i>
                         </div>
                         <div class="nav-spacer"></div>
                     </div>
@@ -2483,7 +2434,7 @@
                     // 渲染 Markdown 内容
                     renderedContent.innerHTML = md.render(contentTextarea.value);
                     
-                    // 应用代码高亮
+                    // ��用代码高亮
                     renderedContent.querySelectorAll('pre code').forEach(block => {
                         hljs.highlightElement(block);
                     });

@@ -4,5 +4,5 @@ from . import views
 app_name = 'aimodels'
 
 urlpatterns = [
-    path('models/', views.get_models, name='get_models'),
+    path('available-models/', views.get_available_models, name='available-models'),
 ] 

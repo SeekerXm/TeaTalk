@@ -244,6 +244,9 @@ document.addEventListener('DOMContentLoaded', function() {
             initDeleteAccountForm();
         });
     }
+
+    // 初始化模型选择器
+    initModelSelector();
 });
 
 // 初始化注销账号表单功能
@@ -351,7 +354,7 @@ function validatePassword(password) {
     
     // 至少包含三类字符
     let types = 0;
-    if (/[A-Z]/.test(password)) types++; // 大写字母
+    if (/[A-Z]/.test(password)) types++; // 大写母
     if (/[a-z]/.test(password)) types++; // 小写字母
     if (/[0-9]/.test(password)) types++; // 数字
     if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) types++; // 特殊字符
@@ -855,7 +858,7 @@ function adjustTextareaHeight(textarea) {
     const lines = textarea.value.split('\n');
     const lineCount = lines.length;
     
-    // 如果内容为空，直接设���为初始高度
+    // 如果内容为空，直接设为初始高度
     if (!textarea.value.trim()) {
         textarea.style.height = '24px';
         return;
@@ -1055,6 +1058,143 @@ function initPasswordValidation() {
         newPasswordInput.addEventListener('input', validatePasswords);
         confirmPasswordInput.addEventListener('input', validatePasswords);
     }
+}
+
+// 添加模型选择器初始化函数
+async function initModelSelector() {
+    try {
+        const response = await fetch('/api/available-models/', {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            if (data.models && data.models.length > 0) {
+                updateModelList(data.models);
+            } else {
+                console.warn('没有可用的模型');
+                // 显示一个默认状态
+                const modelText = document.querySelector('.model-text');
+                const modelName = document.querySelector('.model-name');
+                if (modelText) modelText.textContent = '暂无可用模型';
+                if (modelName) modelName.textContent = '暂无可用模型';
+            }
+        } else {
+            console.error('获取模型列表失败:', data.message);
+            throw new Error(data.message);
+        }
+    } catch (error) {
+        console.error('初始化模型选择器失败:', error);
+        // 显示错误状态
+        const modelText = document.querySelector('.model-text');
+        const modelName = document.querySelector('.model-name');
+        if (modelText) modelText.textContent = '加载失败';
+        if (modelName) modelName.textContent = '加载失败';
+    }
+}
+
+// 更新模型列表函数
+function updateModelList(models) {
+    const modelSelect = document.getElementById('modelSelect');
+    const modelMenu = document.querySelector('.model-menu');
+    const modelText = document.querySelector('.model-text');
+    const modelName = document.querySelector('.model-name');
+    const modelInfo = document.querySelector('.model-info');
+    
+    if (!modelSelect || !modelMenu || !modelText || !modelName || !modelInfo) return;
+    
+    // 清空现有选项
+    modelSelect.innerHTML = '';
+    modelMenu.innerHTML = '';
+    
+    // 添加新的选项
+    models.forEach((model, index) => {
+        // 添加到隐藏的 select 元素
+        const option = document.createElement('option');
+        option.value = model.id;
+        option.textContent = model.name;
+        modelSelect.appendChild(option);
+        
+        // 添加到下拉菜单
+        const item = document.createElement('li');
+        item.innerHTML = `
+            <a class="dropdown-item model-item ${index === 0 ? 'active' : ''}" 
+               href="#" 
+               data-model-id="${model.id}"
+               data-model-name="${model.name}"
+               data-model-type="${model.type}"
+               data-model-platform="${model.platform}"
+               data-original-name="${model.original_name}">
+                <i class="fas fa-${model.type === 'chat' ? 'comment' : 'code'} me-2"></i>
+                ${model.name}
+            </a>
+        `;
+        modelMenu.appendChild(item);
+        
+        // 设置第一个模型为当前选中的模型
+        if (index === 0) {
+            modelText.textContent = model.name;
+            modelName.textContent = model.name;
+            modelInfo.setAttribute('data-bs-title', `
+                <p>模型类型：${model.type === 'chat' ? '对话' : '图像'}</p>
+                <p>模型平台：${model.platform}</p>
+                <p>原始模型：${model.original_name}</p>
+            `);
+            // 重新初始化 tooltip
+            new bootstrap.Tooltip(modelInfo, {
+                html: true,
+                template: '<div class="tooltip model-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+            });
+        }
+    });
+    
+    // 添加模型切换事件监听
+    document.querySelectorAll('.model-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // 更新选中状态
+            document.querySelectorAll('.model-item').forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+            
+            // 更新显示的模型名称和信息
+            const modelId = this.dataset.modelId;
+            const modelName = this.dataset.modelName;
+            const modelType = this.dataset.modelType;
+            const modelPlatform = this.dataset.modelPlatform;
+            const originalName = this.dataset.originalName;
+            
+            modelSelect.value = modelId;
+            modelText.textContent = modelName;
+            document.querySelector('.model-name').textContent = modelName;
+            
+            // 更新模型信息提示
+            const modelInfo = document.querySelector('.model-info');
+            modelInfo.setAttribute('data-bs-title', `
+                <p>模型类型：${modelType === 'chat' ? '对话' : '图像'}</p>
+                <p>模型平台：${modelPlatform}</p>
+                <p>原始模型：${originalName}</p>
+            `);
+            
+            // 销毁旧的 tooltip 并重新初始化
+            const oldTooltip = bootstrap.Tooltip.getInstance(modelInfo);
+            if (oldTooltip) {
+                oldTooltip.dispose();
+            }
+            new bootstrap.Tooltip(modelInfo, {
+                html: true,
+                template: '<div class="tooltip model-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+            });
+        });
+    });
 }
 
 // 其他现有代码保持不变... 
