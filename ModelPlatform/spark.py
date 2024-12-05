@@ -4,7 +4,7 @@ import websocket
 import datetime
 import hmac
 import base64
-from urllib.parse import urlparse
+from urllib.parse import urlparse, quote
 import hashlib
 from time import mktime
 from wsgiref.handlers import format_date_time
@@ -55,7 +55,7 @@ class SparkPlatform:
         self.appid = None
         self.api_key = None
         self.api_secret = None
-        self.version = 'v3.1'  # 默认使用最新版本
+        self.version = 'lite'  # 修改默认版本为 lite
         self.temperature = 0.5
         self.max_tokens = 4096
         self.top_k = 4
@@ -101,6 +101,11 @@ class SparkPlatform:
             signature_sha_base64 = base64.b64encode(signature_sha).decode()
             authorization_origin = f'api_key="{self.api_key}", algorithm="hmac-sha256", headers="host date request-line", signature="{signature_sha_base64}"'
             authorization = base64.b64encode(authorization_origin.encode('utf-8')).decode()
+            
+            # URL 参数编码
+            authorization = quote(authorization)
+            date = quote(date)
+            host = quote(host)
             
             # 拼接最终URL
             url = f'{self.chat_url}?authorization={authorization}&date={date}&host={host}'
@@ -214,6 +219,12 @@ class SparkApi:
     def on_error(ws, error):
         """处理WebSocket错误"""
         logger.error(f"WebSocket错误: {str(error)}")
+        if hasattr(error, 'status_code'):
+            logger.error(f"状态码: {error.status_code}")
+        if hasattr(error, 'headers'):
+            logger.error(f"响应头: {error.headers}")
+        if hasattr(error, 'response'):
+            logger.error(f"响应内容: {error.response}")
 
     @staticmethod
     def on_close(ws, close_status_code, close_reason):
@@ -225,16 +236,18 @@ class SparkApi:
         """处理WebSocket连接打开"""
         def run():
             data = json.dumps(SparkApi.params)
+            logger.debug(f"发送数据: {data}")
             ws.send(data)
         thread.start_new_thread(run, ())
 
     @staticmethod
     def on_message(ws, message):
-        """处理WebSocket���息"""
+        """处理WebSocket消息"""
         try:
             data = json.loads(message)
-            code = data['header']['code']
+            logger.debug(f"收到消息: {data}")
             
+            code = data['header']['code']
             if code != 0:
                 logger.error(f"请求错误: {code}, {data}")
                 ws.close()
@@ -251,4 +264,6 @@ class SparkApi:
                 
         except Exception as e:
             logger.error(f"处理消息时出错: {str(e)}")
+            if isinstance(e, json.JSONDecodeError):
+                logger.error(f"原始消息: {message}")
             ws.close()
