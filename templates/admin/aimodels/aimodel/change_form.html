@@ -577,12 +577,12 @@
                         {% if not add %}
                             <div class="readonly-field-container">
                                 <div class="readonly-field-title">
-                                    <i class="fas fa-code-branch"></i>
+                                    <i class="fas fa-tag"></i>
                                     <span>模型版本</span>
                                 </div>
                                 <div class="readonly-field">
                                     <i class="fas fa-lock readonly-field-icon"></i>
-                                    <span class="readonly-field-value">{{ original.version }}</span>
+                                    <span class="readonly-field-value">{{ original.get_version_display }}</span>
                                 </div>
                                 {% if adminform.form.version.help_text %}
                                     <small class="readonly-field-help">{{ adminform.form.version.help_text }}</small>
@@ -592,9 +592,6 @@
                         {% else %}
                             {{ adminform.form.version.label_tag }}
                             {{ adminform.form.version }}
-                            <div class="invalid-feedback">
-                                请选择模型版本
-                            </div>
                             {% if adminform.form.version.help_text %}
                                 <small class="form-text text-muted">{{ adminform.form.version.help_text }}</small>
                             {% endif %}

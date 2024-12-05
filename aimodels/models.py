@@ -96,8 +96,34 @@ class AIModel(models.Model):
         verbose_name_plural = verbose_name
         ordering = ['weight']
 
+    def get_version_display(self):
+        """获取友好的版本显示名称"""
+        version_mapping = {
+            # Spark平台版本
+            'lite': 'Spark Lite (基础版)',
+            'pro': 'Spark Pro (专业版)',
+            'pro-128k': 'Spark Pro-128K (长文本版)',
+            'max': 'Spark Max (高级版)',
+            'max-32k': 'Spark Max-32K (长文本高级版)',
+            'ultra': 'Spark 4.0 Ultra (旗舰版)',
+            # BigModel平台版本
+            'glm-4': 'GLM-4',
+            'glm-4-vision': 'GLM-4-Vision',
+            'glm-3-turbo': 'GLM-3-Turbo',
+            # 千帆平台版本
+            'yi-34b-chat': 'Yi-34B-Chat',
+            'llama2-70b-chat': 'Llama2-70B-Chat',
+            'llama2-13b-chat': 'Llama2-13B-Chat',
+            # SiliconCloud平台版本
+            'qwen-turbo': 'Qwen-Turbo',
+            'qwen-plus': 'Qwen-Plus',
+            'qwen-max': 'Qwen-Max'
+        }
+        return version_mapping.get(self.version, self.version)
+
     def __str__(self):
-        return f"{self.get_platform_display()} - {self.model_name}"
+        """返回模型的字符串表示"""
+        return f"{self.get_platform_display()} - {self.model_name} ({self.get_version_display()})"
 
 class UserModel(models.Model):
     """用户模型配置表"""
@@ -117,7 +143,7 @@ class UserModel(models.Model):
         ordering = ['-updated_at']
 
     def __str__(self):
-        return f"{self.user.email} ���模型配置"
+        return f"{self.user.email} 的模型配置"
 
     def get_models_display(self):
         if self.use_all_models:

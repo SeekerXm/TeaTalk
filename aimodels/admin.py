@@ -24,10 +24,12 @@ def create_user_model(sender, instance, created, **kwargs):
 
 @admin.register(AIModel)
 class AIModelAdmin(admin.ModelAdmin):
-    list_display = ['model_name', 'platform', 'version', 'is_active', 'weight', 'created_at']
+    """AI模型管理"""
+    list_display = ['model_name', 'get_platform_display', 'get_version_display', 'is_active', 'weight', 'created_at']
     list_filter = ['platform', 'is_active']
     search_fields = ['model_name']
-    ordering = ['weight']
+    ordering = ['weight', '-created_at']
+    readonly_fields = ['platform', 'version', 'model_type']
     
     fieldsets = (
         ('基本信息', {
@@ -52,10 +54,10 @@ class AIModelAdmin(admin.ModelAdmin):
         js = ('js/aimodel_admin.js',)
 
     def get_readonly_fields(self, request, obj=None):
-        """设置只读字段"""
-        if obj:  # 编辑现有模型时
-            return ['model_type', 'platform', 'version', 'weight']
-        return ['weight']
+        """获取只读字段"""
+        if obj:  # 编辑页面
+            return self.readonly_fields
+        return []  # 添加页面
 
     def get_form(self, request, obj=None, **kwargs):
         """自定义表单"""
