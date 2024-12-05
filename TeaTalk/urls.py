@@ -45,10 +45,15 @@ urlpatterns = [
     path('delete-account/', user_views.delete_account, name='delete-account'),
     path('chat/send/', chat_views.send_message, name='send_message'),
     path('api/', include('aimodels.urls')),
-    path('', include('users.urls')),
     path('users/', include('users.urls')),
+    path('api/', include('chat.urls')),  # 添加chat应用的API路由
 ]
 
 if settings.DEBUG:
+    urlpatterns += [
+        path('media/<path:path>', serve, {
+            'document_root': settings.MEDIA_ROOT,
+        }),
+    ]
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

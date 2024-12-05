@@ -3,6 +3,41 @@ from django.contrib.auth.decorators import login_required
 from aimodels.models import AIModel
 from ModelPlatform.spark import SparkPlatform
 
+def get_available_models(request):
+    """获取可用的模型列表"""
+    try:
+        # 获取所有已启用的模型
+        models = AIModel.objects.filter(is_active=True)
+        
+        # 准备基本的模型信息
+        models_data = [{
+            'id': model.id,
+            'name': model.model_name,
+            'platform': model.get_platform_display(),
+            'version': model.get_version_display(),
+            'type': model.model_type
+        } for model in models]
+        
+        # 如果用户已登录，检查用户特定的权限
+        if request.user.is_authenticated:
+            user_model = request.user.user_models
+            if not user_model.use_all_models:
+                # 过滤出用户可用的模型
+                allowed_model_ids = user_model.models.values_list('id', flat=True)
+                models_data = [model for model in models_data if model['id'] in allowed_model_ids]
+        
+        return JsonResponse({
+            'success': True,
+            'models': models_data,
+            'is_authenticated': request.user.is_authenticated
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'message': f'获取模型列表失败: {str(e)}'
+        })
+
 @login_required
 def send_message(request):
     """处理发送消息的请求"""
@@ -38,4 +73,4 @@ def send_message(request):
             return JsonResponse({'success': False, 'message': '不支持的模型平台'})
             
     except Exception as e:
-        return JsonResponse({'success': False, 'message': f'发送失败: {str(e)}'}) 
+        return JsonResponse({'success': False, 'message': f'发送失败: {str(e)}'})
