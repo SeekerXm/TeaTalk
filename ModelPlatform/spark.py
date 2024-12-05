@@ -127,6 +127,11 @@ class SparkPlatform:
 
     def _generate_params(self, messages):
         """生成请求参数，根据不同版本可能有不同的参数结构"""
+        # 获取版本配置
+        version_config = self.API_VERSIONS.get(self.version)
+        if not version_config:
+            raise ValueError(f"不支持的版本: {self.version}")
+
         params = {
             "header": {
                 "app_id": self.appid,
@@ -134,7 +139,7 @@ class SparkPlatform:
             },
             "parameter": {
                 "chat": {
-                    "domain": self.domain,
+                    "domain": version_config['domain'],
                     "temperature": self.temperature,
                     "max_tokens": self.max_tokens,
                     "top_k": self.top_k,
@@ -149,11 +154,16 @@ class SparkPlatform:
         }
         
         # 根据版本添加特定参数
-        if self.version in ['v2.1', 'v3.1']:
+        if self.version in ['pro', 'pro-128k', 'max', 'max-32k', 'ultra']:
             params['parameter']['chat'].update({
                 'auditing': 'default',
-                'chat_id': datetime.now().strftime("%Y%m%d%H%M%S")
             })
+            
+        # 如果是长文本版本，增加最大token数
+        if self.version in ['pro-128k']:
+            params['parameter']['chat']['max_tokens'] = 128000
+        elif self.version in ['max-32k']:
+            params['parameter']['chat']['max_tokens'] = 32000
         
         return params
 
