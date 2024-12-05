@@ -5,14 +5,14 @@ from users.models import User
 
 class AIModel(models.Model):
     """AI模型表"""
-    MODEL_TYPES = [
+    MODEL_TYPE_CHOICES = [
         ('chat', '对话'),
         ('image', '图像'),
     ]
     
-    PLATFORMS = [
+    PLATFORM_CHOICES = [
         ('spark', '讯飞星火'),
-        ('bigmodel', 'BigModel'),
+        ('bigmodel', '智谱AI'),
         ('qianfan', '百度千帆'),
         ('silicon', 'SiliconCloud'),
     ]
@@ -81,9 +81,9 @@ class AIModel(models.Model):
     }
     
     # 基本信息
-    model_type = models.CharField('模型类型', max_length=10, choices=MODEL_TYPES)
+    model_type = models.CharField('模型类型', max_length=10, choices=MODEL_TYPE_CHOICES)
     model_name = models.CharField('模型名称', max_length=50)
-    platform = models.CharField('模型平台', max_length=20, choices=PLATFORMS)
+    platform = models.CharField('模型平台', max_length=20, choices=PLATFORM_CHOICES)
     is_active = models.BooleanField('模型状态', default=True, choices=STATUS_CHOICES)
     weight = models.IntegerField('模型权重', unique=True, null=True, blank=True)
     version = models.CharField('模型版本', max_length=20)
@@ -117,7 +117,7 @@ class UserModel(models.Model):
         ordering = ['-updated_at']
 
     def __str__(self):
-        return f"{self.user.email} 的模型配置"
+        return f"{self.user.email} ���模型配置"
 
     def get_models_display(self):
         if self.use_all_models:
