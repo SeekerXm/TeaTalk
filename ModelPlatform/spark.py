@@ -22,32 +22,50 @@ class SparkPlatform:
         'lite': {
             'url': 'wss://spark-api.xf-yun.com/v1.1/chat',
             'domain': 'lite',
-            'description': 'Spark Lite版本'
+            'description': 'Spark Lite版本',
+            'max_tokens': 4096,  # 取值范围 [1,4096]
+            'max_context_tokens': 8192,  # content累计tokens长度限制
+            'support_ref_label': False  # 是否支持联网检索
         },
         'pro': {
             'url': 'wss://spark-api.xf-yun.com/v3.1/chat',
             'domain': 'generalv3',
-            'description': 'Spark Pro版本'
+            'description': 'Spark Pro版本',
+            'max_tokens': 4096,  # 取值范围 [1,8192]
+            'max_context_tokens': 8192,
+            'support_ref_label': False
         },
         'pro-128k': {
             'url': 'wss://spark-api.xf-yun.com/chat/pro-128k',
             'domain': 'pro-128k',
-            'description': 'Spark Pro-128K版本'
+            'description': 'Spark Pro-128K版本',
+            'max_tokens': 4096,  # 取值范围 [1,4096]
+            'max_context_tokens': 128 * 1024,
+            'support_ref_label': False
         },
         'max': {
             'url': 'wss://spark-api.xf-yun.com/v3.5/chat',
             'domain': 'generalv3.5',
-            'description': 'Spark Max版本'
+            'description': 'Spark Max版本',
+            'max_tokens': 4096,  # 取值范围 [1,8192]
+            'max_context_tokens': 8192,
+            'support_ref_label': True  # Max版本支持联网检索
         },
         'max-32k': {
             'url': 'wss://spark-api.xf-yun.com/chat/max-32k',
             'domain': 'max-32k',
-            'description': 'Spark Max-32K版本'
+            'description': 'Spark Max-32K版本',
+            'max_tokens': 4096,  # 取值范围 [1,8192]
+            'max_context_tokens': 32 * 1024,
+            'support_ref_label': False
         },
         'ultra': {
             'url': 'wss://spark-api.xf-yun.com/v4.0/chat',
             'domain': '4.0Ultra',
-            'description': 'Spark 4.0 Ultra版本'
+            'description': 'Spark 4.0 Ultra版本',
+            'max_tokens': 4096,  # 取值范围 [1,8192]
+            'max_context_tokens': 8192,
+            'support_ref_label': True  # Ultra版本支持联网检索
         }
     }
     
@@ -128,22 +146,22 @@ class SparkPlatform:
     def _generate_params(self, messages):
         """生成请求参数，根据不同版本可能有不同的参数结构"""
         # 获取版本配置
-        version_config = self.API_VERSIONS.get(self.version)
+        version_config = self.API_VERSIONS.get(self.version.lower())
         if not version_config:
             raise ValueError(f"不支持的版本: {self.version}")
 
+        # 基础参数
         params = {
             "header": {
                 "app_id": self.appid,
-                "uid": "user_default"
+                "uid": "user_default"  # 用户ID，非必传，用于后续扩展
             },
             "parameter": {
                 "chat": {
                     "domain": version_config['domain'],
-                    "temperature": self.temperature,
-                    "max_tokens": self.max_tokens,
-                    "top_k": self.top_k,
-                    "chat_id": datetime.now().strftime("%Y%m%d%H%M%S"),
+                    "temperature": self.temperature,  # 取值范围 (0,1]，默认0.5
+                    "max_tokens": version_config['max_tokens'],
+                    "top_k": self.top_k,  # 取值范围 [1,6]，默认4
                 }
             },
             "payload": {
@@ -152,18 +170,10 @@ class SparkPlatform:
                 }
             }
         }
-        
-        # 根据版本添加特定参数
-        if self.version in ['pro', 'pro-128k', 'max', 'max-32k', 'ultra']:
-            params['parameter']['chat'].update({
-                'auditing': 'default',
-            })
-            
-        # 如果是长文本版本，增加最大token数
-        if self.version in ['pro-128k']:
-            params['parameter']['chat']['max_tokens'] = 128000
-        elif self.version in ['max-32k']:
-            params['parameter']['chat']['max_tokens'] = 32000
+
+        # 只为支持联网检索的版本添加 show_ref_label 参数
+        if version_config.get('support_ref_label', False):
+            params['parameter']['chat']['show_ref_label'] = False  # 默认为False
         
         return params
 
