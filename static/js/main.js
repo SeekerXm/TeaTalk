@@ -284,7 +284,7 @@ Object.entries(formHandlers).forEach(([formId, handler]) => {
                 
                 if (data.success) {
                     if (handler.onSuccess) {
-                        handler.onSuccess(data);
+                        handler.onSuccess(data, this);  // 修改这里，传入表单对象作为第二个参数
                     } else {
                         showMessage(data.message || '操作成功！', 'success');
                     }
