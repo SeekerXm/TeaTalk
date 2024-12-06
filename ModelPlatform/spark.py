@@ -194,6 +194,24 @@ class SparkPlatform:
             # 重置回答
             self._reset_answer()
             
+            # 打印当前使用的版本信息
+            version_config = self.API_VERSIONS.get(self.version.lower())
+            print("\n" + "="*50)
+            print(f"当前使用模型版本: {self.version}")
+            print(f"请求地址: {version_config['url']}")
+            print(f"Domain参数: {version_config['domain']}")
+            print(f"最大输出Tokens: {version_config['max_tokens']}")
+            print(f"最大上下文长度: {version_config['max_context_tokens']}")
+            print("="*50 + "\n")
+
+            # 生成参数
+            params = self._generate_params(messages)
+            
+            # 打印实际请求参数
+            print("请求参数:")
+            print(f"参数结构: {json.dumps(params, ensure_ascii=False, indent=2)}")
+            print("-"*50 + "\n")
+
             # 创建WebSocket连接
             ws = websocket.WebSocketApp(
                 self._create_url(),
@@ -204,7 +222,7 @@ class SparkPlatform:
             )
             
             # 设置当前会话的参数
-            SparkApi.params = self._generate_params(messages)
+            SparkApi.params = params
             
             # 运行WebSocket连接
             ws.run_forever()
