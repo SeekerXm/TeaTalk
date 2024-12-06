@@ -1135,7 +1135,7 @@ function updateModelList(models) {
                data-model-name="${model.name}"
                data-model-type="${model.type}"
                data-model-platform="${model.platform}"
-               data-original-name="${model.original_name}">
+               data-original-name="${model.name}">
                 <i class="fas fa-${model.type === 'chat' ? 'comment' : 'code'} me-2"></i>
                 ${model.name}
             </a>
@@ -1149,7 +1149,7 @@ function updateModelList(models) {
             modelInfo.setAttribute('data-bs-title', `
                 <p>模型类型：${model.type === 'chat' ? '对话' : '图像'}</p>
                 <p>模型平台：${model.platform}</p>
-                <p>原始模型：${model.original_name}</p>
+                <p>模型名称：${model.name}</p>
             `);
             // 重新初始化 tooltip
             new bootstrap.Tooltip(modelInfo, {
@@ -1184,7 +1184,7 @@ function updateModelList(models) {
             modelInfo.setAttribute('data-bs-title', `
                 <p>模型类型：${modelType === 'chat' ? '对话' : '图像'}</p>
                 <p>模型平台：${modelPlatform}</p>
-                <p>原始模型：${originalName}</p>
+                <p>模型名称：${originalName}</p>
             `);
             
             // 销毁旧的 tooltip 并重新初始化
