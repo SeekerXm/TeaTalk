@@ -633,7 +633,7 @@
                             <div class="weight-info">
                                 <span class="weight-value">{{ original.weight }}</span>
                                 <i class="fas fa-info-circle ms-2" data-bs-toggle="tooltip" 
-                                   title="权重值只能在模型列表中通过上下箭头调整，数值越小排序越靠前"></i>
+                                   title="权重值只能在模型列表中通��上下箭头调整，数值越小排序越靠前"></i>
                             </div>
                         </div>
                         {% endif %}
@@ -659,6 +659,11 @@
             
             <div class="submit-row">
                 <button type="submit" class="btn btn-primary" name="_save">{% translate 'Save' %}</button>
+                {% if not add %}
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                    <i class="fas fa-trash-alt me-1"></i>删除
+                </button>
+                {% endif %}
                 <a href="{% url opts|admin_urlname:'changelist' %}" class="btn btn-secondary">
                     <i class="fas fa-arrow-left me-1"></i>返回
                 </a>
@@ -666,6 +671,37 @@
         </form>
     </div>
 </div>
+
+{% if not add %}
+<!-- 删除确认模态框 -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">确认删除</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>确定要删除模型 "{{ original.model_name }}" 吗？此操作不可恢复。</p>
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    删除模型将同时删除所有相关的用户权限配置。
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <form method="post" action="{% url 'admin:aimodels_aimodel_delete' original.pk %}" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="post" value="yes">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash-alt me-1"></i>确认删除
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
 
 {% block admin_change_form_document_ready %}
     {{ block.super }}

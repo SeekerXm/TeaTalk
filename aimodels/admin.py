@@ -149,6 +149,37 @@ class AIModelAdmin(admin.ModelAdmin):
         except Exception as e:
             raise ValidationError(f'保存失败：{str(e)}')
 
+    def delete_model(self, request, obj):
+        """
+        删除模型时的处理逻辑
+        """
+        try:
+            # 检查是否有用户在使用这个模型
+            users_using_model = UserModel.objects.filter(models=obj)
+            if users_using_model.exists():
+                # 从用户的可用模型列表中移除该模型
+                for user_model in users_using_model:
+                    user_model.models.remove(obj)
+            
+            # 删除模型
+            obj.delete()
+            
+            # 重新排序剩余模型的权重
+            models = AIModel.objects.order_by('weight')
+            for index, model in enumerate(models, start=1):
+                if model.weight != index:
+                    model.weight = index
+                    model.save(update_fields=['weight'])
+                    
+        except Exception as e:
+            raise ValidationError(f'删除失败：{str(e)}')
+
+    def has_delete_permission(self, request, obj=None):
+        """
+        检查是否有删除权限
+        """
+        return request.user.is_superuser  # 只允许超级管理员删除模型
+
 @admin.register(UserModel)
 class UserModelAdmin(admin.ModelAdmin):
     list_display = ['user', 'use_all_models', 'get_models_display', 'updated_at']
