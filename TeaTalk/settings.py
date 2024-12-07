@@ -275,16 +275,6 @@ MDEDITOR_CONFIGS = {
     }
 }
 
-# 智谱AI配置
-ZHIPU_API_KEY = "8e1436a72f831bf54b6ae4ca43587788.sUsYvAEEXcNF84X0"
-
-# 千帆AI配置
-QIANFAN_ACCESS_KEY = "ALTAKp6vpru3TSWZ0ZDRmhhOza"
-QIANFAN_SECRET_KEY = "2dac3d6e90ca44d7939932f26b68c2a2"
-
-# SiliconCloud配置
-SILICON_API_KEY = "sk-dbpqlfjeedqscsxcedtblzvtjtakcrmzhxpgihkmycdbyfkj"
-
 # 添加日志配置
 LOGGING = {
     'version': 1,

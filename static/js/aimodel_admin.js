@@ -48,21 +48,6 @@ function initializeForm($) {
             ['max', 'Spark Max (高级版)'],
             ['max-32k', 'Spark Max-32K (长文本高级版)'],
             ['ultra', 'Spark 4.0 Ultra (旗舰版)']
-        ],
-        'bigmodel': [
-            ['glm-4', 'GLM-4'],
-            ['glm-4-vision', 'GLM-4-Vision'],
-            ['glm-3-turbo', 'GLM-3-Turbo']
-        ],
-        'qianfan': [
-            ['yi-34b-chat', 'Yi-34B-Chat'],
-            ['llama2-70b-chat', 'Llama2-70B-Chat'],
-            ['llama2-13b-chat', 'Llama2-13B-Chat']
-        ],
-        'silicon': [
-            ['qwen-turbo', 'Qwen-Turbo'],
-            ['qwen-plus', 'Qwen-Plus'],
-            ['qwen-max', 'Qwen-Max']
         ]
     };
     
@@ -88,50 +73,6 @@ function initializeForm($) {
     "SPARK_API_SECRET": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 }</pre>
             </div>
-        `,
-        'bigmodel': `
-            <div class="mb-3">
-                <strong>智谱AI平台配置说明：</strong><br>
-                - ZHIPU_API_KEY：API密钥<br><br>
-                <strong>已支持的模型：</strong><br>
-                - GLM-4 (最新通用大模型)<br>
-                - GLM-4-Vision (多模态大模型)<br>
-                - GLM-3-Turbo (高性能通用大模型)<br><br>
-                <strong>配置示例：</strong><br>
-                <pre>{
-    "ZHIPU_API_KEY": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-}</pre>
-            </div>
-        `,
-        'qianfan': `
-            <div class="mb-3">
-                <strong>百度千帆平台配置说明：</strong><br>
-                - QIANFAN_ACCESS_KEY：访问密钥<br>
-                - QIANFAN_SECRET_KEY：安全密钥<br><br>
-                <strong>已支持的模型：</strong><br>
-                - Yi-34B-Chat (开源大模型)<br>
-                - Llama2-70B-Chat (Meta大模型)<br>
-                - Llama2-13B-Chat (轻量版Meta模型)<br><br>
-                <strong>配置示例：</strong><br>
-                <pre>{
-    "QIANFAN_ACCESS_KEY": "xxxxxxxxxxxxxxxxxxxxxxxx",
-    "QIANFAN_SECRET_KEY": "xxxxxxxxxxxxxxxxxxxxxxxx"
-}</pre>
-            </div>
-        `,
-        'silicon': `
-            <div class="mb-3">
-                <strong>SiliconCloud平台配置说明：</strong><br>
-                - SILICON_API_KEY：API密钥<br><br>
-                <strong>已支持的模型：</strong><br>
-                - Qwen-Turbo (通义千问基础版)<br>
-                - Qwen-Plus (通义千问专业版)<br>
-                - Qwen-Max (通义千问旗舰版)<br><br>
-                <strong>配置示例：</strong><br>
-                <pre>{
-    "SILICON_API_KEY": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-}</pre>
-            </div>
         `
     };
     
@@ -141,16 +82,6 @@ function initializeForm($) {
             "SPARK_APPID": "xxxxxxxx",
             "SPARK_API_KEY": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
             "SPARK_API_SECRET": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        },
-        'bigmodel': {
-            "ZHIPU_API_KEY": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        },
-        'qianfan': {
-            "QIANFAN_ACCESS_KEY": "xxxxxxxxxxxxxxxxxxxxxxxx",
-            "QIANFAN_SECRET_KEY": "xxxxxxxxxxxxxxxxxxxxxxxx"
-        },
-        'silicon': {
-            "SILICON_API_KEY": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         }
     };
 

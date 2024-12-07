@@ -124,12 +124,6 @@ class AIModelAdmin(admin.ModelAdmin):
             # 根据平台验证必要的配置字段
             if obj.platform == 'spark':
                 required_fields = ['SPARK_APPID', 'SPARK_API_KEY', 'SPARK_API_SECRET']
-            elif obj.platform == 'bigmodel':
-                required_fields = ['ZHIPU_API_KEY']
-            elif obj.platform == 'qianfan':
-                required_fields = ['QIANFAN_ACCESS_KEY', 'QIANFAN_SECRET_KEY']
-            elif obj.platform == 'silicon':
-                required_fields = ['SILICON_API_KEY']
             else:
                 required_fields = []
 

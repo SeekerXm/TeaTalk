@@ -12,9 +12,6 @@ class AIModel(models.Model):
     
     PLATFORM_CHOICES = [
         ('spark', '讯飞星火'),
-        ('bigmodel', '智谱AI'),
-        ('qianfan', '百度千帆'),
-        ('silicon', 'SiliconCloud'),
     ]
     
     STATUS_CHOICES = [
@@ -32,21 +29,6 @@ class AIModel(models.Model):
             ('max-32k', 'Spark Max-32K (长文本高级版)'),
             ('ultra', 'Spark 4.0 Ultra (旗舰版)')
         ],
-        'bigmodel': [
-            ('glm-4', 'GLM-4'),
-            ('glm-4-vision', 'GLM-4-Vision'),
-            ('glm-3-turbo', 'GLM-3-Turbo'),
-        ],
-        'qianfan': [
-            ('yi-34b-chat', 'Yi-34B-Chat'),
-            ('llama2-70b-chat', 'Llama2-70B-Chat'),
-            ('llama2-13b-chat', 'Llama2-13B-Chat'),
-        ],
-        'silicon': [
-            ('qwen-turbo', 'Qwen-Turbo'),
-            ('qwen-plus', 'Qwen-Plus'),
-            ('qwen-max', 'Qwen-Max'),
-        ]
     }
     
     # 各平台的配置说明
@@ -59,25 +41,6 @@ class AIModel(models.Model):
             "SPARK_API_SECRET": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         }
         """,
-        'bigmodel': """
-        智谱平台配置示例：
-        {
-            "ZHIPU_API_KEY": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        }
-        """,
-        'qianfan': """
-        千帆平台配置示例：
-        {
-            "QIANFAN_ACCESS_KEY": "xxxxxxxxxxxxxxxxxxxxxxxx",
-            "QIANFAN_SECRET_KEY": "xxxxxxxxxxxxxxxxxxxxxxxx"
-        }
-        """,
-        'silicon': """
-        SiliconCloud平台配置示例：
-        {
-            "SILICON_API_KEY": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        }
-        """
     }
     
     # 基本信息
@@ -106,18 +69,6 @@ class AIModel(models.Model):
             'max': 'Spark Max (高级版)',
             'max-32k': 'Spark Max-32K (长文本高级版)',
             'ultra': 'Spark 4.0 Ultra (旗舰版)',
-            # BigModel平台版本
-            'glm-4': 'GLM-4',
-            'glm-4-vision': 'GLM-4-Vision',
-            'glm-3-turbo': 'GLM-3-Turbo',
-            # 千帆平台版本
-            'yi-34b-chat': 'Yi-34B-Chat',
-            'llama2-70b-chat': 'Llama2-70B-Chat',
-            'llama2-13b-chat': 'Llama2-13B-Chat',
-            # SiliconCloud平台版本
-            'qwen-turbo': 'Qwen-Turbo',
-            'qwen-plus': 'Qwen-Plus',
-            'qwen-max': 'Qwen-Max'
         }
         return version_mapping.get(self.version, self.version)
 

@@ -57,31 +57,27 @@ def send_message(request):
         except AIModel.DoesNotExist:
             return JsonResponse({'success': False, 'message': '选择的模型不可用'})
             
-        # 根据平台创建对应的实例
-        if model.platform == 'spark':
-            platform = SparkPlatform()
-            # 从配置中获取密钥信息
-            config = model.config or {}
-            platform.appid = config.get('SPARK_APPID', '').strip()
-            platform.api_key = config.get('SPARK_API_KEY', '').strip()
-            platform.api_secret = config.get('SPARK_API_SECRET', '').strip()
-            
-            # 验证配置完整性
-            if not all([platform.appid, platform.api_key, platform.api_secret]):
-                return JsonResponse({'success': False, 'message': '模型配置不完整，请检查APPID和密钥信息'})
-            
-            # 设置正确的版本（不带v前缀）
-            platform.version = model.version
-            
-            try:
-                # 调用AI接口
-                response = platform.chat(message)
-                return JsonResponse({'success': True, 'response': response})
-            except Exception as e:
-                return JsonResponse({'success': False, 'message': f'调用AI接口失败: {str(e)}'})
-            
-        else:
-            return JsonResponse({'success': False, 'message': '不支持的模型平台'})
+        # 创建讯飞星火平台实例
+        platform = SparkPlatform()
+        # 从配置中获取密钥信息
+        config = model.config or {}
+        platform.appid = config.get('SPARK_APPID', '').strip()
+        platform.api_key = config.get('SPARK_API_KEY', '').strip()
+        platform.api_secret = config.get('SPARK_API_SECRET', '').strip()
+        
+        # 验证配置完整性
+        if not all([platform.appid, platform.api_key, platform.api_secret]):
+            return JsonResponse({'success': False, 'message': '模型配置不完整，请检查APPID和密钥信息'})
+        
+        # 设置正确的版本（不带v前缀）
+        platform.version = model.version
+        
+        try:
+            # 调用AI接口
+            response = platform.chat(message)
+            return JsonResponse({'success': True, 'response': response})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': f'调用AI接口失败: {str(e)}'})
             
     except Exception as e:
         return JsonResponse({'success': False, 'message': f'发送失败: {str(e)}'})
