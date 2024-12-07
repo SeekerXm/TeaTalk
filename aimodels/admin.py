@@ -16,12 +16,6 @@ from django.core.exceptions import ValidationError
 from django import forms
 from ModelPlatform.spark import SparkPlatform
 
-@receiver(post_save, sender=User)
-def create_user_model(sender, instance, created, **kwargs):
-    """当新用户创建时，自动创建对应的用户模型配置"""
-    if created:
-        UserModel.objects.create(user=instance)
-
 @admin.register(AIModel)
 class AIModelAdmin(admin.ModelAdmin):
     """AI模型管理"""

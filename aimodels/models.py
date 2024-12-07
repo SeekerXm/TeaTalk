@@ -109,7 +109,7 @@ class UserModel(models.Model):
 @receiver(post_save, sender=User)
 def create_user_model(sender, instance, created, **kwargs):
     """当新用户创建时，自动创建对应的用户模型配置"""
-    if created and instance.email_verified:  # 只在新用户创建且邮箱已验证时执行
+    if created:  # 只在新用户创建时执行
         UserModel.objects.get_or_create(
             user=instance,
             defaults={
