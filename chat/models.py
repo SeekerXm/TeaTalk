@@ -12,19 +12,25 @@ class ChatSettings(models.Model):
     setting_type = models.CharField(
         max_length=20,
         choices=SETTING_TYPE_CHOICES,
-        unique=True,
+        unique=False,
         verbose_name='设置类型'
     )
     duration_days = models.IntegerField(
         default=0,
+        null=True,
+        blank=True,
         verbose_name='持续时间(天)'
     )
     duration_hours = models.IntegerField(
         default=0,
+        null=True,
+        blank=True,
         verbose_name='持续时间(小时)'
     )
     duration_minutes = models.IntegerField(
         default=0,
+        null=True,
+        blank=True,
         verbose_name='持续时间(分钟)'
     )
     is_permanent = models.BooleanField(
