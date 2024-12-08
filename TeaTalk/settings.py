@@ -161,7 +161,7 @@ AUTH_USER_MODEL = 'users.User'
 # Simple UI 配置
 SIMPLEUI_CONFIG = {
     'system_keep': False,
-    'menu_display': ['用户管理', '公告管理', '模型管理'],
+    'menu_display': ['用户管理', '公告管理', '模型管理', '对话管理'],
     'dynamic': False,
     'menus': [{
         'name': '用户管理',
@@ -194,6 +194,22 @@ SIMPLEUI_CONFIG = {
             'icon': 'fas fa-users-cog',
             'url': '/admin/aimodels/usermodel/'
         }]
+    }, {
+        'name': '对话管理',
+        'icon': 'fas fa-comments',
+        'models': [{
+            'name': '对话设置',
+            'icon': 'fas fa-cog',
+            'url': '/admin/chat/chatsettings/'
+        }, {
+            'name': '对话记录',
+            'icon': 'fas fa-history',
+            'url': '/admin/chat/chatconversation/'
+        }, {
+            'name': '删除日志',
+            'icon': 'fas fa-trash-alt',
+            'url': '/admin/chat/chatdeletionlog/'
+        }]
     }]
 }
 
@@ -212,7 +228,11 @@ SIMPLEUI_ICON = {
     '模型管理': 'fas fa-robot',
     '用户列表': 'fas fa-user',
     '公告列表': 'fas fa-scroll',
-    'AI模型列表': 'fas fa-microchip'
+    'AI模型列表': 'fas fa-microchip',
+    '对话管理': 'fas fa-comments',
+    '对话设置': 'fas fa-cog',
+    '对话记录': 'fas fa-history',
+    '删除日志': 'fas fa-trash-alt'
 }
 
 # 添加浏览器图标配置
