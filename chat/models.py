@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
+from django.core.exceptions import ValidationError
 
 class ChatSettings(models.Model):
     """对话设置表"""
@@ -71,6 +72,23 @@ class ChatSettings(models.Model):
         related_name='updated_chat_settings',
         verbose_name='更新人'
     )
+
+    def clean(self):
+        """验证至少有一个时间选项被设置"""
+        super().clean()
+        
+        # 检查是否有时间设置
+        has_duration = any([
+            self.is_permanent,
+            self.duration_days,
+            self.duration_hours,
+            self.duration_minutes
+        ])
+        
+        if not has_duration:
+            raise ValidationError({
+                'duration_days': '必须设置保存时长：选择永久保存或设置具体的保存时间（天/小时/分钟）'
+            })
 
     class Meta:
         verbose_name = '对话设置'
