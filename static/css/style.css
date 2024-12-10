@@ -3331,13 +3331,13 @@ body {
 	}
 }
 
-/* 新建对话按钮样式 */
+/* 新建对话/保存对话按钮样式 */
 .new-chat-btn {
 	width: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding: 0.625rem 1rem;
+	padding: 0.625rem 0.1rem;
 	margin-top: 0.75rem;
 	background-color: #ffffff;
 	border: 1px solid #3b82f6;
@@ -3346,12 +3346,12 @@ body {
 	font-size: 0.9rem;
 	transition: all 0.2s ease;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-	cursor: pointer;
 }
 
 .new-chat-btn:hover {
 	background-color: #f8fafc;
 	border-color: #2563eb;
+	color: #1f2937;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
@@ -3580,24 +3580,9 @@ body {
 .action-buttons {
 	display: flex;
 	gap: 8px;
-	margin-top: 12px;
-	padding: 0 12px;
 }
 
-/* 保存按钮特定样式 */
-.new-chat-btn.save-btn {
-	background-color: #3b82f6;
-	color: #ffffff;
-}
 
-.new-chat-btn.save-btn:hover {
-	background-color: #2563eb;
-	border-color: #2563eb;
-}
-
-.new-chat-btn.save-btn i {
-	color: #ffffff;
-}
 
 /* 移动端适配 */
 @media (max-width: 768px) {
