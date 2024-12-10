@@ -1,2098 +1,2107 @@
-/*迁移的内联样式*/
-
-    
-    /* 容器样式优化 */
-    .container-fluid {
-        padding: 0;  /* 移除内边距 */
-        height: 100vh;  /* 用视口高度 */
-        overflow-x: hidden;  /* 添加这行，防止水平��动 */
-    }
-
-    .row {
-        margin: 0;  /* 移除外边距 */
-        height: 100%;  /* 继承父容高度 */
-        flex-wrap: nowrap;  /* 添加这行，防止换行 */
-    }
-
-    /* 左侧栏样式优化 */
-    .sidebar {
-        padding: 0;
-        height: 100vh;
-        background-color: #f8f9fa;  /* 修改背景色 */
-        border-right: 1px solid rgba(0, 0, 0, 0.05);  /* 添加淡色边框 */
-        box-shadow: 4px 0 6px -1px rgba(0, 0, 0, 0.05);  /* 添加右侧阴影 */
-        z-index: 1000;  /* 确保阴影显示在内容区域上方 */
-        position: relative;  /* 为阴影效果添加定位上下文 */
-        position: fixed;
-        left: 0;
-        top: 0;
-        height: 100vh;
-        width: 280px;
-        background-color: #f8f9fa;
-        border-right: 1px solid rgba(0, 0, 0, 0.05);
-        box-shadow: 4px 0 6px -1px rgba(0, 0, 0, 0.05);
-        z-index: 1040;
-        transition: transform 0.3s ease;
-        will-change: transform;  /* 添加这行，优化性能 */
-    }
-
-    /* Logo 区域样式优化 */
-    .sidebar-header {
-        padding: 1.25rem;  /* 调整内边距 */
-        display: flex;
-        align-items: center;  /* 垂直居中 */
-        justify-content: center;  /* 水平居中 */
-        gap: 0.75rem;  /* Logo 和标题的间距 */
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        background: #f8f9fa;  /* 与侧边栏背景色保一致 */
-    }
-
-    /* Logo 图片样式 */
-    .logo {
-        width: 35px;  /* 稍微增大 Logo 尺寸 */
-        height: 35px;
-        object-fit: contain;  /* 保持图片比例 */
-    }
-
-    /* 标题样式 */
-    .sidebar h1 {
-        margin: 0;
-        font-size: 1.35rem;  /* 稍微增大字体 */
-        font-weight: 600;
-        color: #1f2937;
-        letter-spacing: 0.5px;  /* 添加字间距 */
-        white-space: nowrap;  /* 防止标题换行 */
-    }
-
-    .sidebar-content {
-        padding: 1rem;
-    }
-
-    .sidebar-footer {
-        padding: 1.5rem;
-        border-top: 1px solid rgba(0, 0, 0, 0.05);
-        background: #f8f9fa;  /* 与左侧栏背景色保持一致 */
-    }
-
-    /* 右侧主内容区域样式 */
-    .main-content {
-        padding: 0;
-        height: 100vh;
-        overflow: hidden;
-        margin-left: 280px;
-        transition: all 0.3s ease;  /* 改为 all，使过渡更平滑 */
-        width: calc(100% - 280px);
-        min-width: 0;  /* 添加这行，防止内容溢出 */
-    }
-
-    /* 聊天容器样式优化 */
-    .chat-container {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        background-color: #ffffff;
-        overflow: hidden;
-        padding: 0;  /* 移除内边距 */
-    }
-
-    /* 只在PC端添加内边距 */
-    @media (min-width: 769px) {
-        .chat-container {
-            padding: 1rem;
-        }
-    }
-
-    /* 聊天消息区域样式优化 */
-    .chat-messages {
-        flex: 1;
-        overflow-y: auto;
-        padding: 1rem;  /* PC端使用1rem内边距 */
-        background-color: #ffffff;
-        scrollbar-width: none;  /* Firefox */
-        -ms-overflow-style: none;  /* IE and Edge */
-    }
-
-    /* 隐藏 Webkit 浏览器的滚动条 */
-    .chat-messages::-webkit-scrollbar {
-        display: none;
-    }
-
-    .chat-input {
-        padding: 1rem;
-        background: #ffffff;
-        border-top: 1px solid rgba(229, 231, 235, 0.5);
-        box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.05);
-    }
-
-    .chat-input .input-group {
-        background: #f8f9fa;
-        border-radius: 1.5rem;
-        padding: 0.5rem;  /* 统内边距 */
-        border: 2px solid rgba(229, 231, 235, 0.8);  /* 加粗边框 */
-        transition: all 0.3s ease;
-        position: relative;
-        min-height: 50px;
-        display: flex;  /* 使用flex布局 */
-        align-items: center;  /* 垂直居中 */
-    }
-
-    /* 输入框组聚焦状态 */
-    .chat-input .input-group:focus-within {
-        background: #ffffff;
-        border-color: #007bff;  /* 高亮边框颜色 */
-        box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.1);  /* 添加柔和的阴影效果 */
-    }
-
-    .chat-input textarea {
-        border: none;
-        resize: none;
-        min-height: 24px;
-        max-height: 150px;
-        height: 24px;
-        padding: 0.25rem 3.5rem 0.25rem 1rem;  /* 增加左右内边距 */
-        background: transparent;
-        font-size: 0.95rem;
-        line-height: 24px;
-        overflow-y: auto;
-        transition: all 0.2s ease;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-        width: 100%;
-        margin: 0;
-        align-self: center;  /* 在flex容器中垂直居中 */
-    }
-
-    .chat-input textarea::placeholder {
-        line-height: 24px;  /* 与输入框行高一致 */
-        color: #6c757d;
-        opacity: 0.8;
-    }
-
-    .chat-input textarea::-webkit-scrollbar {
-        display: none;
-    }
-
-    .chat-input textarea:focus {
-        box-shadow: none;
-        outline: none;
-    }
-
-    .chat-input .btn-send {
-        position: absolute;
-        right: 0.75rem;  /* 增加右侧间距 */
-        top: 50%;
-        transform: translateY(-50%);
-        background: transparent;
-        border: none;
-        padding: 0;
-        color: #007bff;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 38px;   /* 增加按钮大小 */
-        height: 38px;  /* 增加按钮大小 */
-        border-radius: 50%;
-        margin: 0;
-        z-index: 10;
-    }
-
-    .chat-input .btn-send:hover {
-        background: rgba(0, 123, 255, 0.1);
-        color: #0056b3;
-    }
-
-    .chat-input .btn-send:active {
-        background: rgba(0, 123, 255, 0.2);
-        transform: translateY(-50%) scale(0.95);  /* 添加按下效果 */
-    }
-
-    .chat-input .btn-send i {
-        font-size: 1.2rem;  /* 增加图标大小 */
-    }
-
-    /* 消息样式优化 */
-    .message {
-        margin-bottom: 1.5rem;
-        max-width: 85%;  /* 增加最大宽度 */
-        display: flex;
-        align-items: flex-start;
-        gap: 0.5rem;  /* 减小头像和消息之间的间距 */
-    }
-
-    /* 用户消息样式 */
-    .message.user {
-        margin-left: auto;
-        padding-right: 0.25rem;  /* 减小右侧内边距 */
-        flex-direction: row-reverse;
-    }
-
-    /* AI消息样式 */
-    .message.assistant {
-        margin-right: auto;
-        padding-left: 0.25rem;  /* 减小左侧内边距 */
-        flex-direction: row;
-    }
-
-    /* 头像样式优化 */
-    .message-avatar {
-        width: 36px;  /* 稍微减小头像尺寸 */
-        height: 36px;
-        border-radius: 50%;
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 0.25rem;  /* 添加顶部间距使头像与文本对齐 */
-    }
-
-    .message-avatar .avatar-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;  /* 确保图片填充整个区域 */
-    }
-
-    .message.user .message-avatar {
-        background-color: #007bff;
-        color: white;
-    }
-
-    .message.assistant .message-avatar {
-        background-color: #f8f9fa;
-        color: #1f2937;
-        border: 1px solid #e5e7eb;
-        border-radius: 0 0.5rem 0.5rem 0.5rem;
-        margin-right: auto;
-    }
-
-    .message-avatar i {
-        font-size: 1.2rem;
-    }
-
-    .message-content-wrapper {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-        flex: 1;
-        min-width: 0;  /* 防止内容溢出 */
-    }
-
-    .message-content {
-        padding: 0.75rem 1rem;
-        border-radius: 0.5rem;
-        position: relative;
-        max-width: 100%;
-        word-wrap: break-word;
-        display: block;  /* 改为 block 布局 */
-        min-height: 40px;  /* 保持最小高度 */
-    }
-
-    .message.user .message-content {
-        background: #007bff;
-        color: white;
-        border-radius: 0.5rem 0.5rem 0 0.5rem;
-        margin-left: auto;
-    }
-
-    .message.assistant .message-content {
-        background: #f8f9fa;
-        color: #1f2937;
-        border: 1px solid #e5e7eb;
-        border-radius: 0 0.5rem 0.5rem 0.5rem;
-        margin-right: auto;
-        font-size: 0.95rem;
-        line-height: 1.5;
-    }
-
-    .message.assistant .message-content pre {
-        background: #f1f5f9;
-        border-radius: 0.375rem;
-        margin: 0.5rem 0;
-        overflow-x: auto;
-    }
-
-    .message.assistant .message-content code {
-        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-        font-size: 0.9em;
-    }
-
-    .message.assistant .message-content code:not(pre code) {
-        background: #f1f5f9;
-        padding: 0.2em 0.4em;
-        border-radius: 0.25rem;
-        color: #ef4444;
-    }
-
-    .message.assistant .message-content a {
-        color: #2563eb;
-        text-decoration: none;
-    }
-
-    .message.assistant .message-content a:hover {
-        text-decoration: underline;
-    }
-
-    .message.assistant .message-content ul,
-    .message.assistant .message-content ol {
-        padding-left: 1.5rem;
-        margin: 0.5rem 0;
-    }
-
-    .message.assistant .message-content table {
-        border-collapse: collapse;
-        width: 100%;
-        margin: 0.5rem 0;
-    }
-
-    .message.assistant .message-content th,
-    .message.assistant .message-content td {
-        border: 1px solid #e5e7eb;
-        padding: 0.5rem;
-    }
-
-    .message.assistant .message-content th {
-        background: #f8f9fa;
-    }
-
-    .loading-spinner {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1000;
-        background: rgba(255, 255, 255, 0.8);
-        padding: 2rem;
-        border-radius: 1rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    }
-
-    /* 响应式调整 */
-    @media (max-width: 768px) {
-        .chat-messages {
-            padding: 0.5rem;  /* 移动端使用0.5rem内边距 */
-        }
-        
-        .message {
-            max-width: 90%;
-            gap: 0.375rem;
-        }
-        
-        .message.user {
-            padding-right: 0;
-        }
-        
-        .message.assistant {
-            padding-left: 0;
-        }
-        
-        .message-avatar {
-            width: 32px;
-            height: 32px;
-        }
-    }
-
-    /* 导航栏样式优化 */
-    .chat-nav {
-        padding: 0 1rem;
-        height: 65px;
-        display: flex;
-        align-items: center;
-        background: #f8f9fa;
-        border-bottom: 1px solid #e5e7eb;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        position: relative;
-    }
-
-    /* 汉堡菜单按钮样式 */
-    .sidebar-toggle {
-        padding: 0.5rem;
-        color: #6b7280;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        border-radius: 0.5rem;
-        flex-shrink: 0;
-    }
-
-    /* 导航栏中间区域 */
-    .nav-center {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1;
-    }
-
-    /* 导航栏占位元素 */
-    .nav-spacer {
-        width: 40px;
-        flex-shrink: 0;
-    }
-
-    /* 模型信息样式 */
-    .model-info {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        white-space: nowrap;
-    }
-
-    .model-name {
-        font-size: 1.15rem;
-        font-weight: 500;
-        color: #1f2937;
-    }
-
-    .model-info-icon {
-        color: #6b7280;
-        cursor: pointer;
-        transition: color 0.2s;
-        font-size: 1.1rem;
-    }
-
-    /* 响应式调整 */
-    @media (max-width: 768px) {
-        .chat-nav {
-            padding: 0 0.75rem;
-        }
-        
-        .model-name {
-            font-size: 1rem;
-        }
-        
-        .model-info-icon {
-            font-size: 1rem;
-        }
-    }
-
-    /* 提示框样式 */
-    .model-tooltip {
-        padding: 0.5rem;
-        font-size: 0.9rem;
-    }
-
-    .model-tooltip p {
-        margin: 0.25rem 0;
-    }
-
-    /* 打字动画样式优化 */
-    .typing-indicator {
-        background-color: #fff !important;
-        padding: 12px 20px !important;
-        display: inline-flex !important;  /* 改为 inline-flex */
-        align-items: center !important;
-        gap: 3px !important;
-        min-width: 60px !important;  /* 添加最小宽度 */
-    }
-
-    .typing-indicator span {
-        width: 6px !important;
-        height: 6px !important;
-        background-color: #90959c !important;
-        border-radius: 50% !important;
-        display: inline-block !important;
-        animation: typing 1.4s infinite ease-in-out !important;
-        flex-shrink: 0 !important;  /* 防止点被压缩 */
-    }
-
-    .typing-indicator span:nth-child(1) {
-        animation-delay: 0s !important;
-    }
-
-    .typing-indicator span:nth-child(2) {
-        animation-delay: 0.2s !important;
-    }
-
-    .typing-indicator span:nth-child(3) {
-        animation-delay: 0.4s !important;
-    }
-
-    @keyframes typing {
-        0% {
-            transform: translateY(0);
-            opacity: 0.4;
-        }
-        50% {
-            transform: translateY(-4px);  /* 改垂直方向的移动 */
-            opacity: 1;
-        }
-        100% {
-            transform: translateY(0);
-            opacity: 0.4;
-        }
-    }
-
-    /* 自定义滚动样式 */
-    .chat-messages::-webkit-scrollbar {
-        width: 6px;  /* 滚动宽度 */
-    }
-
-    .chat-messages::-webkit-scrollbar-track {
-        background: transparent;  /* 轨道背景透明 */
-    }
-
-    .chat-messages::-webkit-scrollbar-thumb {
-        background-color: rgba(0, 0, 0, 0.2);  /* 滚动条颜色 */
-        border-radius: 3px;  /* 圆角 */
-        transition: background-color 0.3s;  /* 过渡效果 */
-    }
-
-    .chat-messages::-webkit-scrollbar-thumb:hover {
-        background-color: rgba(0, 0, 0, 0.3);  /* 悬停时的颜色 */
-    }
-
-    /* Firefox 滚动条样式 */
-    .chat-messages {
-        scrollbar-width: thin;  /* 'thin' 或 'none' */
-        scrollbar-color: rgba(0, 0, 0, 0.2) transparent;  /* 滚动条颜色 ���道色 */
-    }
-
-    /* 侧边栏底部按钮样式优化 */
-    .sidebar-footer {
-        padding: 1.5rem;
-        border-top: 1px solid rgba(0, 0, 0, 0.05);
-        background: #f8f9fa;  /* 与左侧栏背景色保持一致 */
-    }
-
-    /* 设置按钮样 */
-    .sidebar-footer .btn-outline-light {
-        background: #ffffff;  /* 白色背 */
-        color: #6c757d;      /* 灰色文字 */
-        border: 1px solid rgba(0, 0, 0, 0.1);  /* 淡色边框 */
-        transition: all 0.3s ease;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);  /* 轻微阴影 */
-    }
-
-    .sidebar-footer .btn-outline-light:hover {
-        background: #f8f9fa;
-        color: #2563eb;  /* 悬浮时变为蓝色 */
-        border-color: rgba(37, 99, 235, 0.1);
-        transform: translateY(-1px);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-
-    /* 登录/退出按钮样式 */
-    .sidebar-footer .btn-primary,
-    .sidebar-footer .btn-danger {
-        background: transparent;  /* 透背景 */
-        color: #2563eb;          /* 蓝色文字 */
-        border: 1px solid rgba(37, 99, 235, 0.2);  /* 淡蓝色边框 */
-        transition: all 0.3s ease;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    }
-
-    .sidebar-footer .btn-primary:hover {
-        background: rgba(37, 99, 235, 0.1);  /* 半透明蓝色背景 */
-        color: #1d4ed8;
-        border-color: rgba(37, 99, 235, 0.3);
-        transform: translateY(-1px);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-
-    .sidebar-footer .btn-danger {
-        color: #dc3545;  /* 红色文字 */
-        border-color: rgba(220, 53, 69, 0.2);  /* 淡红色边框 */
-    }
-
-    .sidebar-footer .btn-danger:hover {
-        background: rgba(220, 53, 69, 0.1);  /* 半透明红色背景 */
-        color: #c82333;
-        border-color: rgba(220, 53, 69, 0.3);
-        transform: translateY(-1px);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-
-    /* ���钮内图标样��� */
-    .sidebar-footer .btn i {
-        margin-right: 0.5rem;
-        font-size: 0.9rem;
-    }
-
-    /* 消息内容样式优化 */
-    .message-content {
-        padding: 0.75rem 1rem;
-        border-radius: 0.5rem;
-        position: relative;
-        max-width: 100%;
-        word-wrap: break-word;
-        display: block;  /* 改为 block 布局 */
-        min-height: 40px;  /* 保持最小高度 */
-    }
-
-    /* AI消息内容样式 */
-    .message.assistant .message-content {
-        background: #f8f9fa;
-        color: #1f2937;
-        border: 1px solid #e5e7eb;
-        border-radius: 0 0.5rem 0.5rem 0.5rem;
-        margin-right: auto;
-        font-size: 0.95rem;
-        line-height: 1.5;
-    }
-
-    /* Markdown 内容样式优化 */
-    .message.assistant .message-content > * {
-        margin: 0.5rem 0;  /* 添加上下外边距 */
-    }
-
-    .message.assistant .message-content > *:first-child {
-        margin-top: 0;  /* 移除第一个元素的顶部外边距 */
-    }
-
-    .message.assistant .message-content > *:last-child {
-        margin-bottom: 0;  /* 移除最后一个元素的底部外边距 */
-    }
-
-    /* 确保段落正确显示 */
-    .message.assistant .message-content p {
-        display: block;  /* 使段落独占一行 */
-        margin: 0.5rem 0;  /* 添加段落间距 */
-    }
-
-    /* 响应式布局样式 */
-    .sidebar {
-        position: fixed;
-        left: 0;
-        top: 0;
-        height: 100vh;
-        width: 280px;
-        background-color: #f8f9fa;
-        border-right: 1px solid rgba(0, 0, 0, 0.05);
-        box-shadow: 4px 0 6px -1px rgba(0, 0, 0, 0.05);
-        z-index: 1040;
-        transition: transform 0.3s ease;
-    }
-
-    /* 主内容区域样式 */
-    .main-content {
-        margin-left: 280px;
-        transition: margin-left 0.3s ease;
-        width: calc(100% - 280px);
-    }
-
-    /* 汉堡菜单按钮样式 */
-    .sidebar-toggle {
-        padding: 0.5rem;
-        color: #6b7280;
-        transition: all 0.2s ease;
-        display: flex;  /* 始终显示 */
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        border-radius: 0.5rem;
-    }
-
-    .sidebar-toggle:hover {
-        color: #2563eb;
-        background: rgba(37, 99, 235, 0.1);  /* 添加��浮背景色 */
-    }
-
-    .sidebar-toggle:active {
-        transform: scale(0.95);  /* 添加点效果 */
-    }
-
-    /* 导航栏样式优化 */
-    .chat-nav {
-        padding: 0 1rem;
-        height: 65px;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        background: #f8f9fa;
-        border-bottom: 1px solid #e5e7eb;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    }
-
-    .model-info {
-        margin-left: auto;  /* 将模型信息推到右侧 */
-    }
-
-    /* 响应式布���断点 */
-    @media (max-width: 1024px) {
-        /* iPad 和较小屏幕 */
-        .sidebar {
-            transform: translateX(-100%);  /* 默认隐藏 */
-        }
-        
-        .main-content {
-            margin-left: 0;
-            width: 100%;
-        }
-        
-        body.sidebar-open .sidebar {
-            transform: translateX(0);
-        }
-        
-        /* 添加遮罩层 */
-        .sidebar-backdrop {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1030;
-        }
-        
-        body.sidebar-open .sidebar-backdrop {
-            display: block;
-        }
-    }
-
-    /* 移除���前的 display: none */
-    /* .sidebar-toggle {
-        display: none;
-    } */
-
-    /* 修改 body 样式 */
-    body {
-        overflow-x: hidden;  /* 添加这行，确保整个页面不会出现水��滚动 */
-    }
-
-    /* 设置模态框左侧菜单样式 */
-    .settings-menu .list-group-item {
-        border: none;
-        border-radius: 0;
-        padding: 0.75rem 1rem;
-        color: #6b7280;
-        transition: all 0.2s ease;
-    }
-
-    .settings-menu .list-group-item:hover {
-        background-color: rgba(37, 99, 235, 0.1);
-        color: #2563eb;
-    }
-
-    .settings-menu .list-group-item.active {
-        background-color: rgba(37, 99, 235, 0.1);
-        color: #2563eb;
-        font-weight: 500;
-    }
-
-    /* 响应式调整 */
-    @media (max-width: 768px) {
-        .settings-menu .list-group-item {
-            text-align: center;
-            padding: 0.75rem;
-        }
-        
-        .settings-menu .list-group-item i {
-            font-size: 1.25rem;
-            margin: 0;  /* 移除图标的外边距 */
-        }
-        
-        .settings-menu .list-group-item span {
-            display: none;  /* 隐藏文 */
-        }
-    }
-
-    /* 修改汉堡菜单按钮样式 */
-    .sidebar-toggle {
-        padding: 0.5rem;
-        color: #6b7280;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        border-radius: 0.5rem;
-        flex-shrink: 0;
-    }
-
-    .sidebar-toggle i {
-        font-size: 1.25rem;  /* 调整图标大小 */
-    }
-
-    .sidebar-toggle:hover {
-        color: #2563eb;
-        background: rgba(37, 99, 235, 0.1);
-    }
-
-    .sidebar-toggle:active {
-        transform: scale(0.95);
-    }
-
-    /* 设置模态框容器样式优化 */
-    .settings-container {
-        display: flex;
-        height: 450px;
-        min-height: 450px;
-        width: 100%;  /* 确保容器占满宽度 */
-        position: relative;  /* 添加相对定位 */
-        overflow: hidden;  /* 防止内容溢出 */
-    }
-
-    /* 左侧菜单样式优化 */
-    .settings-menu {
-        width: 200px;  /* 固定宽度 */
-        min-width: 200px;  /* 最小宽度 */
-        max-width: 200px;  /* 最大宽度 */
-        flex: 0 0 200px;  /* 禁止伸缩 */
-        border-right: 1px solid #e5e7eb;
-        background: #f8f9fa;
-        overflow-y: auto;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-    }
-
-    /* 右侧内容区域样式优化 */
-    .settings-content {
-        flex: 1;  /* 占据剩余空间 */
-        min-width: 0;  /* 允许内容区域被压缩 */
-        overflow-y: auto;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-        background: #ffffff;
-    }
-
-    /* 菜单项样式优化 */
-    .settings-menu .list-group-item {
-        border: none;
-        border-radius: 0;
-        padding: 0.75rem 1rem;
-        color: #6b7280;
-        transition: all 0.2s ease;
-        white-space: nowrap;  /* 防止文字换行 */
-        overflow: hidden;  /* 隐藏溢出内容 */
-        text-overflow: ellipsis;  /* 显示省略号 */
-    }
-
-    /* 响应式调整 */
-    @media (max-width: 768px) {
-        .settings-menu {
-            width: 60px;  /* 移动端固定宽度 */
-            min-width: 60px;
-            max-width: 60px;
-            flex: 0 0 60px;
-        }
-        
-        .settings-menu .list-group-item {
-            padding: 0.75rem;
-            text-align: center;
-            justify-content: center;
-        }
-        
-        .settings-menu .list-group-item i {
-            font-size: 1.25rem;
-            margin: 0;
-        }
-        
-        .settings-menu .list-group-item span {
-            display: none;
-        }
-    }
-
-    /* 面板内容样式优化 */
-    .settings-panel {
-        display: none;
-        padding: 1rem;
-        height: 100%;
-        width: 100%;  /* 确保面板占满容器 */
-    }
-
-    .settings-panel.active {
-        display: block;
-    }
-
-    /* 确保模态框内容不会被挤压 */
-    .modal-dialog.modal-lg {
-        max-width: 800px;  /* 设置最大宽度 */
-        margin: 1.75rem auto;
-    }
-
-    .modal-content {
-        width: 100%;
-        height: auto;
-    }
-
-    .modal-body {
-        padding: 0;
-        overflow: hidden;  /* 防止内容溢出 */
-    }
-
-    /* 设置面板内容样式优化 */
-    .settings-panel-content {
-        height: calc(100% - 3rem);  /* 减去标���的高度 */
-        overflow-y: auto;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-    }
-
-    /* 在移动端时���除内边距 */
-    @media (max-width: 768px) {
-        .settings-panel-content {
-            padding: 0;  /* 移动端移除内边距 */
-        }
-        
-        /* 调整移动端其他相关样式 */
-        .user-info {
-            gap: 0.5rem;  /* 减小间距 */
-        }
-        
-        .info-item {
-            margin: 0 0.75rem;  /* 添加左右边距代替内边距 */
-        }
-        
-        .info-actions {
-            margin: 0.5rem 0.75rem;  /* 添加左右边距 */
-        }
-        
-        .announcement-item {
-            margin: 0 0.75rem;  /* 添加左右边距 */
-        }
-    }
-
-    /* 确保滚动条隐藏 */
-    .settings-panel-content::-webkit-scrollbar {
-        display: none;
-    }
-
-    /* 用户信息基础样式 */
-    .user-info {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-
-    /* 用户信息项样式 */
-    .info-item {
-        background-color: #f8f9fa;
-        border-radius: 8px;
-        padding: 0.75rem;
-    }
-
-    /* PC端样式 */
-    @media (min-width: 769px) {
-        .user-info {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-        }
-        
-        .info-item {
-            margin: 0;
-        }
-    }
-
-    /* 移动端样式 - 使用更高的优先级 */
-    @media (max-width: 768px) {
-        .settings-panel-content .user-info {
-            padding: 0 !important;  /* 使用 !important 确保覆盖其他样式 */
-            background-color: transparent !important;
-            border-radius: 0 !important;
-        }
-        
-        .settings-panel-content .info-item {
-            margin: 0 0.75rem;
-        }
-        
-        .settings-panel-content .info-actions {
-            margin: 0.5rem 0.75rem;
-        }
-    }
-
-    /* 修改密码和注销账号模态框样式优化 */
-    #changePasswordModal .modal-content,
-    #deleteAccountModal .modal-content {
-        border: none;
-        border-radius: 1rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    }
-
-    #changePasswordModal .modal-header,
-    #deleteAccountModal .modal-header {
-        padding: 1.25rem 1.5rem;
-        border-bottom: 1px solid rgba(229, 231, 235, 0.5);
-        background: #f8f9fa;
-        border-radius: 1rem 1rem 0 0;
-    }
-
-    #changePasswordModal .modal-title,
-    #deleteAccountModal .modal-title {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: #1f2937;
-    }
-
-    #changePasswordModal .modal-body,
-    #deleteAccountModal .modal-body {
-        padding: 1.5rem;
-    }
-
-    /* 表单样式优化 */
-    .modal .form-label {
-        font-size: 0.95rem;
-        color: #4b5563;
-        margin-bottom: 0.5rem;
-    }
-
-    .modal .form-control {
-        border-radius: 0.5rem;
-        border: 1px solid #e5e7eb;
-        padding: 0.625rem 1rem;
-        font-size: 0.95rem;
-        transition: all 0.2s ease;
-    }
-
-    .modal .form-control:focus {
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-    }
-
-    .modal .input-group {
-        border-radius: 0.5rem;
-    }
-
-    .modal .input-group .form-control {
-        border-right: none;
-    }
-
-    .modal .input-group .btn {
-        border-radius: 0 0.5rem 0.5rem 0;
-        border: 1px solid #e5e7eb;
-        border-left: none;
-        padding: 0.625rem 1rem;
-    }
-
-    .modal .form-text {
-        font-size: 0.85rem;
-        color: #6b7280;
-        margin-top: 0.5rem;
-    }
-
-    /* 警告提示样式优化 */
-    .modal .alert {
-        border: none;
-        border-radius: 0.5rem;
-        padding: 1rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .modal .alert-heading {
-        font-size: 1rem;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-    }
-
-    .modal .alert ul {
-        margin-bottom: 0;
-        padding-left: 1.25rem;
-    }
-
-    /* 按钮样式优化 */
-    .modal .btn {
-        padding: 0.625rem 1.25rem;
-        font-size: 0.95rem;
-        border-radius: 0.5rem;
-        transition: all 0.2s ease;
-    }
-
-    .modal .btn-primary {
-        background: #3b82f6;
-        border: none;
-    }
-
-    .modal .btn-primary:hover {
-        background: #2563eb;
-        transform: translateY(-1px);
-    }
-
-    .modal .btn-danger {
-        background: #ef4444;
-        border: none;
-    }
-
-    .modal .btn-danger:hover {
-        background: #dc2626;
-        transform: translateY(-1px);
-    }
-
-    /* 复选框样式优化 */
-    .modal .form-check {
-        padding-left: 1.75rem;
-        margin-bottom: 1rem;
-    }
-
-    .modal .form-check-input {
-        width: 1.125rem;
-        height: 1.125rem;
-        margin-left: -1.75rem;
-        margin-top: 0.25rem;
-        border: 1px solid #e5e7eb;
-        transition: all 0.2s ease;
-    }
-
-    .modal .form-check-input:checked {
-        background-color: #3b82f6;
-        border-color: #3b82f6;
-    }
-
-    /* 响应式调整 */
-    @media (max-width: 768px) {
-        #changePasswordModal .modal-content,
-        #deleteAccountModal .modal-content {
-            margin: 0.5rem;
-            border-radius: 0.75rem;
-        }
-        
-        #changePasswordModal .modal-header,
-        #deleteAccountModal .modal-header {
-            padding: 1rem 1rem 0.5rem;
-        }
-        
-        #changePasswordModal .modal-body,
-        #deleteAccountModal .modal-body {
-            padding: 1rem;
-        }
-        
-        .modal .form-label {
-            font-size: 0.9rem;
-        }
-        
-        .modal .form-control {
-            font-size: 0.9rem;
-            padding: 0.5rem 0.75rem;
-        }
-        
-        .modal .btn {
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-        }
-        
-        .modal .alert {
-            padding: 0.75rem;
-            font-size: 0.9rem;
-        }
-    }
-
-    /* 登录模态框样式优化 */
-    #authModal .modal-header {
-        border: none;
-        padding: 1.5rem 1.5rem 0.75rem;
-        position: relative;
-        min-height: 60px;  /* 确保有足够的高度 */
-    }
-
-    /* 导航标签样式优化 */
-    #authModal .nav-tabs {
-        border: none;
-        gap: 0.5rem;
-        padding: 0;
-        margin-bottom: 0;
-        width: calc(100% - 50px);  /* 为关闭按钮留出更多空间 */
-    }
-
-    /* 关闭按钮样式优化 */
-    #authModal .btn-close {
-        position: absolute;
-        right: 1.25rem;  /* 向右移动 */
-        top: 0.75rem;    /* 向上移动 */
-        padding: 0.5rem;
-        width: 32px;     /* 设置固定宽度 */
-        height: 32px;    /* 设置固定高度 */
-        border-radius: 50%;  /* 圆形按钮 */
-        background-color: #f3f4f6;  /* 淡灰色背景 */
-        opacity: 1;      /* 不透明��设为1 */
-        transition: all 0.2s ease;  /* 平滑过渡效果 */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transform-origin: center;  /* 设置变换原点为中心 */
-        z-index: 1050;
-    }
-
-    #authModal .btn-close:hover {
-        background-color: #e5e7eb;  /* 悬浮时背景色变深 */
-        transform: rotate(90deg);   /* 旋转效果 */
-    }
-
-    #authModal .btn-close:active {
-        transform: rotate(90deg) scale(0.95);  /* 点击时缩小效果 */
-    }
-
-    /* 响应式调整 */
-    @media (max-width: 768px) {
-        #authModal .modal-header {
-            padding: 1rem 1rem 0.5rem;
-        }
-        
-        #authModal .nav-tabs {
-            width: calc(100% - 40px);  /* 移动端稍微调整宽度 */
-        }
-        
-        #authModal .btn-close {
-            right: 1rem;
-            top: 0.5rem;
-            width: 28px;  /* 移动端稍微小一点 */
-            height: 28px;
-        }
-    }
-
-    /* 登录模态框样式优化 */
-    #authModal .modal-dialog {
-        position: relative;  /* 为绝对定位的关闭按钮提供参考 */
-    }
-
-    /* 关闭按钮样式优化 */
-    #authModal .btn-close {
-        position: absolute;
-        right: 0.5rem;
-        top: -3.5rem;  /* 将按钮移到模态框上方 */
-        padding: 0.5rem;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        background-color: #ffffff;  /* 改为白色背景 */
-        opacity: 1;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transform-origin: center;
-        z-index: 1050;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);  /* 添加阴影效果 */
-    }
-
-    #authModal .btn-close:hover {
-        background-color: #f3f4f6;
-        transform: rotate(90deg);
-    }
-
-    #authModal .btn-close:active {
-        transform: rotate(90deg) scale(0.95);
-    }
-
-    /* 导航标签样式优化 */
-    #authModal .nav-tabs {
-        border: none;
-        gap: 0.5rem;
-        padding: 0;
-        margin-bottom: 0;
-        width: 100%;  /* 现在可以占据全部宽度 */
-    }
-
-    /* 响应式调整 */
-    @media (max-width: 768px) {
-        #authModal .btn-close {
-            top: -3rem;  /* 移动端稍微靠近一点 */
-            right: 0.25rem;
-            width: 28px;
-            height: 28px;
-        }
-    }
-
-    /* 登录态框样式优 */
-    #authModal {
-        padding-top: 2rem !important;  /* 减小顶部内边距 */
-    }
-
-    #authModal .modal-dialog {
-        position: relative;
-        margin-top: 1rem;  /* 减小顶部外边距 */
-    }
-
-    /* 关闭按钮样式优化 */
-    #authModal .auth-modal-close {
-        position: absolute;
-        right: calc(50% - 19px);  /* 水平居中 */
-        top: -2.5rem;  /* 调整按钮与模态框的距离 */
-        width: 38px;
-        height: 38px;
-        padding: 0.75rem;
-        border-radius: 50%;
-        background-color: #ffffff;
-        opacity: 1;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transform-origin: center;
-        z-index: 1060;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        border: none;
-    }
-
-    /* 响应式调整 */
-    @media (max-width: 768px) {
-        #authModal {
-            padding-top: 1.5rem !important;  /* 移动端减小顶部内边距 */
-        }
-        
-        #authModal .modal-dialog {
-            margin-top: 0.75rem;  /* 移动端减小顶部外边距 */
-        }
-        
-        #authModal .auth-modal-close {
-            top: -2rem;  /* 移动端调整按钮与模态框的距离 */
-            width: 34px;
-            height: 34px;
-            padding: 0.5rem;
-            right: calc(50% - 17px);
-        }
-    }
-
-    /* 登录模态框样式优化 */
-    #authModal .modal-dialog {
-        position: relative;  /* 为关闭按钮提供定位参考 */
-        margin-top: 2.5rem;  /* 为关闭按钮留出空间 */
-    }
-
-    /* 关闭按钮样式优化 */
-    #authModal .auth-modal-close {
-        position: absolute;  /* 相对于 modal-dialog 定位 */
-        left: 50%;          /* 水平居中 */
-        transform: translateX(-50%);  /* 水平居中偏移 */
-        top: -2.5rem;       /* 向上偏移 */
-        width: 38px;
-        height: 38px;
-        padding: 0.75rem;
-        border-radius: 50%;
-        background-color: #ffffff;
-        opacity: 1;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1060;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        border: none;
-    }
-
-    #authModal .auth-modal-close:hover {
-        background-color: #f3f4f6;
-        transform: translateX(-50%) rotate(90deg);  /* 保持水平居中的同时添加旋转效果 */
-    }
-
-    #authModal .auth-modal-close:active {
-        transform: translateX(-50%) rotate(90deg) scale(0.95);  /* 保持水平居中的同时添加旋转和缩放效果 */
-    }
-
-    /* 响应式调整 */
-    @media (max-width: 768px) {
-        #authModal .modal-dialog {
-            margin-top: 2rem;  /* 移动端稍微减小上边距 */
-        }
-        
-        #authModal .auth-modal-close {
-            width: 34px;
-            height: 34px;
-            padding: 0.5rem;
-            top: -2rem;  /* 移动端调整按钮位置 */
-        }
-    }
-
-    /* 登录模态框样式优化 */
-    #authModal .modal-dialog {
-        position: relative;  /* 为关闭按钮提供定位参考 */
-        margin-top: 4rem;  /* 增加顶部外边距 */
-    }
-
-    /* 关闭按钮样式优化 */
-    #authModal .auth-modal-close {
-        position: fixed;
-        left: 50%;
-        transform: translateX(-50%);
-        top: 10.5rem;  /* 增加固定定位的top值 */
-        width: 38px;
-        height: 38px;
-        padding: 0.75rem;
-        border-radius: 50%;
-        background-color: #ffffff;
-        opacity: 1;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1060;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        border: none;
-    }
-
-    #authModal .auth-modal-close:hover {
-        background-color: #f3f4f6;
-        transform: translateX(-50%) rotate(90deg);
-    }
-
-    #authModal .auth-modal-close:active {
-        transform: translateX(-50%) rotate(90deg) scale(0.95);
-    }
-
-    /* 响应式调整 */
-    @media (max-width: 768px) {
-        #authModal .modal-dialog {
-            margin-top: 3rem;  /* 移动端稍微减小上边距 */
-        }
-        
-        #authModal .auth-modal-close {
-            width: 34px;
-            height: 34px;
-            padding: 0.5rem;
-            top: 11rem;  /* 移动端调整固定定位的top值 */
-        }
-    }
-
-    /* 登录模态框样式优化 */
-    #authModal .modal-dialog {
-        position: relative;
-        margin-top: 5rem;  /* 增加顶部外边距 */
-    }
-
-    /* 关闭按钮样式优化 */
-    #authModal .auth-modal-close {
-        position: fixed;
-        left: 50%;
-        transform: translateX(-50%);
-        top: 13.5rem;  /* 增加固定定位的top值 */
-        width: 38px;
-        height: 38px;
-        padding: 0.75rem;
-        border-radius: 50%;
-        background-color: #ffffff;
-        opacity: 1;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1060;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        border: none;
-    }
-
-    #authModal .auth-modal-close:hover {
-        background-color: #f3f4f6;
-        transform: translateX(-50%) rotate(90deg);
-    }
-
-    #authModal .auth-modal-close:active {
-        transform: translateX(-50%) rotate(90deg) scale(0.95);
-    }
-
-    /* 响应式调整 */
-    @media (max-width: 768px) {
-        #authModal .modal-dialog {
-            margin-top: 4rem;  /* 移动端稍微减小上边距 */
-        }
-        
-        #authModal .auth-modal-close {
-            width: 34px;
-            height: 34px;
-            padding: 0.5rem;
-            top: 14rem;  /* 移动端调整固定定位的top值 */
-        }
-    }
-
-    /* 登录模态框样式优化 */
-    #authModal .modal-dialog {
-        position: relative;
-        margin-top: 3rem;  /* 增加顶部外边距，为关闭按钮留出空间 */
-    }
-
-    /* 关闭按钮样式优化 */
-    #authModal .auth-modal-close {
-        position: fixed;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 38px;
-        height: 38px;
-        padding: 0.75rem;
-        border-radius: 50%;
-        background-color: #ffffff;
-        opacity: 1;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1060;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        border: none;
-    }
-
-    #authModal .auth-modal-close:hover {
-        background-color: #f3f4f6;
-        transform: translateX(-50%) rotate(90deg);
-    }
-
-    #authModal .auth-modal-close:active {
-        transform: translateX(-50%) rotate(90deg) scale(0.95);
-    }
-
-    /* 响应式调整 */
-    @media (max-width: 768px) {
-        #authModal .modal-dialog {
-            margin-top: 2.5rem;  /* 移动端稍微减小上边距 */
-        }
-        
-        #authModal .auth-modal-close {
-            width: 34px;
-            height: 34px;
-            padding: 0.5rem;
-        }
-    }
-
-    /* 公��列表样式优化 */
-    .announcement-list {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-
-    .announcement-item {
-        border: 1px solid #e5e7eb;
-        border-radius: 0.75rem;
-        overflow: hidden;
-        background: #ffffff;
-        transition: all 0.2s ease;
-    }
-
-    .announcement-header {
-        padding: 1rem;
-        background: #f8f9fa;
-        border-bottom: 1px solid #e5e7eb;
-        cursor: pointer;
-    }
-
-    .announcement-title-wrapper {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-
-    .announcement-toggle {
-        font-size: 0.875rem;
-        color: #6b7280;
-        transition: transform 0.3s ease;
-    }
-
-    .announcement-item.expanded .announcement-toggle {
-        transform: rotate(90deg);
-    }
-
-    .announcement-title {
-        margin: 0;
-        font-size: 0.95rem;
-        font-weight: 500;
-        color: #1f2937;
-    }
-
-    .announcement-date {
-        color: #6b7280;
-        font-size: 0.8rem;
-    }
-
-    .announcement-content {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease-out, padding 0.3s ease;
-        background-color: #f8f9fa;
-        padding: 0 1rem;
-    }
-
-    .announcement-content.show {
-        max-height: 1000px; /* 设置一个足够大的值 */
-        padding: 1rem;
-        border-top: 1px solid #e5e7eb;
-    }
-
-    .announcement-content p {
-        margin: 0;
-        color: #4b5563;
-        font-size: 0.9rem;
-        line-height: 1.6;
-    }
-
-    /* 响应式调整 */
-    @media (max-width: 768px) {
-        .announcement-header {
-            padding: 0.875rem;
-        }
-        
-        .announcement-title {
-            font-size: 0.875rem;
-        }
-        
-        .announcement-date {
-            font-size: 0.75rem;
-        }
-        
-        .announcement-content.show {
-            padding: 0.875rem;
-        }
-        
-        .announcement-content p {
-            font-size: 0.85rem;
-            line-height: 1.5;
-        }
-        
-        .announcement-toggle {
-            font-size: 0.8rem;
-        }
-        
-        .announcement-title-wrapper {
-            gap: 0.5rem;
-        }
-    }
-
-    /* 添加一些视觉效果 */
-    .announcement-item:hover {
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        transform: translateY(-1px);
-    }
-
-    .announcement-header:hover .announcement-title {
-        color: #2563eb;
-    }
-
-    /* 添加到现有的 style 标签中 */
-    .nav-center {
-        display: flex;
-        align-items: center;
-    }
-
-    .nav-center .model-name {
-        font-weight: 500;
-    }
-
-    .nav-center .model-info {
-        color: #6c757d;
-        cursor: help;
-    }
-
-    /* tooltip 样式 */
-    .model-tooltip p {
-        margin-bottom: 0.5rem;
-        white-space: nowrap;
-    }
-
-    .model-tooltip p:last-child {
-        margin-bottom: 0;
-    }
-    
-
-/*迁移的内联样式*/
-
-
-/* 全局样式 */
-body {
-    background-color: #f8f9fa;
+/* 容器样式优化 */
+.container-fluid {
+	padding: 0;
+	/* 移除内边距 */
+	height: 100vh;
+	/* 用视口高度 */
+	overflow-x: hidden;
+	/* 添加这行，防止水平��动 */
+}
+
+.row {
+	margin: 0;
+	/* 移除外边距 */
+	height: 100%;
+	/* 继承父容高度 */
+	flex-wrap: nowrap;
+	/* 添加这行，防止换行 */
 }
 
 /* 左侧栏样式 */
 .sidebar {
-    background-color: #f8f9fa;
-    color: white;
-    padding: 1rem;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 280px;
+	background-color: #f8f9fa;
+	border-right: 1px solid rgba(0, 0, 0, 0.05);
+	box-shadow: 4px 0 6px -1px rgba(0, 0, 0, 0.05);
+	z-index: 1040;
+	transition: transform 0.3s ease;
+	will-change: transform;
+	flex-direction: column;
+	display: flex;
+	height: 100vh;
+	color: white;
+	padding: 1rem;
+}
+
+/* Logo 区域样式优化 */
+.sidebar-header {
+	padding: 1.25rem;
+	/* 调整内边距 */
+	display: flex;
+	align-items: center;
+	/* 垂直居中 */
+	justify-content: center;
+	/* 水平居中 */
+	gap: 0.75rem;
+	/* Logo 和标题的间距 */
+	border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+	background: #f8f9fa;
+	/* 与侧边栏背景色保一致 */
+}
+
+/* Logo 图片样式 */
+.logo {
+	width: 35px;
+	/* 稍微增大 Logo 尺寸 */
+	height: 35px;
+	object-fit: contain;
+	/* 保持图片比例 */
+}
+
+/* 标题样式 */
+.sidebar h1 {
+	margin: 0;
+	font-size: 1.35rem;
+	/* 稍微增大字体 */
+	font-weight: 600;
+	color: #1f2937;
+	letter-spacing: 0.5px;
+	/* 添加字间距 */
+	white-space: nowrap;
+	/* 防止标题换行 */
+}
+
+/* 右侧主内容区域样式 */
+.main-content {
+	padding: 0;
+	height: 100vh;
+	overflow: hidden;
+	transition: all 0.3s ease;
+	/* 改为 all，使过渡更平滑 */
+	min-width: 0;
+	/* 添加这行，防止内容溢出 */
+}
+
+/* 聊天容器样式优化 */
+.chat-container {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	background-color: #ffffff;
+	overflow: hidden;
+	padding: 0;
+	/* 移除内边距 */
+}
+
+/* 只在PC端添加内边距 */
+@media (min-width: 769px) {
+	.chat-container {
+		padding: 1rem;
+	}
+}
+
+/* 聊天消息区域样式优化 */
+.chat-messages {
+	flex: 1;
+	overflow-y: auto;
+	padding: 1rem;
+	/* PC端使用1rem内边距 */
+	background-color: #ffffff;
+	scrollbar-width: none;
+	/* Firefox */
+	-ms-overflow-style: none;
+	/* IE and Edge */
+}
+
+/* 隐藏 Webkit 浏览器的滚动条 */
+.chat-messages::-webkit-scrollbar {
+	display: none;
+}
+
+.chat-input {
+	padding: 1rem;
+	background: #ffffff;
+	border-top: 1px solid rgba(229, 231, 235, 0.5);
+	box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.chat-input .input-group {
+	background: #f8f9fa;
+	border-radius: 1.5rem;
+	padding: 0.5rem;
+	/* 统内边距 */
+	border: 2px solid rgba(229, 231, 235, 0.8);
+	/* 加粗边框 */
+	transition: all 0.3s ease;
+	position: relative;
+	min-height: 50px;
+	display: flex;
+	/* 使用flex布局 */
+	align-items: center;
+	/* 垂直居中 */
+}
+
+/* 输入框组聚焦状态 */
+.chat-input .input-group:focus-within {
+	background: #ffffff;
+	border-color: #007bff;
+	/* 高亮边框颜色 */
+	box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.1);
+	/* 添加柔和的阴影效果 */
+}
+
+.chat-input textarea {
+	border: none;
+	resize: none;
+	min-height: 24px;
+	max-height: 150px;
+	height: 24px;
+	padding: 0.25rem 3.5rem 0.25rem 1rem;
+	/* 增加左右内边距 */
+	background: transparent;
+	font-size: 0.95rem;
+	line-height: 24px;
+	overflow-y: auto;
+	transition: all 0.2s ease;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+	width: 100%;
+	margin: 0;
+	align-self: center;
+	/* 在flex容器中垂直居中 */
+}
+
+.chat-input textarea::placeholder {
+	line-height: 24px;
+	/* 与输入框行高一致 */
+	color: #6c757d;
+	opacity: 0.8;
+}
+
+.chat-input textarea::-webkit-scrollbar {
+	display: none;
+}
+
+.chat-input textarea:focus {
+	box-shadow: none;
+	outline: none;
+}
+
+.chat-input .btn-send {
+	position: absolute;
+	right: 0.75rem;
+	/* 增加右侧间距 */
+	top: 50%;
+	transform: translateY(-50%);
+	background: transparent;
+	border: none;
+	padding: 0;
+	color: #007bff;
+	transition: all 0.2s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 38px;
+	/* 增加按钮大小 */
+	height: 38px;
+	/* 增加按钮大小 */
+	border-radius: 50%;
+	margin: 0;
+	z-index: 10;
+}
+
+.chat-input .btn-send:hover {
+	background: rgba(0, 123, 255, 0.1);
+	color: #0056b3;
+}
+
+.chat-input .btn-send:active {
+	background: rgba(0, 123, 255, 0.2);
+	transform: translateY(-50%) scale(0.95);
+	/* 添加按下效果 */
+}
+
+.chat-input .btn-send i {
+	font-size: 1.2rem;
+	/* 增加图标大小 */
+}
+
+/* 消息样式优化 */
+.message {
+	margin-bottom: 1.5rem;
+	max-width: 85%;
+	/* 增加最大宽度 */
+	display: flex;
+	align-items: flex-start;
+	gap: 0.5rem;
+	/* 减小头像和消息之间的间距 */
+}
+
+/* 用户消息样式 */
+.message.user {
+	margin-left: auto;
+	padding-right: 0.25rem;
+	/* 减小右侧内边距 */
+	flex-direction: row-reverse;
+}
+
+/* AI消息样式 */
+.message.assistant {
+	margin-right: auto;
+	padding-left: 0.25rem;
+	/* 减小左侧内边距 */
+	flex-direction: row;
+}
+
+/* 头像样式优化 */
+.message-avatar {
+	width: 36px;
+	/* 稍微减小头像尺寸 */
+	height: 36px;
+	border-radius: 50%;
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 0.25rem;
+	/* 添加顶部间距使头像与文本对齐 */
+}
+
+.message-avatar .avatar-image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	/* 确保图片填充整个区域 */
+}
+
+.message.user .message-avatar {
+	background-color: #007bff;
+	color: white;
+}
+
+.message.assistant .message-avatar {
+	background-color: #f8f9fa;
+	color: #1f2937;
+	border: 1px solid #e5e7eb;
+	border-radius: 0 0.5rem 0.5rem 0.5rem;
+	margin-right: auto;
+}
+
+.message-avatar i {
+	font-size: 1.2rem;
+}
+
+.message-content-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	flex: 1;
+	min-width: 0;
+	/* 防止内容溢出 */
+}
+
+.message-content {
+	padding: 0.75rem 1rem;
+	border-radius: 0.5rem;
+	position: relative;
+	max-width: 100%;
+	word-wrap: break-word;
+	display: block;
+	min-height: 40px;
+	background-color: #f3f4f6;
+}
+
+.message.user .message-content {
+	background: #007bff;
+	color: white;
+	border-radius: 0.5rem 0.5rem 0 0.5rem;
+	margin-left: auto;
+}
+
+.message.assistant .message-content pre {
+	background: #f1f5f9;
+	border-radius: 0.375rem;
+	margin: 0.5rem 0;
+	overflow-x: auto;
+}
+
+.message.assistant .message-content code {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 0.9em;
+}
+
+.message.assistant .message-content code:not(pre code) {
+	background: #f1f5f9;
+	padding: 0.2em 0.4em;
+	border-radius: 0.25rem;
+	color: #ef4444;
+}
+
+.message.assistant .message-content a {
+	color: #2563eb;
+	text-decoration: none;
+}
+
+.message.assistant .message-content a:hover {
+	text-decoration: underline;
+}
+
+.message.assistant .message-content ul,
+.message.assistant .message-content ol {
+	padding-left: 1.5rem;
+	margin: 0.5rem 0;
+}
+
+.message.assistant .message-content table {
+	border-collapse: collapse;
+	width: 100%;
+	margin: 0.5rem 0;
+}
+
+.message.assistant .message-content th,
+.message.assistant .message-content td {
+	border: 1px solid #e5e7eb;
+	padding: 0.5rem;
+}
+
+.message.assistant .message-content th {
+	background: #f8f9fa;
+}
+
+.loading-spinner {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 1000;
+	background: rgba(255, 255, 255, 0.8);
+	padding: 2rem;
+	border-radius: 1rem;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+	.chat-messages {
+		padding: 0.5rem;
+		/* 移动端使用0.5rem内边距 */
+	}
+
+	.message {
+		max-width: 90%;
+		gap: 0.375rem;
+	}
+
+	.message.user {
+		padding-right: 0;
+	}
+
+	.message.assistant {
+		padding-left: 0;
+	}
+
+	.message-avatar {
+		width: 32px;
+		height: 32px;
+	}
+}
+
+/* 导航栏样式优化 */
+.chat-nav {
+	padding: 0 1rem;
+	height: 65px;
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	/* 保留这个属性 */
+	background: #f8f9fa;
+	border-bottom: 1px solid #e5e7eb;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+	position: relative;
+	/* 保留这个属性 */
+}
+
+/* 汉堡菜单按钮样式 */
+.sidebar-toggle {
+	padding: 0.5rem;
+	color: #6b7280;
+	transition: all 0.2s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 0.5rem;
+	flex-shrink: 0;
+}
+
+/* 导航栏中间区域 */
+.nav-center {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1;
+}
+
+/* 导航栏占位元素 */
+.nav-spacer {
+	width: 40px;
+	flex-shrink: 0;
+}
+
+/* 模型信息样式 */
+.model-info {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	white-space: nowrap;
+	flex: 1;
+	overflow: hidden;
+}
+
+.model-name {
+	font-size: 1.15rem;
+	font-weight: 500;
+	color: #1f2937;
+}
+
+.model-info-icon {
+	color: #6b7280;
+	cursor: pointer;
+	transition: color 0.2s;
+	font-size: 1.1rem;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+	.chat-nav {
+		padding: 0 0.75rem;
+	}
+
+	.model-name {
+		font-size: 1rem;
+	}
+
+	.model-info-icon {
+		font-size: 1rem;
+	}
+}
+
+/* 提示框样式 */
+.model-tooltip {
+	padding: 0.5rem;
+	font-size: 0.9rem;
+}
+
+.model-tooltip p {
+	margin: 0.25rem 0;
+}
+
+/* 打字动画样式优化 */
+.typing-indicator {
+	background-color: #fff !important;
+	padding: 12px 20px !important;
+	display: inline-flex !important;
+	/* 改为 inline-flex */
+	align-items: center !important;
+	gap: 3px !important;
+	min-width: 60px !important;
+	/* 添加最小宽度 */
+}
+
+.typing-indicator span {
+	width: 6px !important;
+	height: 6px !important;
+	background-color: #90959c !important;
+	border-radius: 50% !important;
+	display: inline-block !important;
+	animation: typing 1.4s infinite ease-in-out !important;
+	flex-shrink: 0 !important;
+	/* 防止点被压缩 */
+}
+
+.typing-indicator span:nth-child(1) {
+	animation-delay: 0s !important;
+}
+
+.typing-indicator span:nth-child(2) {
+	animation-delay: 0.2s !important;
+}
+
+@keyframes typing {
+	0% {
+		transform: translateY(0);
+		opacity: 0.4;
+	}
+
+	50% {
+		transform: translateY(-4px);
+		/* 改垂直方向的移动 */
+		opacity: 1;
+	}
+
+	100% {
+		transform: translateY(0);
+		opacity: 0.4;
+	}
+}
+
+/* 自定义滚动样式 */
+.chat-messages::-webkit-scrollbar {
+	width: 6px;
+	/* 滚动宽度 */
+}
+
+.chat-messages::-webkit-scrollbar-track {
+	background: transparent;
+	/* 轨道背景透明 */
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+	background-color: rgba(0, 0, 0, 0.2);
+	/* 滚动条颜色 */
+	border-radius: 3px;
+	/* 圆角 */
+	transition: background-color 0.3s;
+	/* 过渡效果 */
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+	background-color: rgba(0, 0, 0, 0.3);
+	/* 悬停时的颜色 */
+}
+
+/* Firefox 滚动条样式 */
+.chat-messages {
+	scrollbar-width: thin;
+	/* 'thin' 或 'none' */
+	scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+	/* 滚动条颜色 ���道色 */
+}
+
+/* 设置按钮样 */
+.sidebar-footer .btn-outline-light {
+	background: #ffffff;
+	/* 白色背 */
+	color: #6c757d;
+	/* 灰色文字 */
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	/* 淡色边框 */
+	transition: all 0.3s ease;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+	/* 轻微阴影 */
+}
+
+.sidebar-footer .btn-outline-light:hover {
+	background: #f8f9fa;
+	color: #2563eb;
+	/* 悬浮时变为蓝色 */
+	border-color: rgba(37, 99, 235, 0.1);
+	transform: translateY(-1px);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* 登录/退出按钮样式 */
+.sidebar-footer .btn-primary,
+.sidebar-footer .btn-danger {
+	background: transparent;
+	/* 透背景 */
+	color: #2563eb;
+	/* 蓝色文字 */
+	border: 1px solid rgba(37, 99, 235, 0.2);
+	/* 淡蓝色边框 */
+	transition: all 0.3s ease;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-footer .btn-primary:hover {
+	background: rgba(37, 99, 235, 0.1);
+	/* 半透明蓝色背景 */
+	color: #1d4ed8;
+	border-color: rgba(37, 99, 235, 0.3);
+	transform: translateY(-1px);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-footer .btn-danger {
+	color: #dc3545;
+	/* 红色文字 */
+	border-color: rgba(220, 53, 69, 0.2);
+	/* 淡红色边框 */
+}
+
+.sidebar-footer .btn-danger:hover {
+	background: rgba(220, 53, 69, 0.1);
+	/* 半透明红色背景 */
+	color: #c82333;
+	border-color: rgba(220, 53, 69, 0.3);
+	transform: translateY(-1px);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* ���钮内图标样��� */
+.sidebar-footer .btn i {
+	margin-right: 0.5rem;
+	font-size: 0.9rem;
+}
+
+/* 消息内容样式优化 */
+.message-content {
+	padding: 0.75rem 1rem;
+	border-radius: 0.5rem;
+	position: relative;
+	max-width: 100%;
+	word-wrap: break-word;
+	display: block;
+	min-height: 40px;
+	background-color: #f3f4f6;
+}
+
+/* AI消息内容样式 */
+.message.assistant .message-content {
+	background: #f8f9fa;
+	color: #1f2937;
+	border: 1px solid #e5e7eb;
+	border-radius: 0 0.5rem 0.5rem 0.5rem;
+	margin-right: auto;
+	font-size: 0.95rem;
+	line-height: 1.5;
+	display: block;
+	min-height: 40px;
+	position: relative;
+	padding: 0.75rem 1rem;
+}
+
+/* Markdown 内容样式优化 */
+.message.assistant .message-content>* {
+	margin: 0.5rem 0;
+	/* 添加上下外边距 */
+}
+
+.message.assistant .message-content>*:first-child {
+	margin-top: 0;
+	/* 移除第一个元素的顶部外边距 */
+}
+
+.message.assistant .message-content>*:last-child {
+	margin-bottom: 0;
+	/* 移除最后一个元素的底部外边距 */
+}
+
+/* 确保段落正确显示 */
+.message.assistant .message-content p {
+	display: block;
+	/* 使段落独占一行 */
+	margin: 0.5rem 0;
+	/* 添加段落间距 */
+}
+
+.sidebar-toggle:active {
+	transform: scale(0.95);
+	/* 添加点效果 */
+}
+
+/* 响应式布断点 */
+@media (max-width: 1024px) {
+
+	/* iPad 和较小屏幕 */
+	.sidebar {
+		transform: translateX(-100%);
+		/* 默认隐藏 */
+	}
+
+	.main-content {
+		margin-left: 0;
+		width: 100%;
+	}
+
+	body.sidebar-open .sidebar {
+		transform: translateX(0);
+	}
+
+	/* 添加遮罩层 */
+	.sidebar-backdrop {
+		display: none;
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(0, 0, 0, 0.5);
+		z-index: 1030;
+	}
+
+	body.sidebar-open .sidebar-backdrop {
+		display: block;
+	}
+}
+
+.settings-menu .list-group-item:hover {
+	background-color: rgba(37, 99, 235, 0.1);
+	color: #2563eb;
+}
+
+.settings-menu .list-group-item.active {
+	background-color: rgba(37, 99, 235, 0.1);
+	color: #2563eb;
+	font-weight: 500;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+	.settings-menu .list-group-item {
+		text-align: center;
+		padding: 0.75rem;
+	}
+
+	.settings-menu .list-group-item i {
+		font-size: 1.25rem;
+		margin: 0;
+		/* 移除图标的外边距 */
+	}
+
+	.settings-menu .list-group-item span {
+		display: none;
+		/* 隐藏文 */
+	}
+}
+
+
+.sidebar-toggle i {
+	font-size: 1.25rem;
+	/* 调整图标大小 */
+}
+
+.sidebar-toggle:hover {
+	color: #2563eb;
+	background: rgba(37, 99, 235, 0.1);
+}
+
+.sidebar-toggle:active {
+	transform: scale(0.95);
+}
+
+/* 设置模态框容器样式优化 */
+.settings-container {
+	display: flex;
+	height: 450px;
+	min-height: 500px;
+	/* 使用较大的最小高度值 */
+	width: 100%;
+	position: relative;
+	overflow: hidden;
+}
+
+/* 左侧菜单样式优化 */
+.settings-menu {
+	width: 200px;
+	/* 使用较大的宽度值 */
+	min-width: 200px;
+	max-width: 200px;
+	flex: 0 0 200px;
+	border-right: 1px solid #e5e7eb;
+	background: #f8f9fa;
+	overflow-y: auto;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+/* 右侧内容区域样式优化 */
+.settings-content {
+	flex: 1;
+	/* 占据剩余空间 */
+	min-width: 0;
+	/* 允许内容区域被压缩 */
+	overflow-y: auto;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+	background: #ffffff;
+}
+
+
+/* 响式调整 */
+@media (max-width: 768px) {
+	.settings-menu {
+		width: 60px;
+		/* 移动端固定宽度 */
+		min-width: 60px;
+		max-width: 60px;
+		flex: 0 0 60px;
+	}
+
+	.settings-menu .list-group-item {
+		padding: 0.75rem;
+		text-align: center;
+		justify-content: center;
+	}
+
+	.settings-menu .list-group-item i {
+		font-size: 1.25rem;
+		margin: 0;
+	}
+
+	.settings-menu .list-group-item span {
+		display: none;
+	}
+}
+
+/* 面板内容样式优化 */
+.settings-panel {
+	padding: 1rem;
+	/* PC端使用1rem内边距 */
+	height: 100%;
+	width: 100%;
+}
+
+.settings-panel.active {
+	display: block;
+}
+
+/* 确保模态框内容不会被挤压 */
+.modal-dialog.modal-lg {
+	max-width: 800px;
+	/* 设置最大宽度 */
+	margin: 1.75rem auto;
+}
+
+.modal-content {
+	width: 100%;
+	height: auto;
+}
+
+.modal-body {
+	padding: 0;
+	overflow: hidden;
+	/* 防止内容溢出 */
+}
+
+/* 设置面板内容样式优化 */
+.settings-panel-content {
+	height: calc(100% - 3rem);
+	/* 减去标的高度 */
+	overflow-y: auto;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+/* 在移动端时除内边距 */
+@media (max-width: 768px) {
+	.settings-panel-content {
+		padding: 0;
+		/* 移动端移除内边距 */
+	}
+
+	/* 调整移动端其他相关样式 */
+	.user-info {
+		gap: 0.5rem;
+		/* 减小间距 */
+	}
+
+	.info-item {
+		margin: 0 0.75rem;
+		/* 添加左右边距代替内边距 */
+	}
+
+	.info-actions {
+		margin: 0.5rem 0.75rem;
+		/* 添加左右边距 */
+	}
+
+	.announcement-item {
+		margin: 0 0.75rem;
+		/* 添加左右边距 */
+	}
+}
+
+/* 确保滚动条隐藏 */
+.settings-panel-content::-webkit-scrollbar {
+	display: none;
+}
+
+/* 用户信息基础样式 */
+.user-info {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+/* 用户信息项样式 */
+.info-item {
+	background-color: #f8f9fa;
+	border-radius: 8px;
+	padding: 0.75rem;
+}
+
+/* PC端样式 */
+@media (min-width: 769px) {
+	.user-info {
+		background-color: #f8f9fa;
+		padding: 15px;
+		border-radius: 8px;
+	}
+
+	.info-item {
+		margin: 0;
+	}
+}
+
+/* 移动端样式 - 使用更高的优先级 */
+@media (max-width: 768px) {
+	.settings-panel-content .user-info {
+		padding: 0 !important;
+		/* 使用 !important 确保覆盖其他样式 */
+		background-color: transparent !important;
+		border-radius: 0 !important;
+	}
+
+	.settings-panel-content .info-item {
+		margin: 0 0.75rem;
+	}
+
+	.settings-panel-content .info-actions {
+		margin: 0.5rem 0.75rem;
+	}
+}
+
+/* 修改密码和注销账号模态框样式优化 */
+#changePasswordModal .modal-content,
+#deleteAccountModal .modal-content {
+	border: none;
+	border-radius: 1rem;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+#changePasswordModal .modal-header,
+#deleteAccountModal .modal-header {
+	padding: 1.25rem 1.5rem;
+	border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+	background: #f8f9fa;
+	border-radius: 1rem 1rem 0 0;
+}
+
+#changePasswordModal .modal-title,
+#deleteAccountModal .modal-title {
+	font-size: 1.1rem;
+	font-weight: 600;
+	color: #1f2937;
+}
+
+#changePasswordModal .modal-body,
+#deleteAccountModal .modal-body {
+	padding: 1.5rem;
+}
+
+/* 表单样式优化 */
+.modal .form-label {
+	font-size: 0.95rem;
+	color: #4b5563;
+	margin-bottom: 0.5rem;
+}
+
+.modal .form-control {
+	border-radius: 0.5rem;
+	border: 1px solid #e5e7eb;
+	padding: 0.625rem 1rem;
+	font-size: 0.95rem;
+	transition: all 0.2s ease;
+}
+
+.modal .form-control:focus {
+	border-color: #3b82f6;
+	box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.modal .input-group {
+	border-radius: 0.5rem;
+}
+
+.modal .input-group .form-control {
+	border-right: none;
+}
+
+.modal .input-group .btn {
+	border-radius: 0 0.5rem 0.5rem 0;
+	border: 1px solid #e5e7eb;
+	border-left: none;
+	padding: 0.625rem 1rem;
+}
+
+.modal .form-text {
+	font-size: 0.85rem;
+	color: #6b7280;
+	margin-top: 0.5rem;
+}
+
+/* 警告提示样式优化 */
+.modal .alert {
+	border: none;
+	border-radius: 0.5rem;
+	padding: 1rem;
+	margin-bottom: 1.5rem;
+}
+
+.modal .alert-heading {
+	font-size: 1rem;
+	font-weight: 600;
+	margin-bottom: 0.5rem;
+}
+
+.modal .alert ul {
+	margin-bottom: 0;
+	padding-left: 1.25rem;
+}
+
+/* 按钮样式优化 */
+.modal .btn {
+	padding: 0.625rem 1.25rem;
+	font-size: 0.95rem;
+	border-radius: 0.5rem;
+	transition: all 0.2s ease;
+}
+
+.modal .btn-primary {
+	background: #3b82f6;
+	border: none;
+}
+
+.modal .btn-primary:hover {
+	background: #2563eb;
+	transform: translateY(-1px);
+}
+
+.modal .btn-danger {
+	background: #ef4444;
+	border: none;
+}
+
+.modal .btn-danger:hover {
+	background: #dc2626;
+	transform: translateY(-1px);
+}
+
+/* 复选框样式优化 */
+.modal .form-check {
+	padding-left: 1.75rem;
+	margin-bottom: 1rem;
+}
+
+.modal .form-check-input {
+	width: 1.125rem;
+	height: 1.125rem;
+	margin-left: -1.75rem;
+	margin-top: 0.25rem;
+	border: 1px solid #e5e7eb;
+	transition: all 0.2s ease;
+}
+
+.modal .form-check-input:checked {
+	background-color: #3b82f6;
+	border-color: #3b82f6;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+
+	#changePasswordModal .modal-content,
+	#deleteAccountModal .modal-content {
+		margin: 0.5rem;
+		border-radius: 0.75rem;
+	}
+
+	#changePasswordModal .modal-header,
+	#deleteAccountModal .modal-header {
+		padding: 1rem 1rem 0.5rem;
+	}
+
+	#changePasswordModal .modal-body,
+	#deleteAccountModal .modal-body {
+		padding: 1rem;
+	}
+
+	.modal .form-label {
+		font-size: 0.9rem;
+	}
+
+	.modal .form-control {
+		font-size: 0.9rem;
+		padding: 0.5rem 0.75rem;
+	}
+
+	.modal .btn {
+		padding: 0.5rem 1rem;
+		font-size: 0.9rem;
+	}
+
+	.modal .alert {
+		padding: 0.75rem;
+		font-size: 0.9rem;
+	}
+}
+
+/* 登录模态框样式优化 */
+#authModal .modal-header {
+	border: none;
+	padding: 1.5rem 1.5rem 0.75rem;
+	position: relative;
+	min-height: 60px;
+	/* 确保有足够的高度 */
+}
+
+/* 标签样式优化 */
+#authModal .nav-tabs {
+	border: none;
+	gap: 0.5rem;
+	padding: 0;
+	margin-bottom: 0;
+	width: calc(100% - 50px);
+	/* 为关闭按钮留出更多空间 */
+}
+
+/* 关闭按钮样式��化 */
+#authModal .btn-close {
+	position: absolute;
+	right: 0.5rem;
+	/* 使用第二处定义的位置 */
+	top: -3.5rem;
+	/* 使用第二处定义的位置 */
+	padding: 0.5rem;
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	background-color: #ffffff;
+	/* 使用白色背景 */
+	opacity: 1;
+	transition: all 0.2s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transform-origin: center;
+	z-index: 1050;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	/* 添加阴影效果 */
+}
+
+#authModal .btn-close:hover {
+	background-color: #e5e7eb;
+	/* 悬浮时背景色变深 */
+	transform: rotate(90deg);
+	/* 旋转效果 */
+}
+
+#authModal .btn-close:active {
+	transform: rotate(90deg) scale(0.95);
+	/* 点击时缩小效果 */
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+	#authModal .modal-header {
+		padding: 1rem 1rem 0.5rem;
+	}
+
+	#authModal .nav-tabs {
+		width: calc(100% - 40px);
+		/* 移动端稍微调整宽度 */
+	}
+
+	#authModal .btn-close {
+		right: 1rem;
+		top: 0.5rem;
+		width: 28px;
+		/* 移动端稍微小一点 */
+		height: 28px;
+	}
+}
+
+/* 登录模态框样式优化 */
+#authModal .modal-dialog {
+	position: relative;
+	/* 为绝对定位的关闭按钮提供参考 */
+}
+
+/* 关闭按钮样式优化 */
+#authModal .btn-close {
+	position: absolute;
+	right: 0.5rem;
+	top: -3.5rem;
+	/* 将按钮移到模态框上方 */
+	padding: 0.5rem;
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	background-color: #ffffff;
+	opacity: 1;
+	transition: all 0.2s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transform-origin: center;
+	z-index: 1050;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	/* 添加阴影效果 */
+}
+
+#authModal .btn-close:hover {
+	background-color: #f3f4f6;
+	transform: rotate(90deg);
+}
+
+#authModal .btn-close:active {
+	transform: rotate(90deg) scale(0.95);
+}
+
+/* 导航标签样式优化 */
+#authModal .nav-tabs {
+	border: none;
+	gap: 0.5rem;
+	padding: 0;
+	margin-bottom: 0;
+	width: 100%;
+	/* 使用更宽的宽度定义 */
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+	#authModal .btn-close {
+		top: -3rem;
+		/* 移动端稍微靠近一点 */
+		right: 0.25rem;
+		width: 28px;
+		height: 28px;
+	}
+}
+
+/* 登录态框样式优 */
+#authModal {
+	padding-top: 2rem !important;
+	/* 减小顶部内边距 */
+}
+
+#authModal .modal-dialog {
+	position: relative;
+	margin-top: 1rem;
+	/* 减小顶部外边距 */
+}
+
+/* 关闭按钮样式优化 */
+#authModal .auth-modal-close {
+	position: absolute;
+	right: calc(50% - 19px);
+	/* 水平居中 */
+	top: -2.5rem;
+	/* 调整按钮与模态框的距离 */
+	width: 38px;
+	height: 38px;
+	padding: 0.75rem;
+	border-radius: 50%;
+	background-color: #ffffff;
+	opacity: 1;
+	transition: all 0.2s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transform-origin: center;
+	z-index: 1060;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	border: none;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+	#authModal {
+		padding-top: 1.5rem !important;
+		/* 移动端减小顶部内边距 */
+	}
+
+	#authModal .modal-dialog {
+		margin-top: 0.75rem;
+		/* 移动端减小顶部外边距 */
+	}
+
+	#authModal .auth-modal-close {
+		top: -2rem;
+		/* 移动端调整按钮与模态框的距离 */
+		width: 34px;
+		height: 34px;
+		padding: 0.5rem;
+		right: calc(50% - 17px);
+	}
+}
+
+/* 登录模态框样式优化 */
+#authModal .modal-dialog {
+	position: relative;
+	/* 为关闭按钮提供定位参考 */
+	margin-top: 2.5rem;
+	/* 为关闭按钮留出空间 */
+}
+
+/* 关闭按钮样式优化 */
+#authModal .auth-modal-close {
+	position: absolute;
+	/* 相对于 modal-dialog 定位 */
+	left: 50%;
+	/* 水平居中 */
+	transform: translateX(-50%);
+	/* 水平居中偏移 */
+	top: -2.5rem;
+	/* 向上偏移 */
+	width: 38px;
+	height: 38px;
+	padding: 0.75rem;
+	border-radius: 50%;
+	background-color: #ffffff;
+	opacity: 1;
+	transition: all 0.2s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1060;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	border: none;
+}
+
+#authModal .auth-modal-close:hover {
+	background-color: #f3f4f6;
+	transform: translateX(-50%) rotate(90deg);
+	/* 保持水平居中的同时添加旋转效果 */
+}
+
+#authModal .auth-modal-close:active {
+	transform: translateX(-50%) rotate(90deg) scale(0.95);
+	/* 保持水平居中的同时添加旋转和缩放效果 */
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+	#authModal .modal-dialog {
+		margin-top: 2rem;
+		/* 移动端稍微减小上边距 */
+	}
+
+	#authModal .auth-modal-close {
+		width: 34px;
+		height: 34px;
+		padding: 0.5rem;
+		top: -2rem;
+		/* 移动端调整按钮位置 */
+	}
+}
+
+/* 登录模态框样式优化 */
+#authModal .modal-dialog {
+	position: relative;
+	/* 为关闭按钮提供定位参考 */
+	margin-top: 4rem;
+	/* 增加顶部外边距 */
+}
+
+/* 关闭按钮样式优化 */
+#authModal .auth-modal-close {
+	position: fixed;
+	left: 50%;
+	transform: translateX(-50%);
+	top: 10.5rem;
+	/* 增加固定定位的top值 */
+	width: 38px;
+	height: 38px;
+	padding: 0.75rem;
+	border-radius: 50%;
+	background-color: #ffffff;
+	opacity: 1;
+	transition: all 0.2s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1060;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	border: none;
+}
+
+#authModal .auth-modal-close:hover {
+	background-color: #f3f4f6;
+	transform: translateX(-50%) rotate(90deg);
+}
+
+#authModal .auth-modal-close:active {
+	transform: translateX(-50%) rotate(90deg) scale(0.95);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+	#authModal .modal-dialog {
+		margin-top: 3rem;
+		/* 移动端稍微减小上边距 */
+	}
+
+	#authModal .auth-modal-close {
+		width: 34px;
+		height: 34px;
+		padding: 0.5rem;
+		top: 11rem;
+		/* 移动端调整固定定位的top值 */
+	}
+}
+
+/* 登录模态框样式优化 */
+#authModal .modal-dialog {
+	position: relative;
+	margin-top: 5rem;
+	/* 增加顶部外边距 */
+}
+
+/* 关闭按钮样式优化 */
+#authModal .auth-modal-close {
+	position: fixed;
+	left: 50%;
+	transform: translateX(-50%);
+	top: 13.5rem;
+	/* 增加固定定位的top值 */
+	width: 38px;
+	height: 38px;
+	padding: 0.75rem;
+	border-radius: 50%;
+	background-color: #ffffff;
+	opacity: 1;
+	transition: all 0.2s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1060;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	border: none;
+}
+
+#authModal .auth-modal-close:hover {
+	background-color: #f3f4f6;
+	transform: translateX(-50%) rotate(90deg);
+}
+
+#authModal .auth-modal-close:active {
+	transform: translateX(-50%) rotate(90deg) scale(0.95);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+	#authModal .modal-dialog {
+		margin-top: 4rem;
+		/* 移动端稍微减小上边距 */
+	}
+
+	#authModal .auth-modal-close {
+		width: 34px;
+		height: 34px;
+		padding: 0.5rem;
+		top: 14rem;
+		/* 移动端调整固定定位的top值 */
+	}
+}
+
+/* 登录模态框样式优化 */
+#authModal .modal-dialog {
+	position: relative;
+	margin-top: 3rem;
+	/* 增加顶部外边距，为关闭按钮留出空间 */
+}
+
+/* 关闭按钮样式优化 */
+#authModal .auth-modal-close {
+	position: fixed;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 38px;
+	height: 38px;
+	padding: 0.75rem;
+	border-radius: 50%;
+	background-color: #ffffff;
+	opacity: 1;
+	transition: all 0.2s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1060;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	border: none;
+}
+
+#authModal .auth-modal-close:hover {
+	background-color: #f3f4f6;
+	transform: translateX(-50%) rotate(90deg);
+}
+
+#authModal .auth-modal-close:active {
+	transform: translateX(-50%) rotate(90deg) scale(0.95);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+	#authModal .modal-dialog {
+		margin-top: 2.5rem;
+		/* 移动端稍微减小上边距 */
+	}
+
+	#authModal .auth-modal-close {
+		width: 34px;
+		height: 34px;
+		padding: 0.5rem;
+	}
+}
+
+/* 公��列表样式优化 */
+.announcement-list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.announcement-item {
+	border: 1px solid #e5e7eb;
+	border-radius: 0.75rem;
+	overflow: hidden;
+	background: #ffffff;
+	transition: all 0.2s ease;
+}
+
+.announcement-header {
+	padding: 1rem;
+	background: #f8f9fa;
+	border-bottom: 1px solid #e5e7eb;
+	cursor: pointer;
+}
+
+.announcement-title-wrapper {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.announcement-toggle {
+	font-size: 0.875rem;
+	color: #6b7280;
+	transition: transform 0.3s ease;
+}
+
+.announcement-item.expanded .announcement-toggle {
+	transform: rotate(90deg);
+}
+
+.announcement-title {
+	margin: 0;
+	font-size: 0.95rem;
+	font-weight: 500;
+	color: #1f2937;
+}
+
+.announcement-date {
+	color: #6b7280;
+	font-size: 0.8rem;
+}
+
+.announcement-content {
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 0.3s ease-out, padding 0.3s ease;
+	background-color: #f8f9fa;
+	padding: 0 1rem;
+}
+
+.announcement-content.show {
+	max-height: 1000px;
+	/* 设置一个足够大的值 */
+	padding: 1rem;
+	border-top: 1px solid #e5e7eb;
+}
+
+.announcement-content p {
+	margin: 0;
+	color: #4b5563;
+	font-size: 0.9rem;
+	line-height: 1.6;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+	.announcement-header {
+		padding: 0.875rem;
+	}
+
+	.announcement-title {
+		font-size: 0.875rem;
+	}
+
+	.announcement-date {
+		font-size: 0.75rem;
+	}
+
+	.announcement-content.show {
+		padding: 0.875rem;
+	}
+
+	.announcement-content p {
+		font-size: 0.85rem;
+		line-height: 1.5;
+	}
+
+	.announcement-toggle {
+		font-size: 0.8rem;
+	}
+
+	.announcement-title-wrapper {
+		gap: 0.5rem;
+	}
+}
+
+/* 添加一些视觉效果 */
+.announcement-item:hover {
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+	transform: translateY(-1px);
+}
+
+.announcement-header:hover .announcement-title {
+	color: #2563eb;
+}
+
+/* 添加到现有的 style 标签中 */
+.nav-center {
+	display: flex;
+	align-items: center;
+}
+
+.nav-center .model-name {
+	font-weight: 500;
+}
+
+.nav-center .model-info {
+	color: #6c757d;
+	cursor: help;
+}
+
+/* tooltip 样式 */
+.model-tooltip p {
+	margin-bottom: 0.5rem;
+	white-space: nowrap;
+}
+
+.model-tooltip p:last-child {
+	margin-bottom: 0;
+}
+
+/* 全局样式 */
+body {
+	background-color: #f8f9fa;
+	overflow-x: hidden;
 }
 
 .sidebar-header {
-    text-align: center;
-    padding: 1rem 0;
+	text-align: center;
+	padding: 1rem 0;
 }
 
 .sidebar-header .logo {
-    width: 60px;
-    height: 60px;
-    margin-bottom: 0.5rem;
+	width: 60px;
+	height: 60px;
+	margin-bottom: 0.5rem;
 }
 
 .sidebar-header h1 {
-    font-size: 1.5rem;
-    margin: 0;
+	font-size: 1.5rem;
+	margin: 0;
 }
 
 .sidebar-content {
-    padding: 1rem 0;
+	padding: 1rem 0;
 }
 
 .sidebar-footer {
-    padding: 1rem 0;
-    margin-top: auto;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+	padding: 1rem 0;
+	margin-top: auto;
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+	background: #f8f9fa;
 }
 
 /* 聊天区域样式 */
 .chat-area {
-    height: 100vh;
-    overflow-y: auto;
-    background-color: white;
+	height: 100vh;
+	overflow-y: auto;
+	background-color: white;
 }
 
 .chat-container {
-    padding: 1rem;
+	padding: 1rem;
 }
 
 /* 模态框样式 */
 .modal-content {
-    border-radius: 1rem;
+	border-radius: 1rem;
 }
 
 .nav-tabs {
-    border: none;
+	border: none;
 }
 
 .nav-tabs .nav-link {
-    border: none;
-    color: #6c757d;
-    font-weight: 500;
-    padding: 1rem;
+	border: none;
+	color: #6c757d;
+	font-weight: 500;
+	padding: 1rem;
 }
 
 .nav-tabs .nav-link.active {
-    color: #0d6efd;
-    border-bottom: 2px solid #0d6efd;
+	color: #0d6efd;
+	border-bottom: 2px solid #0d6efd;
 }
 
 .form-label {
-    font-weight: 500;
+	font-weight: 500;
 }
 
 .toggle-password {
-    border-left: none;
+	border-left: none;
 }
 
 .toggle-password:focus {
-    box-shadow: none;
+	box-shadow: none;
 }
 
 /* 响应式调整 */
 @media (max-width: 768px) {
-    .sidebar {
-        height: auto;
-        min-height: 60px;
-    }
-    
-    .chat-area {
-        height: calc(100vh - 60px);
-    }
+	.sidebar {
+		height: 100vh;
+		min-height: 60px;
+	}
+
+	.chat-area {
+		height: calc(100vh - 60px);
+	}
 }
 
 /* 设置模态框样式 */
 .settings-container {
-    display: flex;
-    min-height: 500px;
+	display: flex;
+	min-height: 500px;
 }
 
 /* 左侧菜单样式 */
 .settings-menu {
-    width: 180px;
-    min-width: 180px;
-    max-width: 180px;
-    flex: 0 0 180px;
-    border-right: 1px solid #e5e7eb;
-    background: #f8f9fa;
-    overflow-y: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+	width: 180px;
+	min-width: 180px;
+	max-width: 180px;
+	flex: 0 0 180px;
+	border-right: 1px solid #e5e7eb;
+	background: #f8f9fa;
+	overflow-y: auto;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
 }
 
+/* 设置模态框左侧菜单样式 */
 .settings-menu .list-group-item {
-    border: none;
-    border-radius: 0;
-    padding: 12px 20px;
-    font-size: 0.95rem;
-    color: #495057;
-    background-color: transparent;
-    transition: all 0.3s ease;
+	border: none;
+	border-radius: 0;
+	padding: 0.75rem 1rem;
+	transition: all 0.2s ease;
+	white-space: nowrap;
+	/* 防止文字换行 */
+	overflow: hidden;
+	/* 隐藏溢出内容 */
+	text-overflow: ellipsis;
+	/* 显示省略号 */
+	font-size: 0.95rem;
 }
 
 .settings-menu .list-group-item:hover {
-    background-color: #f0f0f0;
-    color: #2563eb;
+	background-color: #f0f0f0;
+	color: #2563eb;
 }
 
 .settings-menu .list-group-item.active {
-    background-color: #e9ecef;
-    color: #2563eb;
-    font-weight: 500;
+	background-color: #e9ecef;
+	color: #2563eb;
+	font-weight: 500;
 }
 
 /* 右侧内容区域样式 */
 .settings-content {
-    flex: 1;
-    background-color: #fff;
-}
-
-.settings-panel {
-    display: none;
-    height: 100%;
-    width: 100%;
+	flex: 1;
+	background-color: #fff;
 }
 
 .settings-panel.active {
-    display: block;
+	display: block;
 }
 
 .settings-panel-title {
-    padding: 20px;
-    margin: 0;
-    border-bottom: 1px solid #eee;
-    font-weight: 500;
-    color: #1a1a1a;
+	padding: 20px;
+	margin: 0;
+	border-bottom: 1px solid #eee;
+	font-weight: 500;
+	color: #1a1a1a;
 }
 
 .settings-panel-content {
-    padding: 0;
-    height: calc(100% - 3rem);
-    overflow-y: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+	padding: 0;
+	height: calc(100% - 3rem);
+	overflow-y: auto;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
 }
 
 /* 户信息样式 */
 .user-info .info-item {
-    display: flex;
-    align-items: center;
-    padding: 12px 15px;
-    border-bottom: 1px solid #f0f0f0;
-    background-color: #fff;
+	display: flex;
+	align-items: center;
+	padding: 12px 15px;
+	border-bottom: 1px solid #f0f0f0;
+	background-color: #fff;
 }
 
 .user-info .info-item:last-child {
-    border-bottom: none;
+	border-bottom: none;
 }
 
 .user-info .info-label {
-    width: 80px;
-    color: #6b7280;
-    font-size: 0.9rem;
+	width: 80px;
+	color: #6b7280;
+	font-size: 0.9rem;
 }
 
 .user-info .info-value {
-    flex: 1;
-    color: #1a1a1a;
+	flex: 1;
+	color: #1a1a1a;
 }
 
 /* 公告列表样式优化 - 使用更具体的选择器和更高的优先级 */
 @media (max-width: 768px) {
-    .settings-panel-content .announcement-list,
-    .settings-panel.active .announcement-list {
-        padding: 0.3rem !important;
-        margin-left: -12px !important;  /* 使用 !important 确保优先级 */
-    }
-    
-    .settings-panel-content {
-        padding: 0;
-    }
-    
-    .announcement-item {
-        margin: 0;
-        width: 100%;
-    }
-    
-    .announcement-header {
-        padding: 1rem;
-    }
-    
-    .announcement-content.show {
-        padding: 1rem;
-    }
+
+	.settings-panel-content .announcement-list,
+	.settings-panel.active .announcement-list {
+		padding: 0.3rem !important;
+		margin-left: -12px !important;
+		/* 使用 !important 确保优先级 */
+	}
+
+	.settings-panel-content {
+		padding: 0;
+	}
+
+	.announcement-item {
+		margin: 0;
+		width: 100%;
+	}
+
+	.announcement-header {
+		padding: 1rem;
+	}
+
+	.announcement-content.show {
+		padding: 1rem;
+	}
 }
 
 .announcement-header {
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
+	padding: 15px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	cursor: pointer;
 }
 
 .announcement-title-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
 }
 
 .announcement-toggle {
-    font-size: 0.8rem;
-    color: #6b7280;
-    transition: transform 0.3s ease;
+	font-size: 0.8rem;
+	color: #6b7280;
+	transition: transform 0.3s ease;
 }
 
 .announcement-item.expanded .announcement-toggle {
-    transform: rotate(90deg);
+	transform: rotate(90deg);
 }
 
 .announcement-title {
-    margin: 0;
-    font-size: 1rem;
-    color: #1a1a1a;
+	margin: 0;
+	font-size: 1rem;
+	color: #1a1a1a;
 }
 
 .announcement-date {
-    color: #6b7280;
-    font-size: 0.85rem;
+	color: #6b7280;
+	font-size: 0.85rem;
 }
 
 .announcement-content {
-    padding: 0 15px;
-    max-height: 0;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    background-color: #f8f9fa;
+	padding: 0 15px;
+	max-height: 0;
+	overflow: hidden;
+	transition: all 0.3s ease;
+	background-color: #f8f9fa;
 }
 
 .announcement-content.show {
-    padding: 15px;
-    max-height: 500px;
-    border-top: 1px solid #f0f0f0;
+	padding: 15px;
+	max-height: 500px;
+	border-top: 1px solid #f0f0f0;
 }
 
 .announcement-content p {
-    margin: 0;
-    color: #4b5563;
-    font-size: 0.95rem;
-    line-height: 1.6;
+	margin: 0;
+	color: #4b5563;
+	font-size: 0.95rem;
+	line-height: 1.6;
 }
 
 /* 调整模态框小 */
 #settingsModal .modal-dialog {
-    max-width: 900px;
+	max-width: 900px;
 }
 
 #settingsModal .modal-content {
-    border-radius: 12px;
-    overflow: hidden;
+	border-radius: 12px;
+	overflow: hidden;
 }
 
 #settingsModal .modal-header {
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #eee;
+	background-color: #f8f9fa;
+	border-bottom: 1px solid #eee;
 }
 
 .badge {
-    font-weight: 500;
-    padding: 0.4em 0.8em;
+	font-weight: 500;
+	padding: 0.4em 0.8em;
 }
 
 /* 用户信息样式 */
 .user-info {
-    background-color: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
+	background-color: #f8f9fa;
+	padding: 15px;
+	border-radius: 8px;
 }
 
 /* 公告弹窗样式 */
 #announcementPopupModal .modal-content {
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+	border: none;
+	border-radius: 15px;
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
 #announcementPopupModal .modal-header {
-    padding: 20px;
-    border-bottom: 1px solid #eee;
+	padding: 20px;
+	border-bottom: 1px solid #eee;
 }
 
 #announcementPopupModal .modal-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #1a1a1a;
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: #1a1a1a;
 }
 
 #announcementPopupModal .btn-close {
-    opacity: 0.6;
-    transition: all 0.2s ease;
+	opacity: 0.6;
+	transition: all 0.2s ease;
 }
 
 #announcementPopupModal .btn-close:hover {
-    opacity: 1;
+	opacity: 1;
 }
 
 #announcementPopupModal .modal-body {
-    padding: 20px;
+	padding: 20px;
 }
 
 #announcementPopupModal .announcement-content {
-    padding: 0;
-    max-height: none;
-    overflow: visible;
-    background: none;
-    margin-bottom: 15px;
+	padding: 0;
+	max-height: none;
+	overflow: visible;
+	background: none;
+	margin-bottom: 15px;
 }
 
 #announcementPopupModal .announcement-content p {
-    margin: 0;
-    color: #374151;
-    font-size: 0.95rem;
-    line-height: 1.6;
+	margin: 0;
+	color: #374151;
+	font-size: 0.95rem;
+	line-height: 1.6;
 }
 
 #announcementPopupModal .announcement-meta {
-    padding-top: 15px;
-    border-top: 1px solid #f0f0f0;
-    font-size: 0.875rem;
-    color: #6b7280;
+	padding-top: 15px;
+	border-top: 1px solid #f0f0f0;
+	font-size: 0.875rem;
+	color: #6b7280;
 }
 
 /* 禁止点击背景关闭 */
 .modal-backdrop {
-    pointer-events: none;
+	pointer-events: none;
 }
 
 /* 响应式调整 */
 @media (max-width: 576px) {
-    #announcementPopupModal .modal-dialog {
-        margin: 1rem;
-    }
+	#announcementPopupModal .modal-dialog {
+		margin: 1rem;
+	}
 }
 
 /* 警式 */
 .warning-icon {
-    margin-left: 5px;
-    font-size: 0.9rem;
-    color: #856404;  /* 深黄色 */
-    cursor: help;
-    transition: all 0.2s ease;
+	margin-left: 5px;
+	font-size: 0.9rem;
+	color: #856404;
+	/* 深黄色 */
+	cursor: help;
+	transition: all 0.2s ease;
 }
 
 .warning-icon:hover {
-    color: #533f03;  /* 更深的黄色 */
+	color: #533f03;
+	/* 更深的黄色 */
 }
 
 /* Bootstrap tooltip 自定义样式 */
 .tooltip {
-    font-size: 0.85rem;
-    max-width: 250px;
+	font-size: 0.85rem;
+	max-width: 250px;
 }
 
 .tooltip .tooltip-inner {
-    background-color: #2d3748;  /* 深色背景 */
-    color: #fff;
-    padding: 8px 12px;
-    border-radius: 6px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	background-color: #2d3748;
+	/* 深色背景 */
+	color: #fff;
+	padding: 8px 12px;
+	border-radius: 6px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .tooltip.bs-tooltip-end .tooltip-arrow::before {
-    border-right-color: #2d3748;
+	border-right-color: #2d3748;
 }
 
 /* Markdown 内容样式 */
 .markdown-body {
-    color: #24292e;
-    font-size: 16px;
-    line-height: 1.6;
+	color: #24292e;
+	font-size: 16px;
+	line-height: 1.6;
 }
 
 .markdown-body img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 6px;
-    margin: 10px 0;
+	max-width: 100%;
+	height: auto;
+	border-radius: 6px;
+	margin: 10px 0;
 }
 
 .markdown-body p {
-    margin-bottom: 16px;
+	margin-bottom: 16px;
 }
 
 .markdown-body h1,
@@ -2101,1478 +2110,1503 @@ body {
 .markdown-body h4,
 .markdown-body h5,
 .markdown-body h6 {
-    margin-top: 24px;
-    margin-bottom: 16px;
-    font-weight: 600;
-    line-height: 1.25;
+	margin-top: 24px;
+	margin-bottom: 16px;
+	font-weight: 600;
+	line-height: 1.25;
 }
 
 .markdown-body code {
-    padding: 0.2em 0.4em;
-    margin: 0;
-    font-size: 85%;
-    background-color: rgba(27, 31, 35, 0.05);
-    border-radius: 6px;
+	padding: 0.2em 0.4em;
+	margin: 0;
+	font-size: 85%;
+	background-color: rgba(27, 31, 35, 0.05);
+	border-radius: 6px;
 }
 
 .markdown-body pre {
-    padding: 16px;
-    overflow: auto;
-    font-size: 85%;
-    line-height: 1.45;
-    background-color: #f6f8fa;
-    border-radius: 6px;
+	padding: 16px;
+	overflow: auto;
+	font-size: 85%;
+	line-height: 1.45;
+	background-color: #f6f8fa;
+	border-radius: 6px;
 }
 
 .markdown-body blockquote {
-    padding: 0 1em;
-    color: #6a737d;
-    border-left: 0.25em solid #dfe2e5;
-    margin: 0 0 16px 0;
+	padding: 0 1em;
+	color: #6a737d;
+	border-left: 0.25em solid #dfe2e5;
+	margin: 0 0 16px 0;
 }
 
 .markdown-body ul,
 .markdown-body ol {
-    padding-left: 2em;
-    margin-bottom: 16px;
+	padding-left: 2em;
+	margin-bottom: 16px;
 }
 
 .markdown-body table {
-    display: block;
-    width: 100%;
-    overflow: auto;
-    margin-bottom: 16px;
+	display: block;
+	width: 100%;
+	overflow: auto;
+	margin-bottom: 16px;
 }
 
 .markdown-body table th,
 .markdown-body table td {
-    padding: 6px 13px;
-    border: 1px solid #dfe2e5;
+	padding: 6px 13px;
+	border: 1px solid #dfe2e5;
 }
 
 .markdown-body table tr {
-    background-color: #fff;
-    border-top: 1px solid #c6cbd1;
+	background-color: #fff;
+	border-top: 1px solid #c6cbd1;
 }
 
 .markdown-body table tr:nth-child(2n) {
-    background-color: #f6f8fa;
+	background-color: #f6f8fa;
 }
 
 /* 用户钮样式 */
 .info-actions {
-    display: flex;
-    gap: 10px;
-    padding: 15px;
-    border-top: 1px solid #f0f0f0;
+	display: flex;
+	gap: 10px;
+	padding: 15px;
+	border-top: 1px solid #f0f0f0;
 }
 
 .info-actions .btn {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 10px;
-    font-size: 0.95rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: 10px;
+	font-size: 0.95rem;
+	font-weight: 500;
+	transition: all 0.3s ease;
 }
 
 .info-actions .btn:hover {
-    transform: translateY(-1px);
+	transform: translateY(-1px);
 }
 
 .info-actions .btn-primary {
-    background: linear-gradient(145deg, #3b82f6, #2563eb);
-    border: none;
+	background: linear-gradient(145deg, #3b82f6, #2563eb);
+	border: none;
 }
 
 .info-actions .btn-primary:hover {
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+	box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
 .info-actions .btn-danger {
-    background: linear-gradient(145deg, #ef4444, #dc2626);
-    border: none;
+	background: linear-gradient(145deg, #ef4444, #dc2626);
+	border: none;
 }
 
 .info-actions .btn-danger:hover {
-    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+	box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
 }
 
 /* 注销账号确认模态框样式 */
 #deleteAccountModal .modal-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
 }
 
 #deleteAccountModal .alert {
-    border: none;
-    border-radius: 8px;
+	border: none;
+	border-radius: 8px;
 }
 
 #deleteAccountModal .alert-heading {
-    color: #92400e;
-    margin-bottom: 10px;
+	color: #92400e;
+	margin-bottom: 10px;
 }
 
 #deleteAccountModal .alert ul {
-    margin-bottom: 0;
-    padding-left: 20px;
+	margin-bottom: 0;
+	padding-left: 20px;
 }
 
 #deleteAccountModal .alert li {
-    color: #92400e;
-    margin-bottom: 5px;
+	color: #92400e;
+	margin-bottom: 5px;
 }
 
 #deleteAccountModal .alert li:last-child {
-    margin-bottom: 0;
+	margin-bottom: 0;
 }
 
 #deleteAccountModal .form-check-label {
-    font-size: 0.9rem;
-    color: #374151;
+	font-size: 0.9rem;
+	color: #374151;
 }
 
 /* 登录提示样式 */
 .login-prompt {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    background-color: #f8f9fa;
-    padding: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	background-color: #f8f9fa;
+	padding: 20px;
 }
 
 .login-prompt h4 {
-    margin: 15px 0;
-    color: #1a1a1a;
+	margin: 15px 0;
+	color: #1a1a1a;
 }
 
 .login-prompt .btn {
-    margin-top: 15px;
-    padding: 10px 20px;
-    font-size: 1rem;
+	margin-top: 15px;
+	padding: 10px 20px;
+	font-size: 1rem;
 }
 
 /* 聊天界面样式 */
 .chat-interface {
-    display: flex;
-    height: 100%;
+	display: flex;
+	height: 100%;
 }
 
-/* 左侧栏样式 */
-.sidebar {
-    background-color: #f8f9fa;
-    color: white;
-    padding: 1rem;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
 
 /* 模型选择器样式 */
 .model-selector {
-    padding: 0.75rem 1rem;
-    margin-bottom: 0.5rem;
-    margin-top: -1.5rem;
-    position: relative;
+	padding: 0.75rem 1rem;
+	margin-bottom: 0.5rem;
+	margin-top: -1.5rem;
+	position: relative;
 }
 
 .model-selector::after {
-    content: '';
-    position: absolute;
-    bottom: -0.5rem;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: rgba(0, 0, 0, 0.1);
+	content: '';
+	position: absolute;
+	bottom: -0.5rem;
+	left: 0;
+	right: 0;
+	height: 1px;
+	background: rgba(0, 0, 0, 0.1);
 }
 
 .model-label {
-    display: block;
-    color: #1f2937;
-    font-size: 0.85rem;
-    margin-bottom: 0.375rem;
-    font-weight: 500;
+	display: block;
+	color: #1f2937;
+	font-size: 0.85rem;
+	margin-bottom: 0.375rem;
+	font-weight: 500;
 }
 
 .model-btn {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    padding: 0.625rem 1rem;
-    background-color: #ffffff;
-    border: 1px solid #3b82f6;
-    border-radius: 6px;
-    color: #1f2937;
-    font-size: 0.9rem;
-    transition: all 0.2s ease;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+	width: 100%;
+	display: flex;
+	align-items: center;
+	padding: 0.625rem 1rem;
+	background-color: #ffffff;
+	border: 1px solid #3b82f6;
+	border-radius: 6px;
+	color: #1f2937;
+	font-size: 0.9rem;
+	transition: all 0.2s ease;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .model-btn:hover,
 .model-btn:focus {
-    background-color: #f8fafc;
-    border-color: #2563eb;
-    color: #1f2937;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+	background-color: #f8fafc;
+	border-color: #2563eb;
+	color: #1f2937;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 .model-btn::after {
-    margin-left: auto;
-    transition: transform 0.3s ease;
-    color: #6b7280;
+	margin-left: auto;
+	transition: transform 0.3s ease;
+	color: #6b7280;
 }
 
 .model-btn[aria-expanded="true"]::after {
-    transform: rotate(180deg);
+	transform: rotate(180deg);
 }
 
 .model-btn i {
-    color: #3b82f6;
+	color: #3b82f6;
 }
 
 .model-text {
-    margin-right: auto;
-    color: #1f2937;
+	margin-right: auto;
+	color: #1f2937;
 }
 
 .model-menu {
-    width: 100%;
-    padding: 0.375rem;
-    border: 1px solid #3b82f6;
-    border-radius: 6px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transform-origin: top;
-    transition: transform 0.2s ease, opacity 0.2s ease;
-    opacity: 0;
-    transform: scaleY(0.9);
-    display: block;
+	width: 100%;
+	padding: 0.375rem;
+	border: 1px solid #3b82f6;
+	border-radius: 6px;
+	background-color: #ffffff;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	transform-origin: top;
+	transition: transform 0.2s ease, opacity 0.2s ease;
+	opacity: 0;
+	transform: scaleY(0.9);
+	display: block;
 }
 
 .model-menu.show {
-    opacity: 1;
-    transform: scaleY(1);
+	opacity: 1;
+	transform: scaleY(1);
 }
 
 .model-item {
-    display: flex;
-    align-items: center;
-    padding: 0.625rem 0.875rem;
-    color: #1f2937;
-    font-size: 0.9rem;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-    opacity: 0;
-    transform: translateY(-5px);
+	display: flex;
+	align-items: center;
+	padding: 0.625rem 0.875rem;
+	color: #1f2937;
+	font-size: 0.9rem;
+	border-radius: 4px;
+	transition: all 0.2s ease;
+	opacity: 0;
+	transform: translateY(-5px);
 }
 
 .model-menu.show .model-item {
-    opacity: 1;
-    transform: translateY(0);
-    transition-delay: 0.1s;
+	opacity: 1;
+	transform: translateY(0);
+	transition-delay: 0.1s;
 }
 
 .model-menu.show .model-item:nth-child(2) {
-    transition-delay: 0.15s;
+	transition-delay: 0.15s;
 }
 
 .model-menu.show .model-item:nth-child(3) {
-    transition-delay: 0.2s;
+	transition-delay: 0.2s;
 }
 
 .model-item:hover {
-    background-color: #f0f9ff;
-    color: #2563eb;
+	background-color: #f0f9ff;
+	color: #2563eb;
 }
 
 .model-item.active {
-    background-color: #eff6ff;
-    color: #2563eb;
+	background-color: #eff6ff;
+	color: #2563eb;
 }
 
 .model-item i {
-    color: #3b82f6;
+	color: #3b82f6;
 }
 
 /* 移动端适配 */
 @media (max-width: 768px) {
-    .model-selector {
-        padding: 0.5rem 0.75rem;
-        margin-top: -1.5rem;
-    }
-    
-    .model-selector::after {
-        bottom: -0.375rem;
-    }
-    
-    .model-label {
-        font-size: 0.8rem;
-    }
-    
-    .model-btn {
-        padding: 0.5rem 0.875rem;
-        font-size: 0.85rem;
-    }
-    
-    .model-item {
-        padding: 0.5rem 0.75rem;
-        font-size: 0.85rem;
-    }
+	.model-selector {
+		padding: 0.5rem 0.75rem;
+		margin-top: -1.5rem;
+	}
+
+	.model-selector::after {
+		bottom: -0.375rem;
+	}
+
+	.model-label {
+		font-size: 0.8rem;
+	}
+
+	.model-btn {
+		padding: 0.5rem 0.875rem;
+		font-size: 0.85rem;
+	}
+
+	.model-item {
+		padding: 0.5rem 0.75rem;
+		font-size: 0.85rem;
+	}
 }
 
 /* 会话列表样式 */
 .chat-sessions {
-    flex: 1;
-    overflow-y: auto;
-    margin: 1rem 0;
+	flex: 1;
+	overflow-y: auto;
+	margin: 1rem 0;
 }
 
 .sessions-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px;
 }
 
 .session-item {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
+	display: flex;
+	align-items: center;
+	padding: 10px;
+	margin: 5px 0;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: all 0.2s ease;
 }
 
 .session-item:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+	background-color: rgba(255, 255, 255, 0.1);
 }
 
 .session-item.active {
-    background-color: rgba(255, 255, 255, 0.2);
+	background-color: rgba(255, 255, 255, 0.2);
 }
 
 /* 聊天区域样式 */
 .chat-area {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
 }
 
 .chat-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
 }
 
 .chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 10px;
+	flex: 1;
+	overflow-y: auto;
+	padding: 10px;
 }
 
 .message {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-    max-width: 80%;
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 20px;
+	max-width: 80%;
 }
 
 .message.assistant {
-    align-self: flex-start;
+	align-self: flex-start;
 }
 
 .message.user {
-    align-self: flex-end;
+	align-self: flex-end;
 }
 
 .message-content {
-    padding: 12px 16px;
-    border-radius: 12px;
-    background-color: #f3f4f6;
+	padding: 12px 16px;
+	border-radius: 12px;
+	background-color: #f3f4f6;
 }
 
 .message.user .message-content {
-    background-color: #3b82f6;
-    color: white;
+	background-color: #3b82f6;
+	color: white;
 }
 
 .chat-input-container {
-    padding: 15px;
-    background-color: white;
-    border-top: 1px solid #eee;
-    margin-top: auto;
+	padding: 15px;
+	background-color: white;
+	border-top: 1px solid #eee;
+	margin-top: auto;
 }
 
 /* 登录模态框样 */
 #authModal .modal-content {
-    border: none;
-    border-radius: 1rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+	border: none;
+	border-radius: 1rem;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
 }
 
 #authModal .modal-header {
-    border: none;
-    padding: 1.5rem 1.5rem 0.75rem;
-    position: relative;
+	border: none;
+	padding: 1.5rem 1.5rem 0.75rem;
+	position: relative;
 }
 
 /* 导航标签样式 */
 #authModal .nav-tabs {
-    border: none;
-    gap: 0.5rem;
-    padding: 0;
-    margin-bottom: 0;
+	border: none;
+	gap: 0.5rem;
+	padding: 0;
+	margin-bottom: 0;
 }
 
 #authModal .nav-item {
-    flex: 1;
+	flex: 1;
 }
 
 #authModal .nav-link {
-    border: none;
-    padding: 0.75rem;
-    color: #6b7280;
-    font-size: 0.95rem;
-    transition: all 0.2s ease;
-    border-radius: 0.5rem;
-    text-align: center;
-    width: 100%;
+	border: none;
+	padding: 0.75rem;
+	color: #6b7280;
+	font-size: 0.95rem;
+	transition: all 0.2s ease;
+	border-radius: 0.5rem;
+	text-align: center;
+	width: 100%;
 }
 
 #authModal .nav-link:hover {
-    color: #2563eb;
-    background: rgba(37, 99, 235, 0.05);
+	color: #2563eb;
+	background: rgba(37, 99, 235, 0.05);
 }
 
 #authModal .nav-link.active {
-    color: #2563eb;
-    background: rgba(37, 99, 235, 0.1);
-    font-weight: 500;
+	color: #2563eb;
+	background: rgba(37, 99, 235, 0.1);
+	font-weight: 500;
 }
 
 /* 单容器样式 */
 #authModal .modal-body {
-    padding: 1.5rem;
-    background: #ffffff;
+	padding: 1.5rem;
+	background: #ffffff;
 }
 
 #authModal .tab-content {
-    margin-top: 1rem;
+	margin-top: 1rem;
 }
 
 /* 表单组样式 */
 #authModal .form-label {
-    font-size: 0.9rem;
-    color: #4b5563;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
+	font-size: 0.9rem;
+	color: #4b5563;
+	margin-bottom: 0.5rem;
+	font-weight: 500;
 }
 
 #authModal .form-control {
-    padding: 0.75rem 1rem;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.5rem;
-    font-size: 0.95rem;
-    transition: all 0.2s ease;
-    background: #f9fafb;
+	padding: 0.75rem 1rem;
+	border: 1px solid #e5e7eb;
+	border-radius: 0.5rem;
+	font-size: 0.95rem;
+	transition: all 0.2s ease;
+	background: #f9fafb;
 }
 
 #authModal .form-control:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-    background: #ffffff;
+	border-color: #2563eb;
+	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+	background: #ffffff;
 }
 
 /* 输入合样式 */
 #authModal .input-group {
-    border-radius: 0.5rem;
-    background: #f9fafb;
-    border: 1px solid #e5e7eb;
-    transition: all 0.2s ease;
+	border-radius: 0.5rem;
+	background: #f9fafb;
+	border: 1px solid #e5e7eb;
+	transition: all 0.2s ease;
 }
 
 #authModal .input-group:focus-within {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-    background: #ffffff;
+	border-color: #2563eb;
+	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+	background: #ffffff;
 }
 
 #authModal .input-group .form-control {
-    border: none;
-    background: transparent;
+	border: none;
+	background: transparent;
 }
 
 #authModal .input-group .btn {
-    border: none;
-    background: transparent;
-    color: #6b7280;
-    padding: 0 1rem;
+	border: none;
+	background: transparent;
+	color: #6b7280;
+	padding: 0 1rem;
 }
 
 #authModal .input-group .btn:hover {
-    color: #4b5563;
+	color: #4b5563;
 }
 
 /* 验证码样式 */
 #authModal .captcha-image {
-    height: 46px;
-    border-radius: 0 0.5rem 0.5rem 0;
-    cursor: pointer;
-    transition: opacity 0.2s ease;
+	height: 46px;
+	border-radius: 0 0.5rem 0.5rem 0;
+	cursor: pointer;
+	transition: opacity 0.2s ease;
 }
 
 #authModal .captcha-image:hover {
-    opacity: 0.8;
+	opacity: 0.8;
 }
 
 /* 发送验证码按钮样式 */
 #authModal .send-code-btn {
-    min-width: 120px;
-    background: #f3f4f6;
-    border: none;
-    color: #4b5563;
-    transition: all 0.2s ease;
-    font-size: 0.9rem;
-    padding: 0 1rem;
+	min-width: 120px;
+	background: #f3f4f6;
+	border: none;
+	color: #4b5563;
+	transition: all 0.2s ease;
+	font-size: 0.9rem;
+	padding: 0 1rem;
 }
 
 #authModal .send-code-btn:hover:not(:disabled) {
-    background: #e5e7eb;
-    color: #1f2937;
+	background: #e5e7eb;
+	color: #1f2937;
 }
 
 #authModal .send-code-btn:disabled {
-    background: #f3f4f6;
-    color: #9ca3af;
-    cursor: not-allowed;
+	background: #f3f4f6;
+	color: #9ca3af;
+	cursor: not-allowed;
 }
 
 /* 提交按样式 */
 #authModal .btn-primary {
-    width: 100%;
-    padding: 0.75rem;
-    background: #2563eb;
-    border: none;
-    font-weight: 500;
-    border-radius: 0.5rem;
-    transition: all 0.2s ease;
-    margin-top: 1rem;
+	width: 100%;
+	padding: 0.75rem;
+	background: #2563eb;
+	border: none;
+	font-weight: 500;
+	border-radius: 0.5rem;
+	transition: all 0.2s ease;
+	margin-top: 1rem;
 }
 
 #authModal .btn-primary:hover {
-    background: #1d4ed8;
-    transform: translateY(-1px);
+	background: #1d4ed8;
+	transform: translateY(-1px);
 }
 
 /* 帮助文本样式 */
 #authModal .form-text {
-    font-size: 0.85rem;
-    color: #6b7280;
-    margin-top: 0.5rem;
+	font-size: 0.85rem;
+	color: #6b7280;
+	margin-top: 0.5rem;
 }
 
 /* 响应式调整 */
 @media (max-width: 768px) {
-    #authModal .modal-content {
-        margin: 0.5rem;
-        border-radius: 0.75rem;
-    }
-    
-    #authModal .modal-header {
-        padding: 1rem 1rem 0.5rem;
-    }
-    
-    #authModal .modal-body {
-        padding: 1rem;
-    }
-    
-    #authModal .nav-link {
-        padding: 0.6rem;
-        font-size: 0.9rem;
-    }
-    
-    #authModal .form-control {
-        padding: 0.6rem 0.75rem;
-        font-size: 0.9rem;
-    }
-    
-    #authModal .send-code-btn {
-        min-width: 100px;
-        font-size: 0.85rem;
-    }
-    
-    #authModal .captcha-image {
-        height: 42px;
-    }
-    
-    #authModal .btn-primary {
-        padding: 0.6rem;
-    }
-    
-    #authModal .form-text {
-        font-size: 0.8rem;
-    }
+	#authModal .modal-content {
+		margin: 0.5rem;
+		border-radius: 0.75rem;
+	}
+
+	#authModal .modal-header {
+		padding: 1rem 1rem 0.5rem;
+	}
+
+	#authModal .modal-body {
+		padding: 1rem;
+	}
+
+	#authModal .nav-link {
+		padding: 0.6rem;
+		font-size: 0.9rem;
+	}
+
+	#authModal .form-control {
+		padding: 0.6rem 0.75rem;
+		font-size: 0.9rem;
+	}
+
+	#authModal .send-code-btn {
+		min-width: 100px;
+		font-size: 0.85rem;
+	}
+
+	#authModal .captcha-image {
+		height: 42px;
+	}
+
+	#authModal .btn-primary {
+		padding: 0.6rem;
+	}
+
+	#authModal .form-text {
+		font-size: 0.8rem;
+	}
 }
 
-/* 表单间距优化 */
+/* 表单���距优化 */
 #authModal .mb-3 {
-    margin-bottom: 1.25rem;
+	margin-bottom: 1.25rem;
 }
 
 #authModal .mb-3:last-child {
-    margin-bottom: 0;
+	margin-bottom: 0;
 }
 
 /* 动画效果 */
 #authModal .tab-pane {
-    transition: opacity 0.3s ease;
+	transition: opacity 0.3s ease;
 }
 
 #authModal .tab-pane.show {
-    opacity: 1;
+	opacity: 1;
 }
 
 #authModal .tab-pane:not(.show) {
-    opacity: 0;
+	opacity: 0;
 }
 
 /* iPad 响应式调整 */
 @media (min-width: 769px) and (max-width: 1024px) {
-    #authModal .modal-dialog {
-        max-width: 500px;
-        margin: 1.75rem auto;
-    }
-    
-    #authModal .modal-content {
-        margin: 0 1rem;
-    }
-    
-    #authModal .nav-link {
-        font-size: 1rem;
-    }
+	#authModal .modal-dialog {
+		max-width: 500px;
+		margin: 1.75rem auto;
+	}
+
+	#authModal .modal-content {
+		margin: 0 1rem;
+	}
+
+	#authModal .nav-link {
+		font-size: 1rem;
+	}
 }
 
 /* 暂停按钮样式 - 使用更具的选择器提高优先 */
 .chat-input .pause-button,
 .chat-container .chat-input .pause-button {
-    position: absolute !important;  /* 使用 !important 确保位置正确 */
-    top: -2.5rem !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: 32px !important;
-    height: 32px !important;
-    border-radius: 50% !important;
-    background: #ffffff !important;
-    border: 1px solid rgba(0, 0, 0, 0.1) !important;
-    color: #6c757d !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    cursor: pointer !important;
-    transition: all 0.2s ease !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-    z-index: 1050 !important;  /* 提高 z-index 确按钮显示在最上层 */
-    padding: 0 !important;  /* 重置内边距 */
-    margin: 0 !important;  /* 重置外边距 */
+	position: absolute !important;
+	/* 使用 !important 确保位置正确 */
+	top: -2.5rem !important;
+	left: 50% !important;
+	transform: translateX(-50%) !important;
+	width: 32px !important;
+	height: 32px !important;
+	border-radius: 50% !important;
+	background: #ffffff !important;
+	border: 1px solid rgba(0, 0, 0, 0.1) !important;
+	color: #6c757d !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	cursor: pointer !important;
+	transition: all 0.2s ease !important;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+	z-index: 1050 !important;
+	/* 提高 z-index 确按钮显示在最上层 */
+	padding: 0 !important;
+	/* 重置内边距 */
+	margin: 0 !important;
+	/* 重置外边距 */
 }
 
 /* 悬浮效果 */
 .chat-input .pause-button:hover,
 .chat-container .chat-input .pause-button:hover {
-    transform: translateX(-50%) scale(1.1) !important;
-    background: #f8f9fa !important;
-    color: #2563eb !important;
-    border-color: rgba(37, 99, 235, 0.2) !important;
+	transform: translateX(-50%) scale(1.1) !important;
+	background: #f8f9fa !important;
+	color: #2563eb !important;
+	border-color: rgba(37, 99, 235, 0.2) !important;
 }
 
 /* 点击效果 */
 .chat-input .pause-button:active,
 .chat-container .chat-input .pause-button:active {
-    transform: translateX(-50%) scale(0.95) !important;
+	transform: translateX(-50%) scale(0.95) !important;
 }
 
 /* 确保输入框容器有正确的定位 */
 .chat-input {
-    position: relative !important;
-    padding: 1rem !important;
-    background: #ffffff !important;
-    border-top: 1px solid rgba(229, 231, 235, 0.5) !important;
-    box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+	position: relative !important;
+	padding: 1rem !important;
+	background: #ffffff !important;
+	border-top: 1px solid rgba(229, 231, 235, 0.5) !important;
+	box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.05) !important;
 }
 
 /* 移动端适 */
 @media (max-width: 768px) {
-    .chat-input .pause-button,
-    .chat-container .chat-input .pause-button {
-        top: -2rem !important;
-        width: 28px !important;
-        height: 28px !important;
-        font-size: 0.875rem !important;
-    }
+
+	.chat-input .pause-button,
+	.chat-container .chat-input .pause-button {
+		top: -2rem !important;
+		width: 28px !important;
+		height: 28px !important;
+		font-size: 0.875rem !important;
+	}
 }
 
 /* 复制按钮样式 */
 .message .copy-button {
-    position: absolute;
-    left: 0;
-    bottom: -28px;  /* 位于消息气泡下方 */
-    width: 48px;    /* 固定宽度 */
-    height: 24px;   /* 固定高度 */
-    padding: 0;     /* 移除内边距 */
-    border: none;
-    background: #ffffff;
-    color: #6c757d;
-    opacity: 0;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;  /* 内容居中 */
-    gap: 4px;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 10;
-    white-space: nowrap;  /* 防止文字换行 */
+	position: absolute;
+	left: 0;
+	bottom: -28px;
+	/* 位于消息气泡下方 */
+	width: 48px;
+	/* 固定宽度 */
+	height: 24px;
+	/* 固定高度 */
+	padding: 0;
+	/* 移除内边距 */
+	border: none;
+	background: #ffffff;
+	color: #6c757d;
+	opacity: 0;
+	transition: all 0.2s ease;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	/* 内容居中 */
+	gap: 4px;
+	border-radius: 4px;
+	font-size: 0.75rem;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	z-index: 10;
+	white-space: nowrap;
+	/* 防止文字换行 */
 }
 
-/* 用户消息的复制按钮位置调整 */
+/* 用户消息的复��按钮位置调整 */
 .message.user .copy-button {
-    right: 0;
-    left: auto;
+	right: 0;
+	left: auto;
 }
 
 /* 悬浮效果 */
 .message:hover .copy-button {
-    opacity: 1;
+	opacity: 1;
 }
 
 .message .copy-button:hover {
-    background: #f8f9fa;
-    color: #007bff;
-    transform: translateY(-1px);
+	background: #f8f9fa;
+	color: #007bff;
+	transform: translateY(-1px);
 }
 
 /* 复制成功提示框样式 */
 .copy-tooltip {
-    position: fixed;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 8px 16px;
-    border-radius: 4px;
-    font-size: 0.875rem;
-    z-index: 1000;
-    animation: tooltipFadeInOut 1.5s ease forwards;
+	position: fixed;
+	bottom: 2rem;
+	left: 50%;
+	transform: translateX(-50%);
+	background: rgba(0, 0, 0, 0.8);
+	color: white;
+	padding: 8px 16px;
+	border-radius: 4px;
+	font-size: 0.875rem;
+	z-index: 1000;
+	animation: tooltipFadeInOut 1.5s ease forwards;
 }
 
 @keyframes tooltipFadeInOut {
-    0% { opacity: 0; transform: translate(-50%, 10px); }
-    15% { opacity: 1; transform: translate(-50%, 0); }
-    85% { opacity: 1; transform: translate(-50%, 0); }
-    100% { opacity: 0; transform: translate(-50%, -10px); }
+	0% {
+		opacity: 0;
+		transform: translate(-50%, 10px);
+	}
+
+	15% {
+		opacity: 1;
+		transform: translate(-50%, 0);
+	}
+
+	85% {
+		opacity: 1;
+		transform: translate(-50%, 0);
+	}
+
+	100% {
+		opacity: 0;
+		transform: translate(-50%, -10px);
+	}
 }
 
-/* 修改 AI 消息内容样式 */
-.message.assistant .message-content {
-    background: #f8f9fa;
-    color: #1f2937;
-    border: 1px solid #e5e7eb;
-    border-radius: 0 0.5rem 0.5rem 0.5rem;
-    margin-right: auto;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    display: block;  /* 改为 block 布局，而不是 flex */
-    min-height: 40px;
-    position: relative;  /* 保持相对位 */
-    padding: 0.75rem 1rem;
-}
 
 /* 调整 AI 消息中段落的样式 */
 .message.assistant .message-content p {
-    display: block;
-    margin: -0.1rem 0 !important;
-}
-
-/* 复制按钮样式 */
-.message .copy-button {
-    position: absolute;
-    left: 0;
-    bottom: -28px;
-    width: 48px;
-    height: 24px;
-    padding: 0;
-    border: none;
-    background: #ffffff;
-    color: #6c757d;
-    opacity: 0;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 10;
-    white-space: nowrap;
+	display: block;
+	margin: -0.1rem 0 !important;
 }
 
 /* 用户消息的复制按钮位置调整 */
 .message.user .copy-button {
-    right: 0;
-    left: auto;
+	right: 0;
+	left: auto;
 }
 
 /* 悬浮效果 */
 .message:hover .copy-button {
-    opacity: 1;
+	opacity: 1;
 }
 
 .message .copy-button:hover {
-    background: #f8f9fa;
-    color: #007bff;
-    transform: translateY(-1px);
+	background: #f8f9fa;
+	color: #007bff;
+	transform: translateY(-1px);
 }
 
 /* 表单验证样式 */
 .form-control.is-invalid {
-    border-color: #dc3545 !important;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e") !important;
-    background-repeat: no-repeat !important;
-    background-position: right calc(0.375em + 0.1875rem) center !important;
-    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem) !important;
-    padding-right: calc(1.5em + 0.75rem) !important;
+	border-color: #dc3545 !important;
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e") !important;
+	background-repeat: no-repeat !important;
+	background-position: right calc(0.375em + 0.1875rem) center !important;
+	background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem) !important;
+	padding-right: calc(1.5em + 0.75rem) !important;
 }
 
 .form-control.is-valid {
-    border-color: #198754 !important;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e") !important;
-    background-repeat: no-repeat !important;
-    background-position: right calc(0.375em + 0.1875rem) center !important;
-    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem) !important;
-    padding-right: calc(1.5em + 0.75rem) !important;
+	border-color: #198754 !important;
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e") !important;
+	background-repeat: no-repeat !important;
+	background-position: right calc(0.375em + 0.1875rem) center !important;
+	background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem) !important;
+	padding-right: calc(1.5em + 0.75rem) !important;
 }
 
 /* 移除聚焦时的阴影 */
 .form-control.is-invalid:focus,
 .form-control.is-valid:focus {
-    box-shadow: none !important;
+	box-shadow: none !important;
 }
 
 /* 输入组验证样式 */
 .input-group .form-control.is-invalid,
 .input-group .form-control.is-valid {
-    z-index: 3;
+	z-index: 3;
 }
 
 /* 输入组中的按钮样式 */
-.input-group .form-control.is-invalid ~ .input-group-text {
-    border-color: #dc3545 !important;
+.input-group .form-control.is-invalid~.input-group-text {
+	border-color: #dc3545 !important;
 }
 
-.input-group .form-control.is-valid ~ .input-group-text {
-    border-color: #198754 !important;
+.input-group .form-control.is-valid~.input-group-text {
+	border-color: #198754 !important;
 }
 
 /* 验证反馈信息样式 */
 .invalid-feedback {
-    display: none;
-    width: 100%;
-    margin-top: 0.25rem;
-    font-size: 0.875em;
-    color: #dc3545;
+	display: none;
+	width: 100%;
+	margin-top: 0.25rem;
+	font-size: 0.875em;
+	color: #dc3545;
 }
 
 .valid-feedback {
-    display: none;
-    width: 100%;
-    margin-top: 0.25rem;
-    font-size: 0.875em;
-    color: #198754;
+	display: none;
+	width: 100%;
+	margin-top: 0.25rem;
+	font-size: 0.875em;
+	color: #198754;
 }
 
 /* 显示反馈信息 */
-.was-validated .form-control:invalid ~ .invalid-feedback,
-.form-control.is-invalid ~ .invalid-feedback {
-    display: block;
+.was-validated .form-control:invalid~.invalid-feedback,
+.form-control.is-invalid~.invalid-feedback {
+	display: block;
 }
 
-.was-validated .form-control:valid ~ .valid-feedback,
-.form-control.is-valid ~ .valid-feedback {
-    display: block;
+.was-validated .form-control:valid~.valid-feedback,
+.form-control.is-valid~.valid-feedback {
+	display: block;
 }
 
 /* 输入组中的证样式 */
-.input-group > .form-control:not(:focus).is-invalid,
-.input-group > .form-control:not(:focus).is-valid {
-    z-index: 3;
+.input-group>.form-control:not(:focus).is-invalid,
+.input-group>.form-control:not(:focus).is-valid {
+	z-index: 3;
 }
 
 /* 确保验证图标在密码切换按钮的侧 */
-.input-group > .form-control.is-invalid,
-.input-group > .form-control.is-valid {
-    padding-right: calc(2.5em + 0.75rem) !important;
+.input-group>.form-control.is-invalid,
+.input-group>.form-control.is-valid {
+	padding-right: calc(2.5em + 0.75rem) !important;
 }
 
-.input-group > .form-control.is-invalid ~ .input-group-text,
-.input-group > .form-control.is-valid ~ .input-group-text {
-    padding-left: 0.5rem;
+.input-group>.form-control.is-invalid~.input-group-text,
+.input-group>.form-control.is-valid~.input-group-text {
+	padding-left: 0.5rem;
 }
 
 /* 提醒弹窗样式 */
 #alertModal .modal-content {
-    border-radius: 1rem;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+	border-radius: 1rem;
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
 #alertModal .modal-body {
-    padding: 1.5rem;
+	padding: 1.5rem;
 }
 
 #alertModal .alert-icon {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+	width: 40px;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
 }
 
 #alertModal .alert-content {
-    min-width: 0;
+	min-width: 0;
 }
 
 #alertModal .alert-content h5 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #1f2937;
+	font-size: 1.1rem;
+	font-weight: 600;
+	color: #1f2937;
 }
 
 #alertModal .alert-content p {
-    font-size: 0.95rem;
-    line-height: 1.5;
+	font-size: 0.95rem;
+	line-height: 1.5;
 }
 
 #alertModal .btn-close {
-    padding: 0.5rem;
-    margin: -0.5rem;
-    border-radius: 50%;
-    transition: all 0.2s ease;
-    opacity: 0.6;
+	padding: 0.5rem;
+	margin: -0.5rem;
+	border-radius: 50%;
+	transition: all 0.2s ease;
+	opacity: 0.6;
 }
 
 #alertModal .btn-close:hover {
-    opacity: 1;
-    background-color: #f3f4f6;
-    transform: scale(1.1);
+	opacity: 1;
+	background-color: #f3f4f6;
+	transform: scale(1.1);
 }
 
 /* 移动端适配 */
 @media (max-width: 768px) {
-    #alertModal .modal-dialog {
-        margin: 1rem;
-    }
-    
-    #alertModal .modal-body {
-        padding: 1.25rem;
-    }
-    
-    #alertModal .alert-icon {
-        width: 32px;
-        height: 32px;
-    }
-    
-    #alertModal .alert-content h5 {
-        font-size: 1rem;
-    }
-    
-    #alertModal .alert-content p {
-        font-size: 0.9rem;
-    }
+	#alertModal .modal-dialog {
+		margin: 1rem;
+	}
+
+	#alertModal .modal-body {
+		padding: 1.25rem;
+	}
+
+	#alertModal .alert-icon {
+		width: 32px;
+		height: 32px;
+	}
+
+	#alertModal .alert-content h5 {
+		font-size: 1rem;
+	}
+
+	#alertModal .alert-content p {
+		font-size: 0.9rem;
+	}
 }
 
 /* 加载动画样式 */
 #loadingSpinner {
-    margin-bottom: 1.5rem;  /* 与其他消息保持一致的间距 */
-    max-width: 85%;  /* 与其他消息保持一致的宽度 */
-    align-self: flex-start;  /* 靠左对齐 */
+	margin-bottom: 1.5rem;
+	/* 与其他消息保持一致的间距 */
+	max-width: 85%;
+	/* 与其他消息保持一致的宽度 */
+	align-self: flex-start;
+	/* 靠左对齐 */
 }
 
 /* 输入框样式优化 */
 .chat-input textarea {
-    min-height: 24px;
-    max-height: 150px;
-    height: 24px;  /* 设置初始高度 */
-    resize: none;
-    transition: height 0.15s ease;  /* 添加更快的高度过渡效果 */
-    overflow-y: hidden;  /* 默认隐藏滚动条 */
-    box-sizing: border-box;  /* 确保padding不影响高算 */
-    line-height: 1.5;  /* 设置行高 */
-    padding: 0.25rem 1rem;  /* 调整内边距 */
+	min-height: 24px;
+	max-height: 150px;
+	height: 24px;
+	/* 设置初始高度 */
+	resize: none;
+	transition: height 0.15s ease;
+	/* 添加更快的高度过渡效果 */
+	overflow-y: hidden;
+	/* 默认隐藏滚动条 */
+	box-sizing: border-box;
+	/* 确保padding不影响高算 */
+	line-height: 1.5;
+	/* 设置行高 */
+	padding: 0.25rem 1rem;
+	/* 调整内边距 */
 }
 
 /* 当内容超最大高度时显示滚条 */
 .chat-input textarea.overflow {
-    overflow-y: auto;
-}
-
-/* 加载动画样式 */
-.typing-indicator {
-    display: flex;
-    align-items: center;
-    padding: 0.75rem 1rem;
-    background: #f8f9fa;
-    border: 1px solid #e5e7eb;
-    border-radius: 0 0.5rem 0.5rem 0.5rem;
-    min-height: 40px;
+	overflow-y: auto;
 }
 
 .typing-indicator span {
-    width: 6px;
-    height: 6px;
-    background-color: #6b7280;
-    border-radius: 50%;
-    margin: 0 2px;
-    animation: typing 1.4s infinite;
-    opacity: 0.4;
+	width: 6px;
+	height: 6px;
+	background-color: #6b7280;
+	border-radius: 50%;
+	margin: 0 2px;
+	animation: typing 1.4s infinite;
+	opacity: 0.4;
 }
 
 .typing-indicator span:nth-child(2) {
-    animation-delay: 0.2s;
+	animation-delay: 0.2s;
 }
 
 .typing-indicator span:nth-child(3) {
-    animation-delay: 0.4s;
+	animation-delay: 0.4s !important;
 }
 
 @keyframes typing {
-    0%, 100% { opacity: 0.4; transform: translateY(0); }
-    50% { opacity: 1; transform: translateY(-4px); }
+
+	0%,
+	100% {
+		opacity: 0.4;
+		transform: translateY(0);
+	}
+
+	50% {
+		opacity: 1;
+		transform: translateY(-4px);
+	}
 }
 
 /* Toast 提示样式 */
 .toast-tip {
-    position: fixed;
-    left: 50%;
-    bottom: 10%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.75);
-    color: #fff;
-    padding: 8px 16px;
-    border-radius: 4px;
-    font-size: 0.875rem;
-    z-index: 1100;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;  /* 防止遮挡点击 */
+	position: fixed;
+	left: 50%;
+	bottom: 10%;
+	transform: translateX(-50%);
+	background: rgba(0, 0, 0, 0.75);
+	color: #fff;
+	padding: 8px 16px;
+	border-radius: 4px;
+	font-size: 0.875rem;
+	z-index: 1100;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+	pointer-events: none;
+	/* 防止遮挡点击 */
 }
 
 .toast-tip.show {
-    opacity: 1;
+	opacity: 1;
 }
 
 /* 移动端适配 */
 @media (max-width: 768px) {
-    .toast-tip {
-        bottom: 15%;
-        font-size: 0.8rem;
-        padding: 6px 12px;
-    }
+	.toast-tip {
+		bottom: 15%;
+		font-size: 0.8rem;
+		padding: 6px 12px;
+	}
 }
 
-/* 设置面板样式 */
-.settings-panel {
-    display: none;
-    height: 100%;
-    width: 100%;
-}
 
 /* PC端样式 */
 @media (min-width: 769px) {
-    .settings-panel {
-        padding: 1rem;  /* PC端使用1rem内边距 */
-    }
+	.settings-panel {
+		padding: 1rem;
+		/* PC端使用1rem内边距 */
+	}
 }
 
 /* 移动端样式 - 使用更高的优先级 */
 @media (max-width: 768px) {
-    .settings-panel {
-        padding: 0.5rem !important;  /* 移动端使用0.5rem内边距，添加!important确保优先级 */
-    }
-    
-    .settings-panel-content {
-        padding: 0;  /* 移除内容区域的内边距 */
-    }
-    
-    .announcement-list {
-        padding: 0;  /* 移除列表的内边距 */
-        margin-left: -18px;  /* 保持左侧负外边距 */
-    }
-    
-    .announcement-item {
-        margin: 0;  /* 移除公告项的外边距 */
-        width: 100%;  /* 确保宽度占满 */
-    }
+	.settings-panel {
+		padding: 0.5rem !important;
+		/* 移动端使用0.5rem内边距，添加!important确保优先级 */
+	}
+
+	.settings-panel-content {
+		padding: 0;
+		/* 移除内容区域的内边距 */
+	}
+
+	.announcement-list {
+		padding: 0;
+		/* 移除列表的内边距 */
+		margin-left: -18px;
+		/* 保持左侧负外边距 */
+	}
+
+	.announcement-item {
+		margin: 0;
+		/* 移除公告项的外边距 */
+		width: 100%;
+		/* 确保宽度占满 */
+	}
 }
 
 /* 模型切换按钮样式 */
 .model-switch {
-    display: flex;
-    align-items: center;
-    padding: 0.625rem 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    background-color: rgba(255, 255, 255, 0.1);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    margin: 0.75rem 1rem;
-    gap: 0.5rem;
+	display: flex;
+	align-items: center;
+	padding: 0.625rem 1rem;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 8px;
+	background-color: rgba(255, 255, 255, 0.1);
+	cursor: pointer;
+	transition: all 0.2s ease;
+	margin: 0.75rem 1rem;
+	gap: 0.5rem;
 }
 
 .model-switch:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.3);
+	background-color: rgba(255, 255, 255, 0.15);
+	border-color: rgba(255, 255, 255, 0.3);
 }
 
 .model-icon {
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px;
-    background-color: #2563eb;
-    color: white;
-    font-size: 0.85rem;
-}
-
-.model-info {
-    flex: 1;
-    overflow: hidden;
+	width: 24px;
+	height: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 6px;
+	background-color: #2563eb;
+	color: white;
+	font-size: 0.85rem;
 }
 
 .model-name {
-    font-size: 0.9rem;
-    font-weight: 500;
-    margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #1f2937;
+	font-size: 0.9rem;
+	font-weight: 500;
+	margin: 0;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	color: #1f2937;
 }
 
 .switch-arrow {
-    color: rgba(255, 255, 255, 0.7);
-    transition: transform 0.2s ease;
-    font-size: 0.8rem;
+	color: rgba(255, 255, 255, 0.7);
+	transition: transform 0.2s ease;
+	font-size: 0.8rem;
 }
 
 .model-switch[aria-expanded="true"] .switch-arrow {
-    transform: rotate(180deg);
+	transform: rotate(180deg);
 }
 
 .model-dropdown {
-    position: absolute;
-    background-color: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    padding: 0.5rem 0;
-    margin: 0.25rem 1rem;
-    width: calc(100% - 2rem);
+	position: absolute;
+	background-color: #ffffff;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	z-index: 1000;
+	padding: 0.5rem 0;
+	margin: 0.25rem 1rem;
+	width: calc(100% - 2rem);
 }
 
 .model-option {
-    padding: 0.625rem 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+	padding: 0.625rem 1rem;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
 }
 
 .model-option:hover {
-    background-color: rgba(37, 99, 235, 0.05);
+	background-color: rgba(37, 99, 235, 0.05);
 }
 
 .model-option.selected {
-    background-color: rgba(37, 99, 235, 0.1);
+	background-color: rgba(37, 99, 235, 0.1);
 }
 
 .model-option .model-name {
-    color: #1f2937;
+	color: #1f2937;
 }
 
 /* 移动端适配 */
 @media (max-width: 768px) {
-    .model-switch {
-        margin: 0.5rem;
-        padding: 0.5rem 0.875rem;
-    }
-    
-    .model-icon {
-        width: 22px;
-        height: 22px;
-        font-size: 0.8rem;
-    }
-    
-    .model-name {
-        font-size: 0.85rem;
-    }
-    
-    .model-dropdown {
-        margin: 0.25rem 0.5rem;
-        width: calc(100% - 1rem);
-    }
+	.model-switch {
+		margin: 0.5rem;
+		padding: 0.5rem 0.875rem;
+	}
+
+	.model-icon {
+		width: 22px;
+		height: 22px;
+		font-size: 0.8rem;
+	}
+
+	.model-name {
+		font-size: 0.85rem;
+	}
+
+	.model-dropdown {
+		margin: 0.25rem 0.5rem;
+		width: calc(100% - 1rem);
+	}
 }
 
 /* 新建对话按钮样式 */
 .new-chat-btn {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.625rem 1rem;
-    margin-top: 0.75rem;
-    background-color: #ffffff;
-    border: 1px solid #3b82f6;
-    border-radius: 6px;
-    color: #1f2937;
-    font-size: 0.9rem;
-    transition: all 0.2s ease;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.625rem 1rem;
+	margin-top: 0.75rem;
+	background-color: #ffffff;
+	border: 1px solid #3b82f6;
+	border-radius: 6px;
+	color: #1f2937;
+	font-size: 0.9rem;
+	transition: all 0.2s ease;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+	cursor: pointer;
 }
 
 .new-chat-btn:hover {
-    background-color: #f8fafc;
-    border-color: #2563eb;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+	background-color: #f8fafc;
+	border-color: #2563eb;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 .new-chat-btn i {
-    color: #3b82f6;
+	color: #3b82f6;
 }
 
 /* 移动端适配 */
 @media (max-width: 768px) {
-    .new-chat-btn {
-        padding: 0.5rem 0.875rem;
-        font-size: 0.85rem;
-        margin-top: 0.625rem;
-    }
+	.new-chat-btn {
+		padding: 0.5rem 0.875rem;
+		font-size: 0.85rem;
+		margin-top: 0.625rem;
+	}
 }
 
 /* 模型选择器样式 - 添加更具体的选择器以提高优先级 */
 .model-selector .model-btn .model-text,
 .model-selector .model-text {
-    font-size: 0.85rem;  /* 从原来 0.9rem 减小到 0.85rem */
-    margin-right: auto;
-    color: #1f2937;
+	font-size: 0.85rem;
+	/* 从原来 0.9rem 减小到 0.85rem */
+	margin-right: auto;
+	color: #1f2937;
 }
 
 .model-selector .model-item,
 .model-menu .model-item {
-    font-size: 0.82rem;  /* 从原来的 0.9rem 减小到 0.82rem */
-    padding: 0.625rem 0.875rem;
-    color: #1f2937;
-    border-radius: 4px;
-    transition: all 0.2s ease;
+	font-size: 0.82rem;
+	/* 从原来的 0.9rem 减小到 0.82rem */
+	padding: 0.625rem 0.875rem;
+	color: #1f2937;
+	border-radius: 4px;
+	transition: all 0.2s ease;
 }
 
 /* 移动端适配 - 保持原有的响应式逻辑 */
 @media (max-width: 768px) {
-    .model-selector .model-btn .model-text,
-    .model-selector .model-text {
-        font-size: 0.8rem;  /* 移动端更小一点 */
-    }
-    
-    .model-selector .model-item,
-    .model-menu .model-item {
-        font-size: 0.78rem;  /* 移动端更小一点 */
-        padding: 0.5rem 0.75rem;
-    }
+
+	.model-selector .model-btn .model-text,
+	.model-selector .model-text {
+		font-size: 0.8rem;
+		/* 移动端更小一点 */
+	}
+
+	.model-selector .model-item,
+	.model-menu .model-item {
+		font-size: 0.78rem;
+		/* 移动端更小一点 */
+		padding: 0.5rem 0.75rem;
+	}
 }
 
 /* 模型下拉菜单样式 */
 .model-menu .dropdown-item {
-    font-size: 0.82rem;  /* 从默认的大小减小到 0.82rem */
-    padding: 0.5rem 1rem;
-    color: #1f2937;
+	font-size: 0.82rem;
+	/* 从默认的大小减小到 0.82rem */
+	padding: 0.5rem 1rem;
+	color: #1f2937;
 }
 
 /* 模型下拉菜单中的模型名称 */
 .model-menu .model-name {
-    font-size: 0.82rem;  /* 保持一致的字体大小 */
-    color: #1f2937;
+	font-size: 0.82rem;
+	/* 保持一致的字体大小 */
+	color: #1f2937;
 }
 
 /* 移动端适配 */
 @media (max-width: 768px) {
-    .model-menu .dropdown-item,
-    .model-menu .model-name {
-        font-size: 0.78rem;  /* 移动端更小一点 */
-        padding: 0.4rem 0.875rem;
-    }
+
+	.model-menu .dropdown-item,
+	.model-menu .model-name {
+		font-size: 0.78rem;
+		/* 移动端更小一点 */
+		padding: 0.4rem 0.875rem;
+	}
 }
 
 /* 修改密码模态框样式 */
 #changePasswordModal .modal-content {
-    border-radius: 1rem;
-    border: none;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+	border-radius: 1rem;
+	border: none;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 #changePasswordModal .modal-header {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    padding: 1.5rem;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+	padding: 1.5rem;
 }
 
 #changePasswordModal .modal-body {
-    padding: 1.5rem;
+	padding: 1.5rem;
 }
 
 #changePasswordModal .form-control {
-    border-radius: 0.5rem;
-    padding: 0.75rem 1rem;
-    border: 1px solid #e5e7eb;
-    transition: all 0.2s ease;
+	border-radius: 0.5rem;
+	padding: 0.75rem 1rem;
+	border: 1px solid #e5e7eb;
+	transition: all 0.2s ease;
 }
 
 #changePasswordModal .form-control:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+	border-color: #3b82f6;
+	box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 #changePasswordModal .input-group .form-control {
-    border-right: none;
+	border-right: none;
 }
 
 #changePasswordModal .input-group .toggle-password {
-    border-radius: 0 0.5rem 0.5rem 0;
-    border: 1px solid #e5e7eb;
-    border-left: none;
-    background: #fff;
+	border-radius: 0 0.5rem 0.5rem 0;
+	border: 1px solid #e5e7eb;
+	border-left: none;
+	background: #fff;
 }
 
 #changePasswordModal .input-group .toggle-password:hover {
-    background: #f9fafb;
+	background: #f9fafb;
 }
 
 /* 提交按钮样式 */
 #changePasswordModal .submit-btn {
-    background: #3b82f6;
-    border: none;
-    padding: 0.75rem 2rem;
-    border-radius: 0.5rem;
-    font-weight: 500;
-    transition: all 0.2s ease;
+	background: #3b82f6;
+	border: none;
+	padding: 0.75rem 2rem;
+	border-radius: 0.5rem;
+	font-weight: 500;
+	transition: all 0.2s ease;
 }
 
 #changePasswordModal .submit-btn:hover {
-    background: #2563eb;
-    transform: translateY(-1px);
+	background: #2563eb;
+	transform: translateY(-1px);
 }
 
 #changePasswordModal .submit-btn:active {
-    transform: translateY(0);
+	transform: translateY(0);
 }
 
 /* 输入验证样式 */
 #changePasswordModal .is-invalid {
-    border-color: #dc3545;
+	border-color: #dc3545;
 }
 
 #changePasswordModal .is-valid {
-    border-color: #198754;
+	border-color: #198754;
 }
 
 /* 修改密码模态框输入组样式 */
 #changePasswordModal .input-group {
-    position: relative;
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: stretch;
-    width: 100%;
+	position: relative;
+	display: flex;
+	flex-wrap: nowrap;
+	align-items: stretch;
+	width: 100%;
 }
 
 #changePasswordModal .input-group .form-control {
-    position: relative;
-    flex: 1 1 auto;
-    width: 1%;
-    min-width: 0;
-    border-right: none;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+	position: relative;
+	flex: 1 1 auto;
+	width: 1%;
+	min-width: 0;
+	border-right: none;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
 }
 
 #changePasswordModal .input-group .toggle-password {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #6c757d;
-    text-align: center;
-    background-color: #fff;
-    border: 1px solid #e5e7eb;
-    border-left: none;
-    border-radius: 0 0.5rem 0.5rem 0;
-    transition: all 0.2s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.375rem 0.75rem;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.5;
+	color: #6c757d;
+	text-align: center;
+	background-color: #fff;
+	border: 1px solid #e5e7eb;
+	border-left: none;
+	border-radius: 0 0.5rem 0.5rem 0;
+	transition: all 0.2s ease;
 }
 
 #changePasswordModal .input-group .toggle-password:hover {
-    background-color: #f8f9fa;
-    color: #2563eb;
+	background-color: #f8f9fa;
+	color: #2563eb;
 }
 
 /* 验证状态样式 */
 #changePasswordModal .form-control.is-invalid {
-    border-color: #dc3545;
-    padding-right: calc(1.5em + 0.75rem);
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right calc(0.375em + 0.1875rem) center;
-    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+	border-color: #dc3545;
+	padding-right: calc(1.5em + 0.75rem);
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+	background-repeat: no-repeat;
+	background-position: right calc(0.375em + 0.1875rem) center;
+	background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 }
 
 #changePasswordModal .form-control.is-valid {
-    border-color: #198754;
-    padding-right: calc(1.5em + 0.75rem);
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right calc(0.375em + 0.1875rem) center;
-    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+	border-color: #198754;
+	padding-right: calc(1.5em + 0.75rem);
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+	background-repeat: no-repeat;
+	background-position: right calc(0.375em + 0.1875rem) center;
+	background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 }
 
 /* 输入组验证状态样式 */
 #changePasswordModal .input-group .form-control.is-invalid {
-    z-index: 3;
+	z-index: 3;
 }
 
-#changePasswordModal .input-group .form-control.is-invalid ~ .toggle-password {
-    border-color: #dc3545;
-    color: #dc3545;
+#changePasswordModal .input-group .form-control.is-invalid~.toggle-password {
+	border-color: #dc3545;
+	color: #dc3545;
 }
 
-#changePasswordModal .input-group .form-control.is-valid ~ .toggle-password {
-    border-color: #198754;
-    color: #198754;
+#changePasswordModal .input-group .form-control.is-valid~.toggle-password {
+	border-color: #198754;
+	color: #198754;
 }
-  
+
+/* 操作按钮组容器 */
+.action-buttons {
+	display: flex;
+	gap: 8px;
+	margin-top: 12px;
+	padding: 0 12px;
+}
+
+/* 保存按钮特定样式 */
+.new-chat-btn.save-btn {
+	background-color: #3b82f6;
+	color: #ffffff;
+}
+
+.new-chat-btn.save-btn:hover {
+	background-color: #2563eb;
+	border-color: #2563eb;
+}
+
+.new-chat-btn.save-btn i {
+	color: #ffffff;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+	.action-buttons {
+		padding: 0 8px;
+	}
+
+	.new-chat-btn {
+		padding: 0.5rem 0.875rem;
+		font-size: 0.85rem;
+	}
+}
