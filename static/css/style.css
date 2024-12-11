@@ -1812,11 +1812,15 @@ body {
 	opacity: 0;
 	transform: scaleY(0.9);
 	display: block;
+	pointer-events: none;
+	z-index: 1;
+	/* 设置一个较低的值 */
 }
 
 .model-menu.show {
 	opacity: 1;
 	transform: scaleY(1);
+	pointer-events: auto;
 }
 
 .model-item {

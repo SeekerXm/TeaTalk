@@ -47,6 +47,7 @@ urlpatterns = [
     path('api/', include('aimodels.urls')),
     path('users/', include('users.urls')),
     path('api/', include('chat.urls')),  # 添加chat应用的API路由
+    path('chat/', include('chat.urls')),
 ]
 
 if settings.DEBUG:
