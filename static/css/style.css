@@ -5,7 +5,7 @@
 	height: 100vh;
 	/* 用视口高度 */
 	overflow-x: hidden;
-	/* 添加这行，防止水平��动 */
+	/* 添加这行，防止水平滚动 */
 }
 
 .row {
@@ -92,22 +92,13 @@
 	flex-direction: column;
 	background-color: #ffffff;
 	overflow: hidden;
-	padding: 0;
-	/* 移除内边距 */
-}
-
-/* 只在PC端添加内边距 */
-@media (min-width: 769px) {
-	.chat-container {
-		padding: 1rem;
-	}
 }
 
 /* 聊天消息区域样式优化 */
 .chat-messages {
 	flex: 1;
 	overflow-y: auto;
-	padding: 1rem;
+	padding: 2rem;
 	/* PC端使用1rem内边距 */
 	background-color: #ffffff;
 	scrollbar-width: none;
@@ -121,6 +112,7 @@
 	display: none;
 }
 
+
 .chat-input {
 	padding: 1rem;
 	background: #ffffff;
@@ -128,7 +120,7 @@
 	box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
-.chat-input .input-group {
+.chat-container .chat-input .input-group {
 	background: #f8f9fa;
 	border-radius: 1.5rem;
 	padding: 0.5rem;
@@ -1732,10 +1724,6 @@ body {
 	background-color: white;
 }
 
-.chat-container {
-	padding: 1rem;
-}
-
 /* 模态框样式 */
 .modal-content {
 	border-radius: 1rem;
@@ -2465,18 +2453,6 @@ body {
 	height: 100vh;
 }
 
-.chat-container {
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-	padding: 20px;
-}
-
-.chat-messages {
-	flex: 1;
-	overflow-y: auto;
-	padding: 10px;
-}
 
 .message {
 	display: flex;
@@ -3348,11 +3324,15 @@ body {
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-.new-chat-btn:hover {
-	background-color: #f8fafc;
-	border-color: #2563eb;
-	color: #1f2937;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+/* 保存对话按钮悬浮样式 */
+.action-buttons #saveChatBtn:hover {
+	background-color: rgba(0, 0, 0, 0.15);
+
+}
+
+/* 新建对话按钮悬浮样式 */
+.action-buttons #newChatBtn:hover {
+	background-color: rgba(0, 0, 0, 0.15);
 }
 
 .new-chat-btn i {
@@ -3428,6 +3408,7 @@ body {
 		/* 移动端更小一点 */
 		padding: 0.4rem 0.875rem;
 	}
+
 }
 
 /* 修改密码模态框样式 */
@@ -3586,12 +3567,18 @@ body {
 
 /* 移动端适配 */
 @media (max-width: 768px) {
-	.action-buttons {
-		padding: 0 8px;
-	}
 
 	.new-chat-btn {
 		padding: 0.5rem 0.875rem;
 		font-size: 0.85rem;
 	}
+
+	.chat-container {
+		padding: 0;
+	}
+
+	.action-buttons {
+		padding: 0;
+	}
+
 }
