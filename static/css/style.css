@@ -791,8 +791,8 @@
 
 /* 设置面板内容样式优化 */
 .settings-panel-content {
+	padding: 1rem;
 	height: calc(100% - 3rem);
-	/* 减去标的高度 */
 	overflow-y: auto;
 	scrollbar-width: none;
 	-ms-overflow-style: none;
@@ -1072,54 +1072,6 @@
 	/* 使用更宽的宽度定义 */
 }
 
-/* 关闭按钮样式优化 */
-#authModal .auth-modal-close {
-	position: absolute;
-	right: calc(50% - 19px);
-	/* 水平居中 */
-	top: -2.5rem;
-	/* 调整按钮与模态框的距离 */
-	width: 38px;
-	height: 38px;
-	padding: 0.75rem;
-	border-radius: 50%;
-	background-color: #ffffff;
-	opacity: 1;
-	transition: all 0.2s ease;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	transform-origin: center;
-	z-index: 1060;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-	border: none;
-}
-
-/* 关闭按钮样式优化 */
-#authModal .auth-modal-close {
-	position: absolute;
-	/* 相对于 modal-dialog 定位 */
-	left: 50%;
-	/* 水平居中 */
-	transform: translateX(-50%);
-	/* 水平居中偏移 */
-	top: -2.5rem;
-	/* 向上偏移 */
-	width: 38px;
-	height: 38px;
-	padding: 0.75rem;
-	border-radius: 50%;
-	background-color: #ffffff;
-	opacity: 1;
-	transition: all 0.2s ease;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	z-index: 1060;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-	border: none;
-}
-
 #authModal .auth-modal-close:hover {
 	background-color: #f3f4f6;
 	transform: translateX(-50%) rotate(90deg);
@@ -1131,74 +1083,11 @@
 	/* 保持水平居中的同时添加旋转和缩放效果 */
 }
 
-
 /* 关闭按钮样式优化 */
 #authModal .auth-modal-close {
 	position: fixed;
 	left: 50%;
-	transform: translateX(-50%);
-	top: 10.5rem;
-	/* 增加固定定位的top值 */
-	width: 38px;
-	height: 38px;
-	padding: 0.75rem;
-	border-radius: 50%;
-	background-color: #ffffff;
-	opacity: 1;
-	transition: all 0.2s ease;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	z-index: 1060;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-	border: none;
-}
-
-#authModal .auth-modal-close:hover {
-	background-color: #f3f4f6;
-	transform: translateX(-50%) rotate(90deg);
-}
-
-#authModal .auth-modal-close:active {
-	transform: translateX(-50%) rotate(90deg) scale(0.95);
-}
-
-/* 关闭按钮样式优化 */
-#authModal .auth-modal-close {
-	position: fixed;
-	left: 50%;
-	transform: translateX(-50%);
-	top: 13.5rem;
-	/* 增加固定定位的top值 */
-	width: 38px;
-	height: 38px;
-	padding: 0.75rem;
-	border-radius: 50%;
-	background-color: #ffffff;
-	opacity: 1;
-	transition: all 0.2s ease;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	z-index: 1060;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-	border: none;
-}
-
-#authModal .auth-modal-close:hover {
-	background-color: #f3f4f6;
-	transform: translateX(-50%) rotate(90deg);
-}
-
-#authModal .auth-modal-close:active {
-	transform: translateX(-50%) rotate(90deg) scale(0.95);
-}
-
-
-/* 关闭按钮样式优化 */
-#authModal .auth-modal-close {
-	position: fixed;
-	left: 50%;
+	right: calc(50% - 19px);
 	transform: translateX(-50%);
 	width: 38px;
 	height: 38px;
@@ -1215,17 +1104,8 @@
 	border: none;
 }
 
-#authModal .auth-modal-close:hover {
-	background-color: #f3f4f6;
-	transform: translateX(-50%) rotate(90deg);
-}
 
-#authModal .auth-modal-close:active {
-	transform: translateX(-50%) rotate(90deg) scale(0.95);
-}
-
-
-/* 公��列表样式优化 */
+/* 公告列表样式优化 */
 .announcement-list {
 	display: flex;
 	flex-direction: column;
@@ -1238,14 +1118,9 @@
 	overflow: hidden;
 	background: #ffffff;
 	transition: all 0.2s ease;
+	margin: 0;
 }
 
-.announcement-header {
-	padding: 1rem;
-	background: #f8f9fa;
-	border-bottom: 1px solid #e5e7eb;
-	cursor: pointer;
-}
 
 .announcement-title-wrapper {
 	display: flex;
@@ -1284,9 +1159,9 @@
 }
 
 .announcement-content.show {
-	max-height: 1000px;
+	max-height: 500px;
 	/* 设置一个足够大的值 */
-	padding: 1rem;
+	padding: 0.8rem;
 	border-top: 1px solid #e5e7eb;
 }
 
@@ -1466,13 +1341,7 @@ body {
 	color: #1a1a1a;
 }
 
-.settings-panel-content {
-	padding: 0;
-	height: calc(100% - 3rem);
-	overflow-y: auto;
-	scrollbar-width: none;
-	-ms-overflow-style: none;
-}
+
 
 /* 户信息样式 */
 .user-info .info-item {
@@ -1499,11 +1368,13 @@ body {
 }
 
 .announcement-header {
-	padding: 15px;
+	padding: 1rem;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	cursor: pointer;
+	background: #f8f9fa;
+	border-bottom: 1px solid #e5e7eb;
 }
 
 .announcement-title-wrapper {
@@ -1539,12 +1410,6 @@ body {
 	overflow: hidden;
 	transition: all 0.3s ease;
 	background-color: #f8f9fa;
-}
-
-.announcement-content.show {
-	padding: 15px;
-	max-height: 500px;
-	border-top: 1px solid #f0f0f0;
 }
 
 .announcement-content p {
@@ -3052,15 +2917,10 @@ body {
 		flex: 0 0 60px;
 	}
 
-	.settings-panel-content {
-		padding: 0;
-		/* 移动端移除内边距 */
-	}
-
 	/* 调整移动端其他相关样式 */
 	.user-info {
-		gap: 0.5rem;
-		/* 减小间距 */
+		gap: 0.01rem;
+		padding: 0;
 	}
 
 	.info-item {
@@ -3074,19 +2934,21 @@ body {
 	}
 
 	.announcement-item {
-		margin: 0 0.75rem;
+		margin: 0.1rem 0.2rem;
 		/* 添加左右边距 */
+		width: 100%;
 	}
 
-	.settings-panel-content .user-info {
-		padding: 0 !important;
-		/* 使用 !important 确保覆盖其他样式 */
-		background-color: transparent !important;
-		border-radius: 0 !important;
+	.settings-panel-content {
+		padding: 0.3rem;
 	}
+
+	/* .settings-panel-content .user-info {
+		padding: 0 !important;
+	} */
 
 	.settings-panel-content .info-item {
-		margin: 0 0.75rem;
+		margin: 0.5rem;
 	}
 
 	.settings-panel-content .info-actions {
@@ -3158,53 +3020,8 @@ body {
 		/* 移动端减小顶部内边距 */
 	}
 
-
-
-	#authModal .auth-modal-close {
-		top: -2rem;
-		/* 移动端调整按钮与模态框的距离 */
-		width: 34px;
-		height: 34px;
-		padding: 0.5rem;
-		right: calc(50% - 17px);
-	}
-
-
-	#authModal .auth-modal-close {
-		width: 34px;
-		height: 34px;
-		padding: 0.5rem;
-		top: -2rem;
-		/* 移动端调整按钮位置 */
-	}
-
-
-	#authModal .auth-modal-close {
-		width: 34px;
-		height: 34px;
-		padding: 0.5rem;
-		top: 11rem;
-		/* 移动端调整固定定位的top值 */
-	}
-
-
-
-	#authModal .auth-modal-close {
-		width: 34px;
-		height: 34px;
-		padding: 0.5rem;
-		top: 14rem;
-		/* 移动端调整固定定位的top值 */
-	}
-
-	#authModal .auth-modal-close {
-		width: 34px;
-		height: 34px;
-		padding: 0.5rem;
-	}
-
 	.announcement-header {
-		padding: 0.875rem;
+		padding: 0.7rem;
 	}
 
 	.announcement-title {
@@ -3216,7 +3033,7 @@ body {
 	}
 
 	.announcement-content.show {
-		padding: 0.875rem;
+		padding: 0.5rem;
 	}
 
 	.announcement-content p {
@@ -3247,19 +3064,6 @@ body {
 		padding: 0.3rem !important;
 		margin-left: -12px !important;
 		/* 使用 !important 确保优先级 */
-	}
-
-	.announcement-item {
-		margin: 0;
-		width: 100%;
-	}
-
-	.announcement-header {
-		padding: 1rem;
-	}
-
-	.announcement-content.show {
-		padding: 1rem;
 	}
 
 	.model-selector {
@@ -3365,23 +3169,11 @@ body {
 		/* 移动端使用0.5rem内边距，添加!important确保优先级 */
 	}
 
-	.settings-panel-content {
-		padding: 0;
-		/* 移除内容区域的内边距 */
-	}
-
 	.announcement-list {
 		padding: 0;
 		/* 移除列表的内边距 */
 		margin-left: -18px;
 		/* 保持左侧负外边距 */
-	}
-
-	.announcement-item {
-		margin: 0;
-		/* 移除公告项的外边距 */
-		width: 100%;
-		/* 确保宽度占满 */
 	}
 
 	.model-switch {
