@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from aimodels.models import AIModel
 from ModelPlatform.spark import SparkPlatform
-from chat.models import ChatConversation, ChatDeletionLog, ChatMessage
+from chat.models import ChatConversation, ChatDeletionLog
 
 def get_available_models(request):
     """获取可用的模型列表"""
@@ -48,41 +48,11 @@ def send_message(request):
     try:
         message = request.POST.get('message', '').strip()
         model_id = request.POST.get('model')
-        conversation_id = request.POST.get('conversation_id')
         
         if not message:
             return JsonResponse({'success': False, 'message': '消息不能为空'})
             
-        # 获取或创建对话
-        if conversation_id:
-            try:
-                conversation = ChatConversation.objects.get(
-                    id=conversation_id,
-                    user=request.user,
-                    status='active'
-                )
-            except ChatConversation.DoesNotExist:
-                conversation = None
-        else:
-            conversation = None
-        
-        if not conversation:
-            # 创建新对话，使用用户的第一条消息作为标题
-            conversation = ChatConversation.objects.create(
-                user=request.user,
-                title=message[:100],  # 使用第一条消息作为标题，限制长度
-                conversation_type='temporary',
-                status='active'
-            )
-        
-        # 保存用户消息
-        ChatMessage.objects.create(
-            conversation=conversation,
-            role='user',
-            content=message
-        )
-        
-        # 获取模型配置并发送到AI
+        # 获取模型配置
         try:
             model = AIModel.objects.get(id=model_id, is_active=True)
         except AIModel.DoesNotExist:
@@ -90,32 +60,23 @@ def send_message(request):
             
         # 创建讯飞星火平台实例
         platform = SparkPlatform()
+        # 从配置中获取密钥信息
         config = model.config or {}
         platform.appid = config.get('SPARK_APPID', '').strip()
         platform.api_key = config.get('SPARK_API_KEY', '').strip()
         platform.api_secret = config.get('SPARK_API_SECRET', '').strip()
         
+        # 验证配置完整性
         if not all([platform.appid, platform.api_key, platform.api_secret]):
-            return JsonResponse({'success': False, 'message': '模型配置不完整'})
+            return JsonResponse({'success': False, 'message': '模型配置不完整，请检查APPID和密钥信息'})
         
+        # 设置正确的版本（不带v前缀）
         platform.version = model.version
         
         try:
             # 调用AI接口
             response = platform.chat(message)
-            
-            # 保存AI回复
-            ChatMessage.objects.create(
-                conversation=conversation,
-                role='assistant',
-                content=response
-            )
-            
-            return JsonResponse({
-                'success': True,
-                'response': response,
-                'conversation_id': conversation.id
-            })
+            return JsonResponse({'success': True, 'response': response})
         except Exception as e:
             return JsonResponse({'success': False, 'message': f'调用AI接口失败: {str(e)}'})
             
@@ -132,15 +93,14 @@ def create_conversation(request):
         # 创建新对话
         conversation = ChatConversation.objects.create(
             user=request.user,
-            title='',  # 不设置默认标题，等待第一条消息
+            title='新对话',  # 默认标题
             conversation_type='temporary',  # 默认为临时对话
             status='active'
         )
         
         return JsonResponse({
             'success': True,
-            'conversation_id': conversation.id,
-            'message': '新对话已创建'
+            'conversation_id': conversation.id
         })
         
     except Exception as e:
